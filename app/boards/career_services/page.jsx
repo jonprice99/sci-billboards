@@ -2,7 +2,7 @@ import Link from "next/link"
 import styles from './page.module.css'
 import Image from 'next/image'
 
-const other_ideas = () => {
+const career_services = () => {
     return (
       <main className={styles.main}>
       <div className={styles.description}>
@@ -39,7 +39,7 @@ const other_ideas = () => {
       <div className={styles.grid}>
         <a>
           <h2>
-            Other Ideas Board
+            Career Services Board
           </h2>
           <p>(Construction in progress...)</p>
         </a>
@@ -47,4 +47,4 @@ const other_ideas = () => {
     </main>)
   }
   
-export default other_ideas
+export default career_services

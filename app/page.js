@@ -6,27 +6,6 @@ export default function Home() {
   return (
     <main className={styles.main}>
       <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
       </div>
 
       <div className={styles.center}>
@@ -42,27 +21,111 @@ export default function Home() {
 
       <div className={styles.grid}>
         <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
+          href="/boards/career_services"
           className={styles.card}
           target="_blank"
           rel="noopener noreferrer"
         >
           <h2>
-            Docs <span>-&gt;</span>
+            Career Services <span>-&gt;</span>
           </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
+          <p>Give your thoughts on our career assistance/opportunity resources here!</p>
         </a>
 
         <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
+          href="/boards/classes"
           className={styles.card}
           target="_blank"
           rel="noopener noreferrer"
         >
           <h2>
-            Learn <span>-&gt;</span>
+            Classes <span>-&gt;</span>
           </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
+          <p>Feedback about existing classes? Give it here!</p>
+        </a>
+
+        <a
+          href="/boards/classes"
+          className={styles.card}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <h2>
+            Classrooms <span>-&gt;</span>
+          </h2>
+          <p>Is there room for improvement with our classrooms? Tell us here!</p>
+        </a>
+
+        <a
+          href="/boards/community"
+          className={styles.card}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <h2>
+            Community <span>-&gt;</span>
+          </h2>
+          <p>Thoughts on SCI culture or social life? Tell us how you feel!</p>
+        </a>
+
+        <a
+          href="/boards/curriculum"
+          className={styles.card}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <h2>
+            Curriculum <span>-&gt;</span>
+          </h2>
+          <p>Think our curriculum needs some updating? Let us know here!</p>
+        </a>
+
+        <a
+          href="/boards/events"
+          className={styles.card}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <h2>
+            Events <span>-&gt;</span>
+          </h2>
+          <p>Give us your thoughts on past events or ideas for new ones here!</p>
+        </a>
+
+        <a
+          href="/boards/lounges"
+          className={styles.card}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <h2>
+            Lounges <span>-&gt;</span>
+          </h2>
+          <p>Want better places to take it easy at SCI? Drop some ideas here!</p>
+        </a>
+
+        <a
+          href="/boards/misc"
+          className={styles.card}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <h2>
+            Miscellaneous <span>-&gt;</span>
+          </h2>
+          <p>Got some random thoughts for SCI? We want them here!</p>
+        </a>
+
+        <a
+          href="/boards/other_ideas"
+          className={styles.card}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <h2>
+            Other Ideas <span>-&gt;</span>
+          </h2>
+          <p>Have other ideas that don't fit elsewhere? We got you!</p>
         </a>
 
       </div>
