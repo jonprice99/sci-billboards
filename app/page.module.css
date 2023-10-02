@@ -47,11 +47,12 @@
 }
 
 .card {
-  padding: 1rem 1.2rem;
+  padding: 1.5rem 1.7rem;
   border-radius: var(--border-radius);
   background: rgba(var(--card-rgb), 0);
   border: 1px solid rgba(var(--card-border-rgb), 0);
   transition: background 200ms, border 200ms;
+  z-index: 1;
 }
 
 .card span {
@@ -211,11 +212,11 @@
 
 @media (prefers-color-scheme: dark) {
   .vercelLogo {
-    filter: invert(1);
+    /*filter: invert(1);*/
   }
 
   .logo {
-    filter: invert(1) drop-shadow(0 0 0.3rem #ffffff70);
+    /*filter: invert(1) drop-shadow(0 0 0.3rem #ffffff70);*/
   }
 }
 
