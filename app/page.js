@@ -26,13 +26,25 @@ export default function Home() {
 
       <div className={styles.grid}>
         <a
+          href="/boards/trending"
+          className={styles.card}
+          target="_self"
+          rel="noopener noreferrer"
+        >
+          <h2>
+            🔥 Trending 
+          </h2>
+          <p>See what ideas are hot and current here!</p>
+        </a>
+        
+        <a
           href="/boards/career_services"
           className={styles.card}
           target="_self"
           rel="noopener noreferrer"
         >
           <h2>
-            Career Services 
+            🧑‍💼 Career Services 
           </h2>
           <p>Give your thoughts on our career assistance/opportunity resources here!</p>
         </a>
@@ -44,7 +56,7 @@ export default function Home() {
           rel="noopener noreferrer"
         >
           <h2>
-            Classes 
+            🧑‍💻 Classes 
           </h2>
           <p>Feedback about existing classes? Give it here!</p>
         </a>
@@ -56,7 +68,7 @@ export default function Home() {
           rel="noopener noreferrer"
         >
           <h2>
-            Classrooms 
+            🏫 Classrooms 
           </h2>
           <p>Is there room for improvement with our classrooms? Tell us here!</p>
         </a>
@@ -68,7 +80,7 @@ export default function Home() {
           rel="noopener noreferrer"
         >
           <h2>
-            Community 
+            🌐 Community 
           </h2>
           <p>Thoughts on SCI culture or social life? Tell us how you feel!</p>
         </a>
@@ -80,7 +92,7 @@ export default function Home() {
           rel="noopener noreferrer"
         >
           <h2>
-            Curriculum 
+            📚 Curriculum 
           </h2>
           <p>Think our curriculum needs some updating? Let us know here!</p>
         </a>
@@ -92,7 +104,7 @@ export default function Home() {
           rel="noopener noreferrer"
         >
           <h2>
-            Events 
+            📅 Events 
           </h2>
           <p>Give us your thoughts on past events or ideas for new ones here!</p>
         </a>
@@ -104,7 +116,7 @@ export default function Home() {
           rel="noopener noreferrer"
         >
           <h2>
-            Lounges 
+            🛋️ Lounges 
           </h2>
           <p>Want better places to take it easy at SCI? Drop some ideas here!</p>
         </a>
@@ -116,7 +128,7 @@ export default function Home() {
           rel="noopener noreferrer"
         >
           <h2>
-            Miscellaneous 
+            🦆 Miscellaneous 
           </h2>
           <p>Got some random thoughts for SCI? We want them here!</p>
         </a>
@@ -128,7 +140,7 @@ export default function Home() {
           rel="noopener noreferrer"
         >
           <h2>
-            Other Ideas 
+            💭 Other Ideas 
           </h2>
           <p>Have other ideas that don't fit elsewhere? We got you!</p>
         </a>
