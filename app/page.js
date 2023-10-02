@@ -1,22 +1,25 @@
 import Image from 'next/image'
 import styles from './page.module.css'
 import Link from 'next/link'
+import DarkLogo from 'public/University_of_Pittsburgh_Logo_CMYK_Secondary_Reverse_2-Color.png'
+import LightLogo from 'public/University_of_Pittsburgh_Logo_CMYK_Primary_3-Color.png'
 
 export default function Home() {
   return (
     <main className={styles.main}>
-      <div className={styles.description}>
-      </div>
 
       <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
+        <picture>
+          <source srcSet={DarkLogo.src} media="(prefers-color-scheme: dark)"/>
+          <Image
+            className={styles.logo}
+            src={LightLogo}
+            alt="Next.js Logo"
+            width={200}
+            height={76}
+            priority
+          />
+        </picture>
       </div>
 
       <div className={styles.grid}>
