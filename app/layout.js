@@ -35,7 +35,7 @@ export default function RootLayout({ children }) {
                     src={DarkLogo}
                     alt="University of Pittsburgh Logo"
                     width={200}
-                    height={76}
+                    height={70}
                     priority
                     />
                 </picture>
@@ -68,7 +68,51 @@ export default function RootLayout({ children }) {
         {children}
 
         <footer className={styles.footer}>
+          <div className={open_sans.className}>
+              <div className={styles.container}>
+                <div className={styles.footer_logo}>
+                  <Image
+                    src={DarkLogo}
+                    alt="University of Pittsburgh Logo"
+                    width={120}
+                    height={40}
+                    priority
+                  />
+                </div>
+                    
+                <div className={styles.footer_uni_name}>
+                  <Link href={"/"}>
+                    School of Computing and Information
+                  </Link>
+                </div>
+              </div>
 
+              <div className={styles.container}>
+                <p>
+                  <br></br>
+                  Information Science Building, Fifth Floor
+                  <br></br>
+                  135 North Bellefield Avenue
+                  <br></br>
+                  Pittsburgh, PA 15260
+                  <br></br>
+                </p>
+              </div>
+
+              <div className={styles.container}>
+                <ul className={styles.links}>
+                  <li>
+                    <a href="https://www.sci.pitt.edu/careers/career-resources/">Career Resources</a>
+                  </li>
+                  <li>
+                    <a href="https://www.sci.pitt.edu/careers/career-faqs/">Career FAQs</a>
+                  </li>
+                  <li>
+                    <a href="https://www.sci.pitt.edu/careers/career-outcomes/">Career Outcomes</a>
+                  </li>
+                </ul>
+              </div>
+          </div>
         </footer>
       </body>
     </html>
