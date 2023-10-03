@@ -3,7 +3,9 @@ import Link from 'next/link'
 import Image from 'next/image'
 import styles from 'app/page.module.css'
 import DarkLogo from 'public/University_of_Pittsburgh_Logo_CMYK_Secondary_Reverse_2-Color.png'
+import DarkSeal from 'public/Shield_White.png'
 import LightLogo from 'public/University_of_Pittsburgh_Logo_CMYK_Primary_3-Color.png'
+import LightSeal from 'public/Shield_Black.png'
 import { Inter } from 'next/font/google'  // Default Next font
 import { Rubik } from 'next/font/google'  // Primary Pitt font
 import { Open_Sans } from 'next/font/google'  // Secondary Pitt font
@@ -46,8 +48,28 @@ export default function RootLayout({ children }) {
             </h1>
           </div>
         </header>
+
+        <div className={styles.center}>
+          <Link href={"/"}>
+            <picture>
+              <source srcSet={DarkSeal.src} media="(prefers-color-scheme: dark)"/>
+              <Image
+                className={styles.logo}
+                src={LightSeal}
+                alt="Next.js Logo"
+                width={80}
+                height={100}
+                priority
+              />
+            </picture>
+          </Link>
+        </div>
         
         {children}
+
+        <footer className={styles.footer}>
+
+        </footer>
       </body>
     </html>
   )

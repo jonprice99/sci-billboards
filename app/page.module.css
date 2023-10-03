@@ -29,6 +29,15 @@
   float: right;
 }
 
+.footer {
+  background-color: #2b2b2b;
+  height: 390px;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+}
+
 .description {
   display: inherit;
   justify-content: inherit;
@@ -106,10 +115,11 @@
 
 .center::before {
   background: var(--secondary-glow);
-  border-radius: 50%;
+  border-radius: 25%;
   width: 480px;
   height: 360px;
   margin-left: -400px;
+  z-index: 0;
 }
 
 .center::after {
@@ -126,6 +136,7 @@
   position: absolute;
   filter: blur(45px);
   transform: translateZ(0);
+  z-index: -1;
 }
 
 .logo {
@@ -175,9 +186,16 @@
     float: right;
   }
 
-  .logo {
+  header .logo {
     height: 54px;
     width: 150px;
+    position: relative;
+    padding-left: 0.25rem;
+  }
+
+  .logo {
+    height: 80px;
+    width: 64px;
     position: relative;
     padding-left: 0.25rem;
   }
@@ -257,6 +275,11 @@
 @media (min-width: 701px) and (max-width: 1120px) {
   .grid {
     grid-template-columns: repeat(2, 50%);
+  }
+
+  .center::before {
+    transform: none;
+    height: 300px;
   }
 }
 
