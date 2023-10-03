@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import styles from 'app/page.module.css'
 import DarkLogo from 'public/University_of_Pittsburgh_Logo_CMYK_Secondary_Reverse_2-Color.png'
+import LightLogo from 'public/University_of_Pittsburgh_Logo_CMYK_Primary_3-Color.png'
 import { Inter } from 'next/font/google'  // Default Next font
 import { Rubik } from 'next/font/google'  // Primary Pitt font
 import { Open_Sans } from 'next/font/google'  // Secondary Pitt font
