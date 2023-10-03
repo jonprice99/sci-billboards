@@ -7,6 +7,18 @@
   min-height: 100vh;
 }
 
+.header {
+  background-color: #003594;
+  color: #FFB81C;
+  font-size: 24px;
+  height: 78px;
+  display: flex;
+  justify-content: left;
+  align-items: left;
+  padding-left: 1.5rem;
+  z-index: 5;
+}
+
 .description {
   display: inherit;
   justify-content: inherit;
@@ -62,6 +74,7 @@
 
 .card h2 {
   font-weight: 600;
+  font-size: 1.25rem;
   margin-bottom: 0.7rem;
 }
 
@@ -108,6 +121,7 @@
 .logo {
   position: relative;
 }
+
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
   .card:hover {
@@ -130,6 +144,19 @@
 @media (max-width: 700px) {
   .content {
     padding: 4rem;
+  }
+
+  .header {
+    padding-left: 0rem;
+    height: 54px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logo {
+    height: 54px;
+    width: 150px;
+    position: relative;
   }
 
   .grid {

@@ -46,7 +46,7 @@ export default function Home() {
           <h2>
             🧑‍💼 Career Services 
           </h2>
-          <p>Give your thoughts on our career assistance/opportunity resources here!</p>
+          <p>Tell your thoughts on our career assistance & opportunity resources here!</p>
         </a>
 
         <a
