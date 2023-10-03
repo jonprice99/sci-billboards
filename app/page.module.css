@@ -9,14 +9,24 @@
 
 .header {
   background-color: #003594;
-  color: #FFB81C;
-  font-size: 24px;
   height: 78px;
   display: flex;
-  justify-content: left;
+  justify-content: space-between;
   align-items: left;
   padding-left: 1.5rem;
   z-index: 5;
+}
+
+.header_text {
+  color: #FFB81C;
+  font-size: 24px;
+  display: flex;
+  justify-content: right;
+  text-align: center;
+  position: relative;
+  align-items: center;
+  padding-right: 1.5rem;
+  float: right;
 }
 
 .description {
@@ -150,13 +160,26 @@
     padding-left: 0rem;
     height: 54px;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+  }
+
+  .header_text {
+    color: #FFB81C;
+    font-size: 10px;
+    display: flex;
+    justify-content: right;
+    text-align: center;
+    position: relative;
+    align-items: center;
+    padding-right: 0.5rem;
+    float: right;
   }
 
   .logo {
     height: 54px;
     width: 150px;
     position: relative;
+    padding-left: 0.25rem;
   }
 
   .grid {

@@ -38,6 +38,12 @@ export default function RootLayout({ children }) {
                 </picture>
               </Link>
           </div>
+
+          <div className={styles.header_text}>
+            <h1>
+              What do you want?
+            </h1>
+          </div>
         </header>
         
         {children}

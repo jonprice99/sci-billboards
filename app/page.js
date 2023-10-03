@@ -46,7 +46,7 @@ export default function Home() {
           <h2>
             🧑‍💼 Career Services 
           </h2>
-          <p>Tell your thoughts on our career assistance & opportunity resources here!</p>
+          <p>Tell your thoughts on our career resources!</p>
         </a>
 
         <a
@@ -58,7 +58,7 @@ export default function Home() {
           <h2>
             🧑‍💻 Classes 
           </h2>
-          <p>Feedback about existing classes? Give it here!</p>
+          <p>Have feedback about current and existing classes? Give it here!</p>
         </a>
 
         <a
@@ -82,7 +82,7 @@ export default function Home() {
           <h2>
             🌐 Community 
           </h2>
-          <p>Thoughts on SCI culture or social life? Tell us how you feel!</p>
+          <p>Thoughts on SCI culture or social life? Let us know how you feel!</p>
         </a>
 
         <a
@@ -94,7 +94,7 @@ export default function Home() {
           <h2>
             📚 Curriculum 
           </h2>
-          <p>Think our curriculum needs some updating? Let us know here!</p>
+          <p>Think our curriculum needs some updating? Let us know!</p>
         </a>
 
         <a
@@ -106,7 +106,7 @@ export default function Home() {
           <h2>
             📅 Events 
           </h2>
-          <p>Give us your thoughts on past events or ideas for new ones here!</p>
+          <p>Give us your thoughts on past events or ideas for new ones!</p>
         </a>
 
         <a
@@ -118,7 +118,7 @@ export default function Home() {
           <h2>
             🛋️ Lounges 
           </h2>
-          <p>Want better places to take it easy at SCI? Drop some ideas here!</p>
+          <p>Want better places to take it easy at SCI? Drop us some thoughts!</p>
         </a>
 
         <a
@@ -130,7 +130,7 @@ export default function Home() {
           <h2>
             🦆 Miscellaneous 
           </h2>
-          <p>Got some random thoughts for SCI? We want them here!</p>
+          <p>Got some random thoughts for SCI? We want them!</p>
         </a>
 
         <a
