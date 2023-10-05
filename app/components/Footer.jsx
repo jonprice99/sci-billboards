@@ -1,7 +1,7 @@
 /**
  * This file is the footer component that's added to layout.js
  */
-import styles from 'app/page.module.css'
+import styles from './Footer.module.css'
 import 'app/globals.css'
 import Link from 'next/link'
 import Image from 'next/image'
