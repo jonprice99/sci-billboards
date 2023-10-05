@@ -119,18 +119,6 @@ export default function Home() {
           <p>Got some random thoughts for SCI? We want them!</p>
         </a>
 
-        <a
-          href="/boards/other_ideas"
-          className={styles.card}
-          target="_self"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            💭 Other Ideas 
-          </h2>
-          <p>Have other ideas that don't fit elsewhere? We got you!</p>
-        </a>
-
       </div>
     </main>
   )

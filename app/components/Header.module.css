@@ -1,0 +1,30 @@
+.main {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6rem;
+    min-height: 70vh;
+  }
+  
+  .header {
+    background-color: #003594;
+    height: 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: left;
+    padding-left: 1.5rem;
+    z-index: 5;
+  }
+  
+  .header_text {
+    color: #FFB81C;
+    font-size: 20px;
+    display: flex;
+    justify-content: right;
+    text-align: center;
+    position: relative;
+    align-items: center;
+    padding-right: 1.5rem;
+    float: right;
+  }
