@@ -1,10 +1,4 @@
-import Image from 'next/image'
 import styles from './page.module.css'
-import Link from 'next/link'
-import DarkLogo from 'public/University_of_Pittsburgh_Logo_CMYK_Secondary_Reverse_2-Color.png'
-import DarkSeal from 'public/Shield_White.png'
-import LightLogo from 'public/University_of_Pittsburgh_Logo_CMYK_Primary_3-Color.png'
-import LightSeal from 'public/Shield_Black.png'
 
 export default function Home() {
   return (

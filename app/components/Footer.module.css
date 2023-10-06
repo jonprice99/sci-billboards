@@ -56,3 +56,46 @@ footer .links a {
 .footer_uni_name {
     font-weight: 600;
 }
+
+/* Mobile */
+@media (max-width: 700px) {
+    .footer {
+        padding: 50px 0;
+        font-size: 1.15rem;
+        margin-top: 0;
+        margin-right: auto;
+        margin-left: auto;
+        border-top: none;
+    }
+
+    .footer_logo {
+        display: inline-block;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    footer .container {
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        justify-content: left;
+        align-items: center;
+    }
+
+    footer .container .Link {
+        display: flex;
+        justify-content: center;
+    }
+
+    footer .links {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        font-size: .80rem;
+    }
+
+    .footer p {
+        font-size: 12px;
+        margin-left: 10px;
+    }
+}

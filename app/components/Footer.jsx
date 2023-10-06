@@ -17,21 +17,23 @@ export default function Footer() {
         <footer className={styles.footer}>
           <div className={open_sans.className}>
               <div className={styles.container}>
-                <div className={styles.footer_logo}>
-                  <Image
-                    src={DarkLogo}
-                    alt="University of Pittsburgh Logo"
-                    width={120}
-                    height={40}
-                    priority
-                  />
-                </div>
-                    
-                <div className={styles.footer_uni_name}>
-                  <Link href={"/"}>
-                    School of Computing and Information
-                  </Link>
-                </div>
+                <span>
+                    <div className={styles.footer_logo}>
+                    <Image
+                        src={DarkLogo}
+                        alt="University of Pittsburgh Logo"
+                        width={120}
+                        height={40}
+                        priority
+                    />
+                    </div>
+                        
+                    <div className={styles.footer_uni_name}>
+                    <Link href={"/"}>
+                        School of Computing and Information
+                    </Link>
+                    </div>
+                </span>
               </div>
 
               <div className={styles.container}>

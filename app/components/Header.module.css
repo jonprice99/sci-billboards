@@ -19,3 +19,40 @@
     padding-right: 1.5rem;
     float: right;
 }
+
+/* Mobile */
+@media (max-width: 700px) {
+    .main {
+        padding: 3rem;
+    }
+
+    .content {
+        padding: 3rem;
+    }
+
+    .header {
+        padding-left: 0rem;
+        height: 54px;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .header_text {
+        color: #FFB81C;
+        font-size: 10px;
+        display: flex;
+        justify-content: right;
+        text-align: center;
+        position: relative;
+        align-items: center;
+        padding-right: 0.5rem;
+        float: right;
+    }
+
+    header .logo {
+        height: 54px;
+        width: 150px;
+        position: relative;
+        padding-left: 0.25rem;
+    }
+}
