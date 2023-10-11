@@ -32,6 +32,7 @@ export default function Header() {
 
             <div className={styles.header_text}>
                 <h1>
+                    {/* Note: This is a placeholder name. */}
                     What do you want?
                 </h1>
             </div>

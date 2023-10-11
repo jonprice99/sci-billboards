@@ -145,6 +145,7 @@ footer .links a {
   font-weight: 600;
   font-size: 1.25rem;
   margin-bottom: 0.7rem;
+  color: #000;
 }
 
 .card p {
@@ -153,6 +154,7 @@ footer .links a {
   font-size: 0.9rem;
   line-height: 1.5;
   max-width: 30ch;
+  color: #000;
 }
 
 .center {
