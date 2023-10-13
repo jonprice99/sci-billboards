@@ -2,7 +2,7 @@
     background-color: #003594;
     height: 70px;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: left;
     padding-left: 1.5rem;
     z-index: 5;

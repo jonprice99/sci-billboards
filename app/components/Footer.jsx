@@ -89,8 +89,6 @@ export default function Footer() {
           </ul>
         </div>
 
-        <i class="fa-brands fa-twitter fa-2xs"></i>
-
         <div className={styles.copyright}>
           <span>Revised MM/DD/YY</span>
           <span>&copy; Copyright 2023 University of Pittsburgh</span>

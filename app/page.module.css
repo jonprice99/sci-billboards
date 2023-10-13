@@ -134,6 +134,9 @@ footer .links a {
   border: 1px solid rgba(var(--card-border-rgb), 0);
   transition: background 200ms, border 200ms;
   z-index: 1;
+  margin-top: 0.5rem;
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
 }
 
 .card span {
