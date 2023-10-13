@@ -91,8 +91,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'sci-billboard',
         'USER': 'sci-billboard',
-        'PASSWORD': get_secret('DB_PASSWORD'),
-        'HOST':'localhost',
+        # 'PASSWORD': get_secret('DB_PASSWORD'),
+        'PASSWORD': "AQhKPTAKN3yXTRBw",
+        'HOST':'cs-mysql-01.cs.pitt.edu',
         'PORT':'3306',
     }
 }
