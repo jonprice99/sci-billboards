@@ -42,7 +42,7 @@ export default function RootLayout({ children }) {
               <Image
                 className={styles.logo}
                 src={LightSeal}
-                alt="Next.js Logo"
+                alt="Pitt Seal (Placeholder)"
                 width={80}
                 height={100}
                 priority

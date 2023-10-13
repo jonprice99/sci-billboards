@@ -134,6 +134,9 @@ footer .links a {
   border: 1px solid rgba(var(--card-border-rgb), 0);
   transition: background 200ms, border 200ms;
   z-index: 1;
+  margin-top: 0.5rem;
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
 }
 
 .card span {
@@ -145,6 +148,7 @@ footer .links a {
   font-weight: 600;
   font-size: 1.25rem;
   margin-bottom: 0.7rem;
+  color: #000;
 }
 
 .card p {
@@ -153,6 +157,7 @@ footer .links a {
   font-size: 0.9rem;
   line-height: 1.5;
   max-width: 30ch;
+  color: #000;
 }
 
 .center {
@@ -367,10 +372,6 @@ footer .links a {
 
 /* Tablet and Smaller Desktop */
 @media (min-width: 701px) and (max-width: 1120px) {
-  .grid {
-    grid-template-columns: repeat(2, 50%);
-  }
-
   .center::before {
     transform: none;
     height: 300px;

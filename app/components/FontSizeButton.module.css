@@ -1,0 +1,23 @@
+.font_size_button {
+    background-color: #FFB81C;
+    border: none;
+    color: black;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    font-weight: bold;
+    margin: 4px 2px;
+}
+
+/* Enable hover only on devices with a pointer */
+@media (hover: hover) and (pointer: fine) {
+    .font_size_button:hover {
+        background-color: #B58500;
+    }
+
+    .font_size_button {
+        cursor: pointer;
+    }
+}

@@ -7,6 +7,7 @@
 
 # testing
 /coverage
+/myenv
 
 # next.js
 /.next/
@@ -33,3 +34,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# db
+*.py[co]
+*.sw[po]
+*~
+/billboard/secrets.json

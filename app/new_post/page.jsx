@@ -2,14 +2,14 @@ import Link from "next/link"
 import styles from 'app/page.module.css'
 import Image from 'next/image'
 
-const other_ideas = () => {
+const new_post = () => {
     return (
       <main className={styles.main}>
 
       <div className={styles.grid}>
         <a>
           <h2>
-            Other Ideas Board
+            Create New Post
           </h2>
           <p>(Construction in progress...)</p>
         </a>
@@ -17,4 +17,4 @@ const other_ideas = () => {
     </main>)
   }
   
-export default other_ideas
+export default new_post
