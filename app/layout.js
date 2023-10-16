@@ -6,6 +6,7 @@
 import './globals.css'
 import Header from './components/Header'
 import Footer from './components/Footer'
+import Center from './components/Center'
 import Link from 'next/link'
 import Image from 'next/image'
 import styles from 'app/page.module.css'
@@ -35,21 +36,7 @@ export default function RootLayout({ children }) {
       <body className={rubik.className}>
         <Header />
 
-        <div className={styles.center}>
-          <Link href={"/"}>
-            <picture>
-              <source srcSet={DarkSeal.src} media="(prefers-color-scheme: dark)"/>
-              <Image
-                className={styles.logo}
-                src={LightSeal}
-                alt="Pitt Seal (Placeholder)"
-                width={80}
-                height={100}
-                priority
-              />
-            </picture>
-          </Link>
-        </div>
+        <Center />
         
         {children}
 

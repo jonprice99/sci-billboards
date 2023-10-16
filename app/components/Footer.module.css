@@ -1,12 +1,12 @@
 .footer {
     background-color: #2b2b2b;
     color: #fff;
-    height: 375px;
+    height: 270px;
     position: relative;
     background-color: rgb(43, 43, 43);
-    padding: 50px 0;
+    padding: 5px 0;
     font-size: 1.15rem;
-    margin-top: 0;
+    margin-top: auto;
     margin-right: auto;
     margin-left: auto;
     border-top: none;
@@ -23,6 +23,7 @@ footer .container {
     flex-direction: row;
     justify-content: left;
     align-items: center;
+    margin-top: 10px;
 }
 
 .footer_logo {
@@ -127,7 +128,7 @@ footer .container .Link {
 /* Mobile */
 @media (max-width: 700px) {
     .footer {
-        padding: 50px 0;
+        padding: 5px 0;
         font-size: 1.15rem;
         margin-top: 0;
         margin-right: auto;
@@ -164,8 +165,8 @@ footer .container .Link {
 /* Mobile (portrait) */
 @media (max-width: 400px) {
     .footer {
-        height: 500px;
-        padding: 50px 0;
+        height: 450px;
+        padding: 5px 0;
         font-size: 1.15rem;
         margin-top: 0;
         margin-right: auto;

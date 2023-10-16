@@ -136,7 +136,7 @@ footer .links a {
   z-index: 1;
   margin-top: 0.5rem;
   margin-left: 0.25rem;
-  margin-right: 0.25rem;
+  margin-right: 0.1rem;
 }
 
 .card span {
@@ -148,16 +148,17 @@ footer .links a {
   font-weight: 600;
   font-size: 1.25rem;
   margin-bottom: 0.7rem;
-  color: #000;
+  color: #fff;
 }
 
 .card p {
   margin: 0;
-  opacity: 0.6;
+  opacity: 0.8;
   font-size: 0.9rem;
   line-height: 1.5;
   max-width: 30ch;
-  color: #000;
+  color: #FFF;
+  font-weight: 400;
 }
 
 .center {
