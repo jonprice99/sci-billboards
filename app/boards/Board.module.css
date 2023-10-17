@@ -17,6 +17,18 @@
   text-align: center;
 }
 
+.post_grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(50%, auto));
+  grid-auto-rows: 250px;
+  max-width: 100%;
+  width: var(--max-width);
+  align-content: center;
+  justify-content: space-evenly;
+  text-align: center;
+  padding-top: 1rem;
+}
+
 .card {
   padding: 1.5rem 1.7rem;
   border-radius: var(--border-radius);
@@ -39,16 +51,43 @@
   font-size: 1.25rem;
   margin-bottom: 0.7rem;
   color: #fff;
+  text-align: left;
 }
 
 .card p {
+  overflow: hidden;
+  display: -webkit-box;
   margin: 0;
   opacity: 0.8;
   font-size: 0.9rem;
   line-height: 1.5;
-  max-width: 30ch;
+  max-width: auto;
   color: #FFF;
   font-weight: 400;
+  text-align: left;
+  bottom: calc(100% - 10px);
+  -webkit-line-clamp: 4; /* number of lines to show */
+          line-clamp: 4; 
+  -webkit-box-orient: vertical;
+}
+
+.card footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.1rem;
+  position: sticky;
+  height: 40px;
+  top: calc(100% - 10px);
+}
+
+.card footer counter {
+  color: #fff;
+}
+
+.card footer datetime {
+  font-size: 0.7rem;
+  color: #fff;
 }
 
 .description {
@@ -135,6 +174,14 @@
     text-align: center;
   }
 
+  .post_grid {
+    grid-template-columns: repeat(1, minmax(50%, auto));
+    grid-auto-rows: 200px;
+    margin-bottom: 120px;
+    max-width: 320px;
+    text-align: center;
+  }
+
   .card {
     padding: 1rem 2.5rem;
   }
@@ -142,6 +189,33 @@
   .card h2 {
     margin-bottom: 0.5rem;
     text-align: center;
+  }
+
+  .card p {
+    overflow: hidden;
+    display: -webkit-box;
+    margin: 0;
+    opacity: 0.8;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    max-width: auto;
+    color: #FFF;
+    font-weight: 400;
+    text-align: left;
+    bottom: calc(100% - 10px);
+    -webkit-line-clamp: 3; /* number of lines to show */
+            line-clamp: 3; 
+    -webkit-box-orient: vertical;
+  }
+
+  .card footer counter {
+    color: #fff;
+    font-size: 12px;
+  }
+  
+  .card footer datetime {
+    font-size: 0.5rem;
+    color: #fff;
   }
 
   .center {
@@ -199,6 +273,16 @@
 @media (min-width: 701px) and (max-width: 1120px) {
   .grid {
     grid-template-columns: repeat(3, minmax(25%, auto));
+  }
+
+  .card footer counter {
+    color: #fff;
+    font-size: 14px;
+  }
+  
+  .card footer datetime {
+    font-size: 0.55rem;
+    color: #fff;
   }
 }
 

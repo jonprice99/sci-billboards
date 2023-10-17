@@ -4,7 +4,7 @@ import Center from './components/Home_Center';
 import { useState } from 'react';
 
 export default function Home() {
-  // The set of pastel colors to be used as backgrounds for the link cards
+  // The set of colors to be used as backgrounds for the link cards
   const pastelColors = [
     'rgba(0, 53, 148, 1)',
     'rgba(19, 149, 186, 1)',
