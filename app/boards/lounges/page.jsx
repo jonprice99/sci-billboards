@@ -7,12 +7,18 @@ const lounges = () => {
       <main className={styles.main}>
 
       <div className={styles.grid}>
-        <a>
+        <Link href='/'>
+            <h3>◀ Back to Home</h3>
+          </Link>
+        <div>
           <h2>
-            Lounges Board
+            Lounges
           </h2>
           <p>(Construction in progress...)</p>
-        </a>
+        </div>
+        <Link href='/new_post' passHref>
+          <button className={styles.button}>Submit</button>
+        </Link>
       </div>
     </main>)
   }

@@ -7,12 +7,18 @@ const events = () => {
       <main className={styles.main}>
 
       <div className={styles.grid}>
-        <a>
+        <Link href='/'>
+            <h3>◀ Back to Home</h3>
+          </Link>
+        <div>
           <h2>
-            Events Board
+            Events
           </h2>
           <p>(Construction in progress...)</p>
-        </a>
+        </div>
+        <Link href='/new_post' passHref>
+          <button className={styles.button}>Submit</button>
+        </Link>
       </div>
     </main>)
   }
