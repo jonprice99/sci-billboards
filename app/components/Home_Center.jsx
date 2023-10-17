@@ -1,12 +1,16 @@
+/**
+ * This is the file where the word cloud for the homepage HTML
+ * is located. (Currently just a Pitt Logo placeholder...)
+ */
+
 import 'app/globals.css'
 import Link from 'next/link'
 import Image from 'next/image'
-import styles from 'app/page.module.css'
-import DarkLogo from 'public/University_of_Pittsburgh_Logo_CMYK_Secondary_Reverse_2-Color.png'
+import styles from './Home_Center.module.css'
 import DarkSeal from 'public/Shield_White.png'
 import LightSeal from 'public/Shield_Black.png'
 
-export default function Center() {
+export default function Home_Center() {
     return (
         <div className={styles.center}>
           <Link href={"/"}>

@@ -1,5 +1,5 @@
 import Link from "next/link"
-import styles from 'app/page.module.css'
+import styles from './NewPost.module.css'
 import Image from 'next/image'
 
 const new_post = () => {
@@ -7,12 +7,18 @@ const new_post = () => {
       <main className={styles.main}>
 
       <div className={styles.grid}>
-        <a>
+        <Link href='/'>
+            <h3>◀ Back to Home</h3>
+          </Link>
+        <div>
           <h2>
-            Create New Post
+            New Post
           </h2>
           <p>(Construction in progress...)</p>
-        </a>
+        </div>
+        <Link href='/new_post' passHref>
+          <button className={styles.button}>Submit</button>
+        </Link>
       </div>
     </main>)
   }

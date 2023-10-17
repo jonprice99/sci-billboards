@@ -1,5 +1,6 @@
+'use client';
 import Link from "next/link"
-import styles from 'app/page.module.css'
+import styles from 'app/boards/Board.module.css'
 import Image from 'next/image'
 
 const career_services = () => {
@@ -7,12 +8,18 @@ const career_services = () => {
       <main className={styles.main}>
 
       <div className={styles.grid}>
-        <a>
+        <Link href='/'>
+            <h3>◀ Back to Home</h3>
+          </Link>
+        <div>
           <h2>
-            Career Services Board
+            Career Services
           </h2>
           <p>(Construction in progress...)</p>
-        </a>
+        </div>
+        <Link href='/new_post' passHref>
+          <button className={styles.button}>New Post</button>
+        </Link>
       </div>
     </main>)
   }
