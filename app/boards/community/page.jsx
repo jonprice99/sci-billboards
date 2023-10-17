@@ -1,5 +1,5 @@
 import Link from "next/link"
-import styles from 'app/page.module.css'
+import styles from 'app/boards/Board.module.css'
 import Image from 'next/image'
 
 const community = () => {
@@ -12,12 +12,12 @@ const community = () => {
           </Link>
         <div>
           <h2>
-            New Post
+            Community
           </h2>
           <p>(Construction in progress...)</p>
         </div>
         <Link href='/new_post' passHref>
-          <button className={styles.button}>Submit</button>
+          <button className={styles.button}>New Post</button>
         </Link>
       </div>
     </main>)

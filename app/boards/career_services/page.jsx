@@ -4,13 +4,13 @@ import styles from 'app/boards/Board.module.css'
 import Image from 'next/image'
 
 const career_services = () => {
-    return (
-      <main className={styles.main}>
+  return (
+    <main className={styles.main}>
 
       <div className={styles.grid}>
         <Link href='/'>
-            <h3>◀ Back to Home</h3>
-          </Link>
+          <h3>◀ Back to Home</h3>
+        </Link>
         <div>
           <h2>
             Career Services
@@ -22,6 +22,6 @@ const career_services = () => {
         </Link>
       </div>
     </main>)
-  }
-  
+}
+
 export default career_services

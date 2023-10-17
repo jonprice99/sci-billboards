@@ -3,13 +3,13 @@ import styles from './NewPost.module.css'
 import Image from 'next/image'
 
 const new_post = () => {
-    return (
-      <main className={styles.main}>
+  return (
+    <main className={styles.main}>
 
       <div className={styles.grid}>
         <Link href='/'>
-            <h3>◀ Back to Home</h3>
-          </Link>
+          <h3>◀ Back to Home</h3>
+        </Link>
         <div>
           <h2>
             New Post
@@ -20,7 +20,9 @@ const new_post = () => {
           <button className={styles.button}>Submit</button>
         </Link>
       </div>
+
+      {/* Form for data entry will go here... */}
     </main>)
-  }
-  
+}
+
 export default new_post
