@@ -1,20 +1,26 @@
 import Link from "next/link"
-import styles from 'app/page.module.css'
+import styles from 'app/boards/Board.module.css'
 import Image from 'next/image'
 
-const career_services = () => {
+const trending = () => {
     return (
       <main className={styles.main}>
 
       <div className={styles.grid}>
-        <a>
+        <Link href='/'>
+            <h3>◀ Back to Home</h3>
+          </Link>
+        <div>
           <h2>
-            Trending Board
+            Trending
           </h2>
           <p>(Construction in progress...)</p>
-        </a>
+        </div>
+        <Link href='/new_post' passHref>
+          <button className={styles.button}>New Post</button>
+        </Link>
       </div>
     </main>)
   }
   
-export default career_services
+export default trending

@@ -1,18 +1,19 @@
 'use client';
 import styles from './page.module.css'
+import Center from './components/Home_Center';
 import { useState } from 'react';
 
 export default function Home() {
-  // The set of pastel colors to be used as backgrounds for the link cards
+  // The set of colors to be used as backgrounds for the link cards
   const pastelColors = [
-    'rgba(252, 182, 28, 1)',
-    'rgba(157, 207, 123, 1)',
-    'rgba(0, 148, 114, 1)',
-    'rgba(244, 127, 42, 1)',
-    'rgba(112, 101, 155, 1)',
+    'rgba(0, 53, 148, 1)',
+    'rgba(19, 149, 186, 1)',
+    'rgba(0, 126, 79, 1)',
+    'rgba(92, 161, 112, 1)',
     'rgba(126, 77, 120, 1)',
-    'rgba(6, 139, 176, 1)',
-    'rgba(99, 205, 243, 1)',
+    'rgba(112, 101, 155, 1)',
+    'rgba(178, 34, 34, 1)',
+    'rgba(166, 90, 85, 1)',
   ];
 
   // The set of cards with their appropriate links and details
@@ -20,50 +21,50 @@ export default function Home() {
   const [cards, setCards] = useState([
     {
       href: '/boards/trending',
-      header: '🔥 Trending',
+      header: 'Trending',
       paragraph: 'See what ideas are hot and current here!',
     },
     {
       href: '/boards/career_services',
-      header: '🧑‍💼 Career Services',
+      header: 'Career Services',
       paragraph: 'Tell your thoughts on our career resources!',
     },
     {
       href: '/boards/classes',
-      header: '🧑‍💻 Classes',
+      header: 'Classes',
       paragraph: 'Have feedback about current and existing classes? Give it here!',
     },
     {
       href: '/boards/classrooms',
-      header: '🏫 Classrooms',
+      header: 'Classrooms',
       paragraph: 'Is there room for improvement with our classrooms? Tell us here!',
     },
     {
       href: '/boards/community',
-      header: '🌐 Community',
+      header: 'Community',
       paragraph: "Thoughts on SCI culture or social life? Let us know how you feel!",
     },
     {
       href: '/boards/curriculum',
-      header: '📚 Curriculum ',
+      header: 'Curriculum ',
       paragraph:
         "Think our curriculum needs some updating? Let us know!",
     },
     {
       href: '/boards/events',
-      header: '📅 Events ',
+      header: 'Events ',
       paragraph:
         "Give us your thoughts on past events or ideas for new ones!",
     },
     {
       href: '/boards/lounges',
-      header: '🛋️ Lounges ',
+      header: 'Lounges ',
       paragraph:
         "Want better places to take it easy at SCI? Drop us some thoughts!",
     },
     {
       href: '/boards/misc',
-      header: '🦆 Miscellaneous ',
+      header: 'Miscellaneous ',
       paragraph:
         "Got some random thoughts for SCI? We want them!",
     },
@@ -109,18 +110,10 @@ export default function Home() {
    * up and running so we can also add and drop tables as needed
    */
 
-  /**
-   * Function to get and cycle through each of the pastel colors
-   * @returns (String) Color code for the card
-   */
-  function getNextPastelColor() {
-    const color = pastelColors.shift();
-    pastelColors.push(color);
-    return color;
-  }
-
   return (
     <main className={styles.main}>
+
+      <Center />
 
       <div className={styles.grid}>
         {cards.map((card, index) => (

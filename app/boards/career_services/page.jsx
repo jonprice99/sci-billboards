@@ -1,20 +1,85 @@
+'use client';
 import Link from "next/link"
-import styles from 'app/page.module.css'
+import styles from 'app/boards/Board.module.css'
 import Image from 'next/image'
+import { useState } from 'react';
 
 const career_services = () => {
-    return (
-      <main className={styles.main}>
+  const pastelColors = [
+    'rgba(0, 53, 148, 1)',
+    'rgba(19, 149, 186, 1)',
+    'rgba(0, 126, 79, 1)',
+    'rgba(92, 161, 112, 1)',
+    'rgba(126, 77, 120, 1)',
+    'rgba(112, 101, 155, 1)',
+    'rgba(178, 34, 34, 1)',
+    'rgba(166, 90, 85, 1)',
+  ];
+  
+  const [cards, setCards] = useState([
+    {
+      href: '',
+      header: 'Example #1',
+      paragraph: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi molestias iste autem tenetur accusamus voluptates inventore laborum maxime nostrum. Impedit dignissimos doloremque, porro quia reprehenderit accusamus similique deserunt optio magnam.',
+    },
+    {
+      href: '',
+      header: 'Example #2',
+      paragraph: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi molestias iste autem tenetur accusamus voluptates inventore laborum maxime nostrum. Impedit dignissimos doloremque, porro quia reprehenderit accusamus similique deserunt optio magnam.',
+    },
+    {
+      href: '',
+      header: 'Example #3',
+      paragraph: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi molestias iste autem tenetur accusamus voluptates inventore laborum maxime nostrum. Impedit dignissimos doloremque, porro quia reprehenderit accusamus similique deserunt optio magnam.',
+    },
+  ]);
+  
+  return (
+    <main className={styles.main}>
 
       <div className={styles.grid}>
-        <a>
+        <Link href='/'>
+          <h3>◀ Back to Home</h3>
+        </Link>
+        <div>
           <h2>
-            Career Services Board
+            Career Services
           </h2>
           <p>(Construction in progress...)</p>
-        </a>
+        </div>
+        <Link href='/new_post' passHref>
+          <button className={styles.button}>New Post</button>
+        </Link>
+      </div>
+
+      {/* This is where the posts will be displayed in a card format similar to homepage */}
+      <div className={styles.post_grid}>
+        {cards.map((card, index) => (
+          <a
+            key={index}
+            className={styles.card}
+            style={{ backgroundColor: pastelColors[index % pastelColors.length] }}
+            target='_self'
+            rel='noopener noreferrer'
+          >
+            <h2>{card.header}</h2>
+            <p>{card.paragraph}</p>
+            <footer>
+              <counter>
+                Upvotes
+              </counter>
+              <counter>
+                Duplicates
+              </counter>
+              <datetime>
+                'MM/DD/YYYY, hh:mm:ss'
+              </datetime>
+            </footer>
+          </a>
+        ))}
+
       </div>
     </main>)
-  }
-  
+}
+
 export default career_services
