@@ -21,6 +21,7 @@
     "next": "^13.5.4",
     "react": "latest",
     "react-dom": "latest",
+    "react-textarea-autosize": "^8.5.3",
     "tls": "^0.0.1"
   }
 }
