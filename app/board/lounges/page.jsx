@@ -1,8 +1,8 @@
 import Link from "next/link"
-import styles from 'app/boards/Board.module.css'
+import styles from 'app/board/Board.module.css'
 import Image from 'next/image'
 
-const community = () => {
+const lounges = () => {
     return (
       <main className={styles.main}>
 
@@ -12,7 +12,7 @@ const community = () => {
           </Link>
         <div>
           <h2>
-            Community
+            Lounges
           </h2>
           <p>(Construction in progress...)</p>
         </div>
@@ -23,4 +23,4 @@ const community = () => {
     </main>)
   }
   
-export default community
+export default lounges

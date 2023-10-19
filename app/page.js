@@ -21,50 +21,50 @@ export default function Home() {
   // To be replaced with a db table
   const [cards, setCards] = useState([
     {
-      href: '/boards/trending',
+      href: '/board/trending',
       header: 'Trending',
       paragraph: 'See what ideas are hot and current here!',
     },
     {
-      href: '/boards/career_services',
+      href: '/board/career_services',
       header: 'Career Services',
       paragraph: 'Tell your thoughts on our career resources!',
     },
     {
-      href: '/boards/classes',
+      href: '/board/classes',
       header: 'Classes',
       paragraph: 'Have feedback about current and existing classes? Give it here!',
     },
     {
-      href: '/boards/classrooms',
+      href: '/board/classrooms',
       header: 'Classrooms',
       paragraph: 'Is there room for improvement with our classrooms? Tell us here!',
     },
     {
-      href: '/boards/community',
+      href: '/board/community',
       header: 'Community',
       paragraph: "Thoughts on SCI culture or social life? Let us know how you feel!",
     },
     {
-      href: '/boards/curriculum',
+      href: '/board/curriculum',
       header: 'Curriculum ',
       paragraph:
         "Think our curriculum needs some updating? Let us know!",
     },
     {
-      href: '/boards/events',
+      href: '/board/events',
       header: 'Events ',
       paragraph:
         "Give us your thoughts on past events or ideas for new ones!",
     },
     {
-      href: '/boards/lounges',
+      href: '/board/lounges',
       header: 'Lounges ',
       paragraph:
         "Want better places to take it easy at SCI? Drop us some thoughts!",
     },
     {
-      href: '/boards/misc',
+      href: '/board/misc',
       header: 'Miscellaneous ',
       paragraph:
         "Got some random thoughts for SCI? We want them!",
@@ -86,7 +86,7 @@ export default function Home() {
     setCards([
       ...cards, 
       {
-        href: `/boards/${link}`,
+        href: `/board/${link}`,
         header: title,
         paragraph: description,
       },

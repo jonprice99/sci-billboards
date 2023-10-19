@@ -1,8 +1,8 @@
 import Link from "next/link"
-import styles from 'app/boards/Board.module.css'
+import styles from 'app/board/Board.module.css'
 import Image from 'next/image'
 
-const classes = () => {
+const curriculum = () => {
     return (
       <main className={styles.main}>
 
@@ -12,7 +12,7 @@ const classes = () => {
           </Link>
         <div>
           <h2>
-            Classes
+            Curriculum
           </h2>
           <p>(Construction in progress...)</p>
         </div>
@@ -23,4 +23,4 @@ const classes = () => {
     </main>)
   }
   
-export default classes
+export default curriculum

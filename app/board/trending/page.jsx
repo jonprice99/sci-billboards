@@ -1,5 +1,5 @@
 import Link from "next/link"
-import styles from 'app/boards/Board.module.css'
+import styles from 'app/board/Board.module.css'
 import Image from 'next/image'
 
 const trending = () => {

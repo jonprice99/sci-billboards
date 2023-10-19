@@ -1,18 +1,18 @@
 import Link from "next/link"
-import styles from 'app/boards/Board.module.css'
+import styles from 'app/board/Board.module.css'
 import Image from 'next/image'
 
-const classrooms = () => {
+const community = () => {
     return (
       <main className={styles.main}>
 
-<div className={styles.grid}>
+      <div className={styles.grid}>
         <Link href='/'>
             <h3>◀ Back to Home</h3>
           </Link>
         <div>
           <h2>
-            Classrooms
+            Community
           </h2>
           <p>(Construction in progress...)</p>
         </div>
@@ -23,4 +23,4 @@ const classrooms = () => {
     </main>)
   }
   
-export default classrooms
+export default community

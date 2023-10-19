@@ -1,6 +1,6 @@
 'use client';
 import Link from "next/link"
-import styles from 'app/boards/Board.module.css'
+import styles from 'app/board/Board.module.css'
 import Image from 'next/image'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowUp, faMessage, faFlag, faArrowLeft, faAngleLeft, faThumbsUp } from '@fortawesome/free-solid-svg-icons'
