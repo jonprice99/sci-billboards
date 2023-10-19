@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'posts'
 ]
 
 MIDDLEWARE = [
@@ -88,7 +89,7 @@ def get_secret(setting, secrets=secrets):
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'mysql.connector.django',
         'NAME': 'sci-billboard',
         'USER': 'sci-billboard',
         # 'PASSWORD': get_secret('DB_PASSWORD'),
