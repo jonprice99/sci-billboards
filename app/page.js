@@ -2,6 +2,7 @@
 import styles from './page.module.css'
 import Center from './components/Home_Center';
 import { useState } from 'react';
+import Link from 'next/link';
 
 export default function Home() {
   // The set of colors to be used as backgrounds for the link cards
@@ -117,7 +118,7 @@ export default function Home() {
 
       <div className={styles.grid}>
         {cards.map((card, index) => (
-          <a
+          <Link
             key={index}
             href={card.href}
             className={styles.card}
@@ -127,7 +128,7 @@ export default function Home() {
           >
             <h2>{card.header}</h2>
             <p>{card.paragraph}</p>
-          </a>
+          </Link>
         ))}
 
       </div>

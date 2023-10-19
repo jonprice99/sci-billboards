@@ -169,7 +169,8 @@
 
   .grid {
     grid-template-columns: 1fr;
-    margin-bottom: 120px;
+    gap: 20px;
+    margin-bottom: 40px;
     max-width: 320px;
     text-align: center;
   }

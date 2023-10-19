@@ -8,6 +8,8 @@ import { useState } from "react";
 import 'app/globals.css';
 import styles from "./HamburgerMenu.module.css";
 import FontSizeButton from './FontSizeButton'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBars } from '@fortawesome/'
 
 export default function HamburgerMenu() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -22,9 +24,7 @@ export default function HamburgerMenu() {
                 {/* Aiming to place the FontSizeButton module here */}
             </div>
             <div className={styles.menu_icon} onClick={handleMenuClick}>
-                <span></span>
-                <span></span>
-                <span></span>
+                <FontAwesomeIcon icon={faBars} size="xl" style={{color: "#ffffff",}} />
             </div>
         </div>
     )

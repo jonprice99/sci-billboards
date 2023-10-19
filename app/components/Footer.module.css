@@ -115,7 +115,15 @@ footer .container .Link {
 }
 
 .socials {
-    font-size: 0.5rem;
+    font-size: 14px;
+    display: grid;
+    padding-left: 2rem;
+    padding-top: 1rem;
+    grid-auto-flow: column;
+    grid-template-columns: 1fr;
+    max-width: 1px;
+    text-align: center;
+    gap: 10px;
 }
 
 /* Tablet (portrait) */
@@ -159,6 +167,10 @@ footer .container .Link {
     .footer p {
         font-size: 12px;
         margin-left: 10px;
+    }
+
+    .socials {
+        padding-left: 0.6rem;
     }
 }
 

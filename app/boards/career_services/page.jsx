@@ -2,6 +2,8 @@
 import Link from "next/link"
 import styles from 'app/boards/Board.module.css'
 import Image from 'next/image'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowUp, faMessage, faFlag, faArrowLeft, faAngleLeft, faThumbsUp } from '@fortawesome/free-solid-svg-icons'
 import { useState } from 'react';
 
 const career_services = () => {
@@ -39,7 +41,7 @@ const career_services = () => {
 
       <div className={styles.grid}>
         <Link href='/'>
-          <h3>◀ Back to Home</h3>
+          <h3><FontAwesomeIcon icon={faAngleLeft} size="lg" /> Back to Home</h3>
         </Link>
         <div>
           <h2>
@@ -55,8 +57,9 @@ const career_services = () => {
       {/* This is where the posts will be displayed in a card format similar to homepage */}
       <div className={styles.post_grid}>
         {cards.map((card, index) => (
-          <a
+          <Link
             key={index}
+            href={card.href}
             className={styles.card}
             style={{ backgroundColor: pastelColors[index % pastelColors.length] }}
             target='_self'
@@ -66,16 +69,16 @@ const career_services = () => {
             <p>{card.paragraph}</p>
             <footer>
               <counter>
-                Upvotes
+              <FontAwesomeIcon icon={faThumbsUp} size="xl" style={{color: "#ffffff",}} /><br />12
               </counter>
               <counter>
-                Duplicates
+              <FontAwesomeIcon icon={faMessage} flip="horizontal" size="xl" style={{color: "#ffffff",}} /><br />3
               </counter>
-              <datetime>
-                'MM/DD/YYYY, hh:mm:ss'
-              </datetime>
+              <counter>
+              <FontAwesomeIcon icon={faFlag} size="xl" style={{color: "#ffffff",}} />
+              </counter>
             </footer>
-          </a>
+          </Link>
         ))}
 
       </div>
