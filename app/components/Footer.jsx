@@ -8,9 +8,6 @@ import Image from 'next/image'
 import DarkLogo from 'public/University_of_Pittsburgh_Logo_CMYK_Secondary_Reverse_2-Color.png'
 import { Rubik } from 'next/font/google'  // Primary Pitt font
 import { Open_Sans } from 'next/font/google'  // Secondary Pitt font
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPhone, faEnvelope } from '@fortawesome/free-solid-svg-icons'
-import { faFacebookF, faTwitter, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons'
 const rubik = Rubik({ subsets: ['latin'] })
 const open_sans = Open_Sans({ subsets: ['latin'] })
 
@@ -49,15 +46,6 @@ export default function Footer() {
             <p>412-624-9425</p>
             <br></br>
             <p><a href="mailto:sciadmit@pitt.edu">sciadmit@pitt.edu</a></p>
-
-            <div className={styles.socials}>
-              <a href='mailto:sciadmit@pitt.edu'><FontAwesomeIcon icon={faEnvelope} color='#FFF' size='lg'/></a>
-              <a href='tel:4123834396'><FontAwesomeIcon icon={faPhone} color='#FFF' size='lg'/></a>
-              <a href='https://www.facebook.com/SciPitt/'><FontAwesomeIcon icon={faFacebookF} color='#FFF' size='lg'/></a>
-              <a href='https://twitter.com/SciPitt'><FontAwesomeIcon icon={faTwitter} color='#FFF' size='lg'/></a>
-              <a href='https://www.linkedin.com/school/university-of-pittsburgh-school-of-computing-and-information/?viewAsMember=true'><FontAwesomeIcon icon={faLinkedin} color='#FFF' size='lg'/></a>
-              <a href='https://www.instagram.com/pitt_sci/?hl=en'><FontAwesomeIcon icon={faInstagram} color='#FFF' size='lg'/></a>
-            </div>
           </div>
 
           <ul className={styles.footer_links}>
