@@ -77,22 +77,12 @@ WSGI_APPLICATION = 'billboard.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-with open(os.path.join(BASE_DIR, 'secrets.json')) as secrets_file:
-    secrets = json.load(secrets_file)
-
-def get_secret(setting, secrets=secrets):
-    """Get secret setting or fail with ImproperlyConfigured"""
-    try:
-        return secrets[setting]
-    except KeyError:
-        raise ImproperlyConfigured("Set the {} setting".format(setting))
 
 DATABASES = {
     'default': {
         'ENGINE': 'mysql.connector.django',
         'NAME': 'sci-billboard',
         'USER': 'sci-billboard',
-        # 'PASSWORD': get_secret('DB_PASSWORD'),
         'PASSWORD': "AQhKPTAKN3yXTRBw",
         'HOST':'cs-mysql-01.cs.pitt.edu',
         'PORT':'3306',
