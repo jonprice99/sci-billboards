@@ -13,3 +13,4 @@ class TestTable(models.Model):
     def __str__(self):
         return self.test_field
     
+    
