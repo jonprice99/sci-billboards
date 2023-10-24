@@ -10,6 +10,7 @@ import DarkLogo from 'public/University_of_Pittsburgh_Logo_CMYK_Secondary_Revers
 import { Rubik } from 'next/font/google'  // Primary Pitt font
 import { Open_Sans } from 'next/font/google'  // Secondary Pitt font
 import { useState } from 'react'
+import HamburgerMenu from './HamburgerMenu';
 
 const rubik = Rubik({ subsets: ['latin'] })
 const open_sans = Open_Sans({ subsets: ['latin'] })
@@ -37,6 +38,10 @@ export default function Header() {
                     {/* Note: This is a placeholder name. */}
                     SCI Idea Board
                 </h1>
+            </div>
+
+            <div className={styles.menu_placer}>
+                <HamburgerMenu />
             </div>
         </header>
     )

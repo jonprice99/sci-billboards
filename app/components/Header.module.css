@@ -3,7 +3,7 @@
     height: 70px;
     display: flex;
     justify-content: space-evenly;
-    align-items: left;
+    align-items: center;
     padding-left: 1.5rem;
     z-index: 5;
 }
@@ -18,6 +18,10 @@
     align-items: center;
     padding-right: 1.5rem;
     float: right;
+}
+
+.menu_placer {
+    position: relative;
 }
 
 /* Mobile */
@@ -55,4 +59,9 @@
         position: relative;
         padding-left: 0.25rem;
     }
+
+    .menu_placer {
+        position: relative;
+    }
+
 }
