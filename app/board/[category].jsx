@@ -19,7 +19,7 @@ export async function getStaticProps({ params }) {
   const { category } = params;
 
   // Fetch data from data source using category (Note: fetch address will be updated to Django link)
-  const postsData = await fetch(`/api/posts/${category}`).then((res) =>
+  const postsData = await fetch(`http://127.0.0.1:8000/api/${category}`).then((res) =>
     res.json()
   );
 

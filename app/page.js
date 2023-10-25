@@ -73,7 +73,7 @@ export default function Home() {
 
   useEffect(() => {
     async function fetchData() {
-      const res = await fetch("/api/categories/");
+      const res = await fetch("http://127.0.0.1:8000/api/categories/");
       const data = await res.json();
       console.log(data);
       setCards(data);
@@ -133,7 +133,7 @@ export default function Home() {
             key={card.id}
             href={card.href}
             className={styles.card}
-            style={{ backgroundColor: pastelColors[index % pastelColors.length] }}
+            style={{ backgroundColor: pastelColors[card.id % pastelColors.length] }}
             target='_self'
             rel='noopener noreferrer'
           >

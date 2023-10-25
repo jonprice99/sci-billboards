@@ -9,6 +9,10 @@ from django.views.decorators.csrf import csrf_exempt
 from BillboardAPI.models import Categories
 from BillboardAPI.serializers import CategoriesSerializer, CareerServicesSerializer
 
+import logging
+
+logger = logging.getLogger('api.views')
+
 
 # Create your views here.
 
@@ -16,6 +20,7 @@ from BillboardAPI.serializers import CategoriesSerializer, CareerServicesSeriali
 def categories_list(request):
     categories = Categories.objects.all()
     serializer = CategoriesSerializer(categories, many=True)
+    logger.info('Response Data: %s', serializer.data)
     return Response(serializer.data)
 
 

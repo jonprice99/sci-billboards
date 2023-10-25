@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Categories
+from .models import Categories, CareerServices
 
 class CategoriesSerializer(serializers.ModelSerializer):
     class Meta:
