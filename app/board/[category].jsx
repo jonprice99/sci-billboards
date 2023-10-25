@@ -9,7 +9,9 @@ import { useState } from 'react';
 export async function getStaticPaths() {
   // This is where we'd have to pull the paths for each post from the database
   const paths = [
-    { params: { category: 'test_board' } },
+    { params: { category: 'career_services' } },
+    { params: { category: 'classes' } },
+    { params: { category: 'classrooms' } },
   ];
 
   return { paths, fallback: false };
@@ -20,6 +22,11 @@ export async function getStaticProps({ params }) {
 
   // Fetch data from data source using category (Note: fetch address will be updated to Django link)
   const postsData = await fetch(`http://127.0.0.1:8000/api/${category}`).then((res) =>
+    res.json()
+  );
+
+  // Fetch the category
+  const catData = await fetch(`http://127.0.0.1:8000/api/categories/${category}`).then((res) =>
     res.json()
   );
 
@@ -70,7 +77,7 @@ export default function category({postsData}) {
         <div>
           <h2>
             {/* Will be updated to reflect column name from database */}
-            {postsData.category}
+            {catData.name}
           </h2>
           <p>(Construction in progress...)</p>
         </div>

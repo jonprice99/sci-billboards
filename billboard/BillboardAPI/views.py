@@ -30,6 +30,12 @@ def posts_list(request):
     serializer = PostsSerializer(career_services, many=True)
     return Response(serializer.data)
 
+@api_view(['GET'])
+def category_by_href(request, href):
+    category = Categories.objects.get(href=href)
+    serializer = CategoriesSerializer(category, many=True)
+    return Response(serializer.data)
+
 @api_view(['POST'])
 def create_post(request):
     serializer = PostsSerializer(data=request.data)
