@@ -6,8 +6,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.views.decorators.csrf import csrf_exempt
 
-from BillboardAPI.models import Categories
-from BillboardAPI.serializers import CategoriesSerializer, CareerServicesSerializer
+from BillboardAPI.models import Categories, Posts
+from BillboardAPI.serializers import CategoriesSerializer, PostsSerializer
 
 import logging
 
@@ -25,14 +25,14 @@ def categories_list(request):
 
 
 @api_view(['GET'])
-def career_services_list(request):
-    career_services = CareerServices.objects.all()
-    serializer = CareerServicesSerializer(career_services, many=True)
+def posts_list(request):
+    career_services = Posts.objects.all()
+    serializer = PostsSerializer(career_services, many=True)
     return Response(serializer.data)
 
 @api_view(['POST'])
-def create_career_service(request):
-    serializer = CareerServicesSerializer(data=request.data)
+def create_post(request):
+    serializer = PostsSerializer(data=request.data)
 
     if serializer.is_valid():
         serializer.save()

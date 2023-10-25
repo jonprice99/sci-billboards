@@ -1,12 +1,12 @@
 from rest_framework import serializers
-from .models import Categories, CareerServices
+from .models import Categories, Posts
 
 class CategoriesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Categories
         fields = '__all__'
         
-class CareerServicesSerializer(serializers.ModelSerializer):
+class PostsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = CareerServices
+        model = Posts
         fields = '__all__'

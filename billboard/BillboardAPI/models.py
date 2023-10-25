@@ -19,9 +19,9 @@ class Categories(models.Model):
     def __str__(self):
         return self.name
 
-class CareerServices(models.Model):
-    category_id = models.IntegerField()
+class Posts(models.Model):
     post_id = models.AutoField(primary_key=True)
+    category = models.CharField(max_length = 128)
     title = models.CharField(max_length=160)
     description = models.TextField()
     subcategory = models.CharField(max_length=256)
@@ -35,7 +35,7 @@ class CareerServices(models.Model):
     is_hidden = models.BooleanField(default=False)
     
     class Meta:
-        db_table = 'Career_Services'  # Specify the table name
+        db_table = 'Posts'  # Specify the table name
 
     def __str__(self):
         return self.title
