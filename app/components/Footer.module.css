@@ -1,12 +1,12 @@
 .footer {
     background-color: #2b2b2b;
     color: #fff;
-    height: 270px;
+    height: auto;
     position: relative;
     background-color: rgb(43, 43, 43);
-    padding: 5px 0;
+    padding: 50px 0;
     font-size: 1.15rem;
-    margin-top: auto;
+    margin-top: 0;
     margin-right: auto;
     margin-left: auto;
     border-top: none;
@@ -23,13 +23,14 @@ footer .container {
     flex-direction: row;
     justify-content: left;
     align-items: center;
-    margin-top: 10px;
+    margin-left: 10%;
+    padding-bottom: 5px;
 }
 
 .footer_logo {
     display: inline-table;
+    padding-right: 20px;
     margin-left: 2rem;
-    margin-right: 1rem;
     vertical-align: middle;
 }
 
@@ -46,11 +47,18 @@ footer .container .Link {
     text-decoration: none;
 }
 
+.vertical_line {
+    padding-left: 15px;
+    border-left: 1px solid gray;
+}
+
 .footer_uni_name {
-    font-weight: 600;
+    font-weight: 400;
+    font-size: 1.5rem;
     position: relative;
     display: inline-table;
     margin-bottom: 2rem;
+    overflow-wrap: break-word;
 }
 
 .footer_logo_container {
@@ -67,11 +75,26 @@ footer .container .Link {
     column-gap: 1px;
     overflow: hidden;
     flex-basis: calc(30% - 0.5rem);
+    width: 50%;
+
 }
-  
+
 .column {
     flex: 1;
     width: 10%;
+}
+
+.resourcesList {
+    columns: 2;
+    column-gap: 1.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 60%;
+}
+
+.resourcesList li {
+    break-inside: avoid;
 }
 
 .column ul {
@@ -85,9 +108,10 @@ footer .container .Link {
 }
 
 .contact {
-    flex-basis: calc(50% - 0.5rem);
     text-align: left;
     font-size: 12px;
+    width: 20%;
+    margin-left: 13%;
 }
 
 .contact a {
@@ -99,8 +123,16 @@ footer .container .Link {
 
 .contact_resources {
     display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+}
+
+.column h4 {
+    font-size: 14px;
+    text-transform: uppercase;
+    padding-bottom: 8px;
+}
+
+.space {
+    padding-top: 10px;
 }
 
 .copyright {
@@ -108,132 +140,96 @@ footer .container .Link {
     justify-content: space-between;
     align-items: left;
     text-align: left;
-    margin-top: 1rem;
-    margin-left: 2rem;
-    margin-right: 2rem;
+    margin-top: 3rem;
+    margin-left: 15%;
     font-size: 10px;
+    width: 20%;
 }
 
 .socials {
-    font-size: 14px;
-    display: grid;
-    padding-left: 2rem;
-    padding-top: 1rem;
-    grid-auto-flow: column;
-    grid-template-columns: 1fr;
-    max-width: 1px;
-    text-align: center;
-    gap: 10px;
+    padding-left: 15%;
 }
 
-/* Tablet (portrait) */
-@media (min-width: 768px) and (max-width: 1024px) {
-    .footer_links {
-        margin-right: 2rem;
-    }
+.socials a {
+    margin-right: 7px;
 }
 
 /* Mobile */
 @media (max-width: 700px) {
     .footer {
-        padding: 5px 0;
-        font-size: 1.15rem;
-        margin-top: 0;
-        margin-right: auto;
-        margin-left: auto;
-        border-top: none;
+        padding: 5px 0px;
+        height: auto;
     }
 
-    .footer_logo {
-        display: inline-table;
-        margin-left: 2rem;
-        margin-right: 1rem;
-        vertical-align: middle;
-    }
-
-    footer .container {
-        position: relative;
-        display: flex;
-        flex-direction: row;
-        justify-content: left;
-        align-items: center;
-    }
-
-    footer .container .Link {
-        display: flex;
-        justify-content: center;
-    }
-
-    .footer p {
-        font-size: 12px;
-        margin-left: 10px;
-    }
-
-    .socials {
-        padding-left: 0.6rem;
-    }
-}
-
-/* Mobile (portrait) */
-@media (max-width: 400px) {
-    .footer {
-        height: 450px;
-        padding: 5px 0;
-        font-size: 1.15rem;
-        margin-top: 0;
-        margin-right: auto;
-        margin-left: auto;
-        border-top: none;
-    }
-
-    footer .container {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        vertical-align: middle;
+    .footer .container {
+        padding: 0px;
+        width: 100%;
+        margin-left: 40px;
     }
 
     .footer_logo_container {
-        display: inline-table;
-        flex-direction: column;
-        justify-content: center;
-        position: relative;
-    }
-
-    .footer_uni_name {
-        font-weight: 600;
-        position: relative;
-        display: flex;
-        margin-bottom: 2rem;
+        margin: 0px;
+        padding: 0px;
     }
 
     .footer_logo {
+        width: 100%;
+        margin: 0px;
+    }
+
+    .footer_uni_name {
+        position: relative;
+        font-size: 1.5rem;
         display: inline-table;
-        margin-left: 6.75rem;
-        margin-right: 0rem;
-        vertical-align: middle;
+        text-align: left;
+        margin-bottom: 2rem;
     }
 
-    .contact {
-        text-align: center;
-        font-size: 12px;
-    }
-
-    .contact a {
-        text-align: center;
-        font-size: 12px;
-        font-weight: bold;
-        color: #FFB81C;
+    .vertical_line {
+        display: none;
     }
 
     .contact_resources {
+        display: flex;
         flex-direction: column;
-        align-items: center;
+    }
+
+    .contact {
+        width: 100%;
+        margin-left: 5px;
+        text-align: left;
+        margin-bottom: 1rem;
     }
 
     .footer_links {
-        margin-top: 1rem;
+        width: 100%;
+        padding-bottom: 2rem;
     }
+
+    .resourcesList {
+        width: 100%;
+        text-align: left;
+        margin-left: 5px;
+    }
+
+    .resourcesList li {
+        white-space: nowrap;
+        overflow-wrap: break-word;
+    }
+
+    .socials {
+        width: 100%;
+        margin: 0px;
+        padding-left: 2rem;
+        padding-bottom: 2rem;
+    }
+
+    .copyright {
+        width: 100%;
+        text-align: left;
+        margin-top: 1rem;
+        margin-left: 5px;
+        padding-bottom: 1rem;
+    }
+
 }
