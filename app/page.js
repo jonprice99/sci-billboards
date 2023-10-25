@@ -1,7 +1,7 @@
 'use client';
 import styles from './page.module.css'
 import Center from './components/Home_Center';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 export default function Home() {
@@ -20,7 +20,7 @@ export default function Home() {
   // The set of cards with their appropriate links and details
   // To be replaced with a db table
   const [cards, setCards] = useState([
-    {
+    /*{
       href: '/board/trending',
       header: 'Trending',
       paragraph: 'See what ideas are hot and current here!',
@@ -68,8 +68,19 @@ export default function Home() {
       header: 'Miscellaneous ',
       paragraph:
         "Got some random thoughts for SCI? We want them!",
-    },
+    },*/
   ]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const res = await fetch("/api/categories/");
+      const data = await res.json();
+      console.log(data);
+      setCards(data);
+    }
+
+    fetchData();
+  }, []);
   
   /**
    * Note: To make any persistent changes to the card list, 
@@ -117,16 +128,16 @@ export default function Home() {
       <Center />
 
       <div className={styles.grid}>
-        {cards.map((card, index) => (
+        {cards.map((card) => (
           <Link
-            key={index}
+            key={card.id}
             href={card.href}
             className={styles.card}
             style={{ backgroundColor: pastelColors[index % pastelColors.length] }}
             target='_self'
             rel='noopener noreferrer'
           >
-            <h2>{card.header}</h2>
+            <h2>{card.name}</h2>
             <p>{card.paragraph}</p>
           </Link>
         ))}
