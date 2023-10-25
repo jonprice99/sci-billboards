@@ -39,4 +39,3 @@ next-env.d.ts
 *.py[co]
 *.sw[po]
 *~
-/billboard/secrets.json
