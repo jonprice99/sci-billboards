@@ -12,6 +12,9 @@ class Categories(models.Model):
     name = models.CharField(max_length=160)
     href = models.CharField(max_length=160)
     paragraph = models.TextField()
+    
+    class Meta:
+        db_table = 'Categories'  # Specify the table name
 
     def __str__(self):
         return self.name
@@ -30,6 +33,9 @@ class CareerServices(models.Model):
     comments = models.IntegerField(default=0)
     is_pending_mod = models.BooleanField(default=False)
     is_hidden = models.BooleanField(default=False)
+    
+    class Meta:
+        db_table = 'Career_Services'  # Specify the table name
 
     def __str__(self):
         return self.title

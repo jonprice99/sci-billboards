@@ -7,7 +7,7 @@ from rest_framework import status
 from django.views.decorators.csrf import csrf_exempt
 
 from BillboardAPI.models import Categories
-from BillboardAPI.serializers import CategoriesSerializer
+from BillboardAPI.serializers import CategoriesSerializer, CareerServicesSerializer
 
 
 # Create your views here.
@@ -19,4 +19,8 @@ def categories_list(request):
     return Response(serializer.data)
 
 
-
+@api_view(['GET'])
+def career_services_list(request):
+    career_services = CareerServices.objects.all()
+    serializer = CareerServicesSerializer(career_services, many=True)
+    return Response(serializer.data)
