@@ -131,7 +131,7 @@ export default function Home() {
         {cards.map((card) => (
           <Link
             key={card.id}
-            href={card.href}
+            href={`/board/${card.href}`}
             className={styles.card}
             style={{ backgroundColor: pastelColors[card.id % pastelColors.length] }}
             target='_self'

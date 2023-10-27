@@ -9,8 +9,8 @@ import { useState } from 'react';
 export async function getStaticPaths() {
   // This is where we'd have to pull the paths for each post from the database
   const paths = [
-    { params: { category: 'career_services' } },
-    { params: { category: 'classes' } },
+    { params: { category: 'board/career_services' } },
+    { params: { category: 'board/classes' } },
     { params: { category: 'classrooms' } },
   ];
 
@@ -37,7 +37,7 @@ export async function getStaticProps({ params }) {
   };
 }
 
-export default function category({postsData}) {
+export default function Page({postsData}) {
   const pastelColors = [
     'rgba(0, 53, 148, 1)',
     'rgba(19, 149, 186, 1)',
