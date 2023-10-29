@@ -2,11 +2,15 @@
 import Link from "next/link"
 import styles from 'app/board/Board.module.css'
 import Image from 'next/image'
+import Center from 'app/components/Home_Center';
+import Error_Grid from 'app/components/Error_Grid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowUp, faMessage, faFlag, faArrowLeft, faAngleLeft, faThumbsUp } from '@fortawesome/free-solid-svg-icons'
-import { useState } from 'react';
+import { faMessage, faFlag, faAngleLeft, faThumbsUp } from '@fortawesome/free-solid-svg-icons'
+import { useState, useEffect } from 'react';
 
-const career_services = () => {
+const server_url = `http://127.0.0.1:8000`;
+
+export default function Page({ params, searchParams }) {
   const pastelColors = [
     'rgba(0, 53, 148, 1)',
     'rgba(19, 149, 186, 1)',
@@ -35,6 +39,39 @@ const career_services = () => {
       paragraph: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi molestias iste autem tenetur accusamus voluptates inventore laborum maxime nostrum. Impedit dignissimos doloremque, porro quia reprehenderit accusamus similique deserunt optio magnam.',
     },
   ]);
+
+  const [name, setName] = useState('')
+  const [paragraph, setParagraph] = useState('')
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch(`${server_url}/api/categories/${params.category}`);
+        const data = await response.json();
+        setName(data.name);
+        setParagraph(data.paragraph);
+
+        //const cardResponse = await fetch(`${server_url}/api/posts/${data.id}`);
+        //const cardData = await cardResponse.json();
+        //setCards(cardData.cards);
+        //console.log(cardData);
+      } catch (error) {
+        setError(true);
+      }
+      
+    }
+
+    fetchData();
+  }, [params]);
+
+  if (error) {
+    return (
+      <main className={styles.main}>
+        <Error_Grid />
+      </main>
+    )
+  }
   
   return (
     <main className={styles.main}>
@@ -43,18 +80,19 @@ const career_services = () => {
         <Link href='/'>
           <h3><FontAwesomeIcon icon={faAngleLeft} size="lg" /> Back to Home</h3>
         </Link>
-        <div>
+        <div className={styles.title}>
           <h2>
-            Career Services
+            {/* Will be updated to reflect column name from database */}
+            {name}
           </h2>
-          <p>(Construction in progress...)</p>
+          <p>{paragraph}</p>
         </div>
         <Link href='/new_post' passHref>
           <button className={styles.button}>New Post</button>
         </Link>
       </div>
 
-      {/* This is where the posts will be displayed in a card format similar to homepage */}
+      {/* Note: Will be updated to show posts from postsData */}
       <div className={styles.post_grid}>
         {cards.map((card, index) => (
           <Link
@@ -69,10 +107,10 @@ const career_services = () => {
             <p>{card.paragraph}</p>
             <footer>
               <counter>
-              <FontAwesomeIcon icon={faThumbsUp} size="xl" style={{color: "#ffffff",}} /><br />12
+              <FontAwesomeIcon icon={faThumbsUp} size="xl" style={{color: "#ffffff",}} /><br />{card.upvotes}
               </counter>
               <counter>
-              <FontAwesomeIcon icon={faMessage} flip="horizontal" size="xl" style={{color: "#ffffff",}} /><br />3
+              <FontAwesomeIcon icon={faMessage} flip="horizontal" size="xl" style={{color: "#ffffff",}} /><br />{card.comments}
               </counter>
               <counter>
               <FontAwesomeIcon icon={faFlag} size="xl" style={{color: "#ffffff",}} />
@@ -84,5 +122,3 @@ const career_services = () => {
       </div>
     </main>)
 }
-
-export default career_services

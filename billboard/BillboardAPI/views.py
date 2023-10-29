@@ -33,7 +33,7 @@ def posts_list(request):
 @api_view(['GET'])
 def category_by_href(request, href):
     category = Categories.objects.get(href=href)
-    serializer = CategoriesSerializer(category, many=True)
+    serializer = CategoriesSerializer(category)
     return Response(serializer.data)
 
 @api_view(['POST'])

@@ -4,6 +4,8 @@ import Center from './components/Home_Center';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
+const server_url = `http://127.0.0.1:8000`;
+
 export default function Home() {
   // The set of colors to be used as backgrounds for the link cards
   const pastelColors = [
@@ -18,64 +20,12 @@ export default function Home() {
   ];
 
   // The set of cards with their appropriate links and details
-  // To be replaced with a db table
-  const [cards, setCards] = useState([
-    /*{
-      href: '/board/trending',
-      header: 'Trending',
-      paragraph: 'See what ideas are hot and current here!',
-    },
-    {
-      href: '/board/career_services',
-      header: 'Career Services',
-      paragraph: 'Tell your thoughts on our career resources!',
-    },
-    {
-      href: '/board/classes',
-      header: 'Classes',
-      paragraph: 'Have feedback about current and existing classes? Give it here!',
-    },
-    {
-      href: '/board/classrooms',
-      header: 'Classrooms',
-      paragraph: 'Is there room for improvement with our classrooms? Tell us here!',
-    },
-    {
-      href: '/board/community',
-      header: 'Community',
-      paragraph: "Thoughts on SCI culture or social life? Let us know how you feel!",
-    },
-    {
-      href: '/board/curriculum',
-      header: 'Curriculum ',
-      paragraph:
-        "Think our curriculum needs some updating? Let us know!",
-    },
-    {
-      href: '/board/events',
-      header: 'Events ',
-      paragraph:
-        "Give us your thoughts on past events or ideas for new ones!",
-    },
-    {
-      href: '/board/lounges',
-      header: 'Lounges ',
-      paragraph:
-        "Want better places to take it easy at SCI? Drop us some thoughts!",
-    },
-    {
-      href: '/board/misc',
-      header: 'Miscellaneous ',
-      paragraph:
-        "Got some random thoughts for SCI? We want them!",
-    },*/
-  ]);
+  const [cards, setCards] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
-      const res = await fetch("http://127.0.0.1:8000/api/categories/");
+      const res = await fetch(`${server_url}/api/categories/`);
       const data = await res.json();
-      console.log(data);
       setCards(data);
     }
 
