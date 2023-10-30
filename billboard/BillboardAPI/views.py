@@ -23,9 +23,14 @@ def categories_list(request):
     logger.info('Response Data: %s', serializer.data)
     return Response(serializer.data)
 
+@api_view(['GET'])
+def posts_list(request, category_id):
+    posts = Posts.objects.get(category_id=category_id)
+    serializer = PostsSerializer(posts, many=True)
+    return Response(serializer.data)
 
 @api_view(['GET'])
-def posts_list(request):
+def get_all_posts(request):
     posts = Posts.objects.all()
     serializer = PostsSerializer(posts, many=True)
     return Response(serializer.data)
@@ -34,6 +39,12 @@ def posts_list(request):
 def category_by_href(request, href):
     category = Categories.objects.get(href=href)
     serializer = CategoriesSerializer(category)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def get_post(request, category_id, post_id):
+    post = Posts.objects.get(category_id=category_id, post_id=post_id)
+    serializer = PostsSerializer(post, many=False)
     return Response(serializer.data)
 
 @api_view(['POST'])
