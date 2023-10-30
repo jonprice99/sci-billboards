@@ -6,6 +6,7 @@
 import './globals.css'
 import Header from './components/Header'
 import Footer from './components/Footer'
+import Center from './components/Home_Center'
 import Link from 'next/link'
 import Image from 'next/image'
 import styles from 'app/page.module.css'
@@ -24,9 +25,9 @@ const open_sans = Open_Sans({ subsets: ['latin'] })
 const merriweather = Merriweather({ subsets: ['latin'], weight: ['400'] })
 
 export const metadata = {
-  title: 'School of Computing and Information - "What Do You Want?" Board',
+  title: 'School of Computing and Information - Idea Board',
   description: "Virtual billboards for the University of Pittsburgh's School of Computing and Information to field ideas, projects, suggestions, and feedback from guests, students, staff, and faculty.",
-  keywords: 'Pitt, University of Pittsburgh, SCI, School of Computing and Information, feedback, What Do You Want'
+  keywords: 'Pitt, University of Pittsburgh, SCI, School of Computing and Information, feedback, What Do You Want, idea, Idea Board'
 }
 
 export default function RootLayout({ children }) {
@@ -34,22 +35,6 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={rubik.className}>
         <Header />
-
-        <div className={styles.center}>
-          <Link href={"/"}>
-            <picture>
-              <source srcSet={DarkSeal.src} media="(prefers-color-scheme: dark)"/>
-              <Image
-                className={styles.logo}
-                src={LightSeal}
-                alt="Pitt Seal (Placeholder)"
-                width={80}
-                height={100}
-                priority
-              />
-            </picture>
-          </Link>
-        </div>
         
         {children}
 

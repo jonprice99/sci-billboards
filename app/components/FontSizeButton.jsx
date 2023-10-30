@@ -6,6 +6,7 @@
 import { useState } from "react";
 import 'app/globals.css'
 import styles from './FontSizeButton.module.css'
+import Link from 'next/link'
 
 export default function FontSizeButton() {
     const [fontSize, setFontSize] = useState(100);
@@ -18,10 +19,27 @@ export default function FontSizeButton() {
         setFontSize(prevFontSize => prevFontSize - 25);
     }
 
+
+
     return (
-        <div>
-            <button onClick={increaseSize}>Increase Font Size</button>
-            <button onClick={decreaseSize}>Decrease Font Size</button>
+        <div className={styles.button_layout}>
+            <div>
+                <Link href={"/"}>
+                    <button className={styles.font_size_button}>Login</button>
+                </Link>
+            </div>
+            <div>
+                <button className={styles.font_size_button} onClick={increaseSize}>Increase Font Size</button>
+            </div>
+            <div>
+                <button className={styles.font_size_button} onClick={decreaseSize}>Decrease Font Size</button>
+            </div>
+            <div>
+                <Link href={"/"}>
+                    <button className={styles.font_size_button}>Mod Tools</button>
+                </Link>
+            </div>
+
             <style jsx global>{`
             * {
               font-size: ${fontSize}%;

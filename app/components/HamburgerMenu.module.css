@@ -1,0 +1,37 @@
+.menu_icon {
+    cursor: pointer;
+}
+
+.menu {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 20%;
+    height: auto;
+    background: #FFB81C;
+    transition: left 0.4s ease-in-out;
+    z-index: 5;
+}
+
+
+.close_button {
+    padding: 10px;
+    float: right;
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+
+
+    .menu {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 50%;
+        height: auto;
+        background: #FFB81C;
+        transition: left 0.4s ease-in-out;
+        z-index: 5;
+    }
+
+}

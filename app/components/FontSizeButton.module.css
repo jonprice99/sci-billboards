@@ -1,15 +1,27 @@
 .font_size_button {
     background-color: #FFB81C;
     border: none;
-    color: black;
+    color: #003594;
     padding: 10px 20px;
-    text-align: center;
+    text-align: left;
     text-decoration: none;
-    display: inline-block;
-    font-size: 12px;
+    display: block;
+    font-size: 13px;
+    text-transform: uppercase;
     font-weight: bold;
-    margin: 4px 2px;
+    width: 100%;
+    white-space: normal;
+    word-wrap: break-word;
 }
+
+.font_size_button::after {
+    content: "";
+    display: block;
+    border-bottom: solid 1px gray;
+    margin-top: 10px;
+}
+
+
 
 /* Enable hover only on devices with a pointer */
 @media (hover: hover) and (pointer: fine) {

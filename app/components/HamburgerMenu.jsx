@@ -4,28 +4,69 @@
  * moderation/admin tools when logged in
  */
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import 'app/globals.css';
 import styles from "./HamburgerMenu.module.css";
 import FontSizeButton from './FontSizeButton'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBars, faX} from '@fortawesome/free-solid-svg-icons'
 
 export default function HamburgerMenu() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const menuRef = useRef(null);
 
+
+    /* close menu whenever user clicks anywhere on screen outside hamburger menu elements*/
+    useEffect(() => {
+        const closeMenuOutsideClick = (e) => {
+            if (menuRef.current && !menuRef.current.contains(e.target)) {
+                setIsMenuOpen(false);
+            }
+        };
+
+        if (isMenuOpen) {
+            document.addEventListener("click", closeMenuOutsideClick);
+        }
+        else {
+            document.removeEventListener("click", closeMenuOutsideClick);
+        }
+
+
+        return () => {
+            document.removeEventListener("click", closeMenuOutsideClick);
+        };
+    }, [isMenuOpen]);
+
+
+    /* when menu is clicked */
     const handleMenuClick = () => {
         setIsMenuOpen(!isMenuOpen);
-    }
+    };
+
 
     return (
         <div>
-            <div className={`${styles.menu} ${isMenuOpen ? 'open' : ''}`}>
-                {/* Aiming to place the FontSizeButton module here */}
-            </div>
-            <div className={styles.menu_icon} onClick={handleMenuClick}>
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
+            {/* when menu is clicked hide open button */}
+            {isMenuOpen ? (
+                <div className={styles.menu_icon} onClick={handleMenuClick}>
+                    <FontAwesomeIcon icon={faX} size="xl" style={{ color: "#003594", }} />
+                </div>
+            ) : (
+                <div className={styles.menu_icon} onClick={handleMenuClick}>
+                    <FontAwesomeIcon icon={faBars} size="xl" style={{ color: "#ffffff", }} />
+                </div>
+            )}
+            {isMenuOpen && (
+                <div className={styles.menu} ref={menuRef}>
+                    <div className={styles.close_button} onClick={handleMenuClick}>
+                        <FontAwesomeIcon icon={faX} size="lg" style={{ color: "#003594", }} />
+                    </div>
+                    <div>
+                        <FontSizeButton />
+                    </div>
+                </div>
+            )}
+
         </div>
     )
 }
