@@ -147,6 +147,12 @@
   box-shadow: 0 12px 16px 0 rgba(0,0,0,0.1), 0 17px 50px 0 rgba(0, 0, 0, 0.075);
 }
 
+.iconButton {
+  background: transparent;
+  color: white;
+  border: none;
+}
+
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
   .card:hover {

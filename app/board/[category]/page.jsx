@@ -22,7 +22,7 @@ export default function Page({ params, searchParams }) {
     'rgba(178, 34, 34, 1)',
     'rgba(166, 90, 85, 1)',
   ];
-  
+
   const [cards, setCards] = useState([]);
   const [name, setName] = useState('');
   const [paragraph, setParagraph] = useState('');
@@ -49,7 +49,7 @@ export default function Page({ params, searchParams }) {
           const cardResponse = await fetch(`${server_url}/api/posts/${data.id}`);
           const cardData = await cardResponse.json();
           setCards(cardData);
-          
+
           // Check if we have no posts for this category
           if (Object.keys(cardData).length < 1) {
             setFoundPosts(false);
@@ -68,16 +68,31 @@ export default function Page({ params, searchParams }) {
   }, [params]);
 
   // Function for the post flag button
-  function FlagButton({ category_id, post_id}) {
+  function FlagButton({ category_id, post_id }) {
     const router = useRouter();
 
     const handleClick = () => {
-      router.push(url=`/flag_post?category_id=${category_id}&post_id=${post_id}`);
+      router.push(url = `/flag_post?category_id=${category_id}&post_id=${post_id}`);
     };
 
     return (
-      <button onClick={handleClick}>
-        <FontAwesomeIcon icon={faFlag} size="xl" style={{color: "#ffffff",}} />
+      <button onClick={handleClick} className={styles.iconButton}>
+        <FontAwesomeIcon icon={faFlag} size="xl" style={{ color: "#ffffff", }} />
+      </button>
+    )
+  }
+
+  // Function for the upvote button
+  function UpVoteButton({ category_id, post_id }) {
+    const router = useRouter();
+
+    const handleClick = () => {
+      router.push(url = `/flag_post?category_id=${category_id}&post_id=${post_id}`);
+    };
+
+    return (
+      <button onClick={handleClick} className={styles.iconButton}>
+        <FontAwesomeIcon icon={faThumbsUp} size="xl" style={{ color: "#ffffff", }} />
       </button>
     )
   }
@@ -90,7 +105,7 @@ export default function Page({ params, searchParams }) {
 
         <Center />
 
-        <h4>If you do not believe you should be seeing this error, 
+        <h4>If you do not believe you should be seeing this error,
           please contact the system administrator.</h4>
       </main>
     )
@@ -225,7 +240,7 @@ export default function Page({ params, searchParams }) {
             key={card.post_id}
             href={`/board/${href}/${card.post_id}`}
             className={styles.card}
-            style={{ backgroundColor: pastelColors[(card.post_id-1) % pastelColors.length] }}
+            style={{ backgroundColor: pastelColors[(card.post_id - 1) % pastelColors.length] }}
             target='_self'
             rel='noopener noreferrer'
           >
@@ -233,13 +248,13 @@ export default function Page({ params, searchParams }) {
             <p>{card.description}</p>
             <footer>
               <counter>
-              <FontAwesomeIcon icon={faThumbsUp} size="xl" style={{color: "#ffffff",}} /><br />{card.upvotes}
+                <UpVoteButton category_id={card.category_id} post_id={card.post_id} />
               </counter>
               <counter>
-              <FontAwesomeIcon icon={faMessage} flip="horizontal" size="xl" style={{color: "#ffffff",}} /><br />{card.comments}
+                <FontAwesomeIcon icon={faMessage} flip="horizontal" size="xl" style={{ color: "#ffffff", }} /><br />{card.comments}
               </counter>
               <counter>
-                <FlagButton category_id={card.category_id} post_id={card.post_id}/>
+                <FlagButton category_id={card.category_id} post_id={card.post_id} />
               </counter>
             </footer>
           </Link>
