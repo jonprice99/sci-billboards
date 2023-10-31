@@ -1,7 +1,6 @@
 'use client';
 import Link from "next/link"
 import styles from 'app/board/Board.module.css'
-import Image from 'next/image'
 import Center from 'app/components/Home_Center';
 import Error_Grid from 'app/components/Error_Grid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -24,32 +23,18 @@ export default function Page({ params, searchParams }) {
     'rgba(166, 90, 85, 1)',
   ];
   
-  const [cards, setCards] = useState([
-    {
-      href: '',
-      title: 'Example #1',
-      description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi molestias iste autem tenetur accusamus voluptates inventore laborum maxime nostrum. Impedit dignissimos doloremque, porro quia reprehenderit accusamus similique deserunt optio magnam.',
-    },
-    {
-      href: '',
-      title: 'Example #2',
-      description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi molestias iste autem tenetur accusamus voluptates inventore laborum maxime nostrum. Impedit dignissimos doloremque, porro quia reprehenderit accusamus similique deserunt optio magnam.',
-    },
-    {
-      href: '',
-      title: 'Example #3',
-      description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi molestias iste autem tenetur accusamus voluptates inventore laborum maxime nostrum. Impedit dignissimos doloremque, porro quia reprehenderit accusamus similique deserunt optio magnam.',
-    },
-  ]);
-
+  const [cards, setCards] = useState([]);
   const [name, setName] = useState('');
   const [paragraph, setParagraph] = useState('');
-  const [error, setError] = useState(false);
+  const [boardError, setBoardError] = useState(false);
+  const [postError, setPostError] = useState(false);
+  const [foundPosts, setFoundPosts] = useState(true);
   const [href, setHref] = useState(''); // Used for post href creation
 
   useEffect(() => {
     // Get the necessary data from the database
     async function fetchData() {
+      // Try to get the category
       try {
         const response = await fetch(`${server_url}/api/categories/${params.category}`);
         const data = await response.json();
@@ -57,14 +42,24 @@ export default function Page({ params, searchParams }) {
         setParagraph(data.paragraph);
         setHref(data.href)
 
-        //const cardResponse = await fetch(`${server_url}/api/posts/${data.id}`);
-        //const cardData = await cardResponse.json();
-        //setCards(cardData.cards);
-        //console.log(cardData);
+        // Try to get the posts
+        try {
+          const cardResponse = await fetch(`${server_url}/api/posts/${data.id}`);
+          const cardData = await cardResponse.json();
+          setCards(cardData);
+          
+          // Check if we have no posts for this category
+          if (Object.keys(cardData).length < 1) {
+            setFoundPosts(false)
+          }
+        } catch (error) {
+          // There was an error getting the posts
+          setPostError(true)
+        }
       } catch (error) {
-        setError(true);
+        // There was an error getting the category (i.e., it doesn't exist)
+        setBoardError(true);
       }
-      
     }
 
     fetchData();
@@ -86,14 +81,96 @@ export default function Page({ params, searchParams }) {
   }
 
   // Display an error page if we try to access a board that doesn't exist
-  if (error) {
+  if (boardError) {
     return (
       <main className={styles.main}>
         <Error_Grid />
+
+        <Center />
+
+        <h4>If you do not believe you should be seeing this error, 
+          please contact the system administrator.</h4>
       </main>
     )
   }
-  
+
+  // Display an error page if there was a problem accessing the posts for a board
+  if (postError) {
+    return (
+      <main className={styles.main}>
+        <div className={styles.grid}>
+          <Link href='/'>
+            <h3><FontAwesomeIcon icon={faAngleLeft} size="lg" /> Back to Home</h3>
+          </Link>
+          <div className={styles.title}>
+            <h2>
+              {name}
+            </h2>
+            <p>{paragraph}</p>
+          </div>
+          <Link href='/new_post' passHref>
+            <button className={styles.button}>New Post</button>
+          </Link>
+        </div>
+
+        <Center />
+        <h4>We had a problem getting posts for this category...</h4>
+        <p>Please try again later!</p>
+      </main>
+    )
+  }
+
+  // Display a modified page with a message for the user if no posts exist
+  if (!foundPosts && name != "Trending") {
+    return (
+      <main className={styles.main}>
+        <div className={styles.grid}>
+          <Link href='/'>
+            <h3><FontAwesomeIcon icon={faAngleLeft} size="lg" /> Back to Home</h3>
+          </Link>
+          <div className={styles.title}>
+            <h2>
+              {name}
+            </h2>
+            <p>{paragraph}</p>
+          </div>
+          <Link href='/new_post' passHref>
+            <button className={styles.button}>New Post</button>
+          </Link>
+        </div>
+
+        <h4>Nobody's posted feedback here yet...</h4>
+        <p>Why not click New Post and be the first?</p>
+      </main>
+    )
+  }
+
+  // Display a modified trending page with a message for the user if no posts
+  if (!foundPosts && name == "Trending") {
+    return (
+      <main className={styles.main}>
+        <div className={styles.grid}>
+          <Link href='/'>
+            <h3><FontAwesomeIcon icon={faAngleLeft} size="lg" /> Back to Home</h3>
+          </Link>
+          <div className={styles.title}>
+            <h2>
+              {name}
+            </h2>
+            <p>{paragraph}</p>
+          </div>
+          <Link href='/new_post' passHref>
+            <button className={styles.button}>New Post</button>
+          </Link>
+        </div>
+
+        <h4>There's nothing trending right now...</h4>
+        <p>Please check back in later!</p>
+      </main>
+    )
+  }
+  console.log(cards);
+  // Display the board with its posts
   return (
     <main className={styles.main}>
 
@@ -115,12 +192,12 @@ export default function Page({ params, searchParams }) {
 
       {/* Note: Will be updated to show posts from db */}
       <div className={styles.post_grid}>
-        {cards.map((card, index) => (
+        {cards.map((card) => (
           <Link
-            key={index}
+            key={card.post_id}
             href={`/board/${href}/${card.post_id}`}
             className={styles.card}
-            style={{ backgroundColor: pastelColors[index % pastelColors.length] }}
+            style={{ backgroundColor: pastelColors[(card.post_id-1) % pastelColors.length] }}
             target='_self'
             rel='noopener noreferrer'
           >

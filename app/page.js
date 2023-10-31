@@ -83,7 +83,7 @@ export default function Home() {
             key={card.id}
             href={`/board/${card.href}`}
             className={styles.card}
-            style={{ backgroundColor: pastelColors[card.id % pastelColors.length] }}
+            style={{ backgroundColor: pastelColors[(card.id-1) % pastelColors.length] }}
             target='_self'
             rel='noopener noreferrer'
           >

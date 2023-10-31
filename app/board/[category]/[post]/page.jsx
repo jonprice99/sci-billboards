@@ -6,7 +6,6 @@
 'use client';
 import Link from "next/link"
 import styles from 'app/board/Board.module.css'
-import Image from 'next/image'
 import Center from 'app/components/Home_Center';
 import Error_Grid from 'app/components/Error_Grid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -32,6 +31,7 @@ export default function Post({ params, searchParams }) {
     const [cards, setCards] = ([]);
     const [title, setTitle] = useState('');
     const [paragraph, setParagraph] = useState('');
+    const [posterName, setPosterName] = useState('');
     const [progress, setProgress] = useState('');
     const [date, setDate] = useState('');
     const [error, setError] = useState(false);
@@ -42,12 +42,26 @@ export default function Post({ params, searchParams }) {
         async function fetchData() {
             try {
                 // Get the post details
-                const response = await fetch(`${server_url}/api/posts/${params.category}/${params.post}`);
+                const catRes = await fetch(`${server_url}/api/categories/${params.category}`);
+                const catData = await catRes.json();
+                const response = await fetch(`${server_url}/api/posts/${catData.id}/${params.post}`);
                 const data = await response.json();
                 setTitle(data.title);
-                setParagraph(data.paragraph);
+                setParagraph(data.description);
                 setProgress(data.progress)
-                setDate(data.date_posted)
+
+                // Set the appropriate date
+                const date = new Date(data.date_posted);
+                const localDate = new Date(date.getTime() + (date.getTimezoneOffset() * 60000));
+                const estDate = localDate.toLocaleString('en-US', { timeZone: 'America/New_York' });
+                setDate(estDate)
+                
+                // Set the appropriate poster name
+                if (data.poster_name == null) {
+                    setPosterName("Anonymous")
+                } else {
+                    setPosterName(data.poster_name)
+                }
 
                 // Get the comments for this post
                 //const cardResponse = await fetch(`${server_url}/api/posts/${data.id}`);
@@ -79,7 +93,7 @@ export default function Post({ params, searchParams }) {
         progressText = "Being deliberated";
     } else if (progress === 2) {
         progressText = "In development";
-    } else if (progress === 4) {
+    } else if (progress === 3) {
         progressText = "Implemented";
     }
 
@@ -106,6 +120,10 @@ export default function Post({ params, searchParams }) {
                 {title}
             </h3>
 
+            <h4>
+                {posterName}
+            </h4>
+
             <p>
                 {paragraph}
             </p>
@@ -121,6 +139,8 @@ export default function Post({ params, searchParams }) {
             <p>
                 {progressText}
             </p>
+
+            {/* Need to also include the upvote and flag buttons here */}
 
             {/* The comments will go here... */}
         </main>

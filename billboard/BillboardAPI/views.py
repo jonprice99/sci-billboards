@@ -25,7 +25,7 @@ def categories_list(request):
 
 @api_view(['GET'])
 def posts_list(request, category_id):
-    posts = Posts.objects.get(category_id=category_id)
+    posts = Posts.objects.filter(category_id=category_id, is_hidden=False)
     serializer = PostsSerializer(posts, many=True)
     return Response(serializer.data)
 

@@ -20,8 +20,8 @@ class Categories(models.Model):
         return self.name
 
 class Posts(models.Model):
-    category_id = models.IntegerField()
-    post_id = models.AutoField(primary_key=True)
+    category_id = models.PositiveIntegerField()
+    post_id = models.PositiveIntegerField(primary_key=True)
     #category = models.CharField(max_length = 128)
     title = models.CharField(max_length=160)
     description = models.TextField()
