@@ -26,6 +26,7 @@ export default function Page({ params, searchParams }) {
   const [cards, setCards] = useState([]);
   const [name, setName] = useState('');
   const [paragraph, setParagraph] = useState('');
+  const [archived, setArchived] = useState(false);
   const [boardError, setBoardError] = useState(false);
   const [postError, setPostError] = useState(false);
   const [foundPosts, setFoundPosts] = useState(true);
@@ -40,7 +41,8 @@ export default function Page({ params, searchParams }) {
         const data = await response.json();
         setName(data.name);
         setParagraph(data.paragraph);
-        setHref(data.href)
+        setHref(data.href);
+        setArchived(data.isArchived);
 
         // Try to get the posts
         try {
@@ -50,11 +52,11 @@ export default function Page({ params, searchParams }) {
           
           // Check if we have no posts for this category
           if (Object.keys(cardData).length < 1) {
-            setFoundPosts(false)
+            setFoundPosts(false);
           }
         } catch (error) {
           // There was an error getting the posts
-          setPostError(true)
+          setPostError(true);
         }
       } catch (error) {
         // There was an error getting the category (i.e., it doesn't exist)
@@ -90,6 +92,32 @@ export default function Page({ params, searchParams }) {
 
         <h4>If you do not believe you should be seeing this error, 
           please contact the system administrator.</h4>
+      </main>
+    )
+  }
+
+  // Display a different page if the user attempts to access an archived board
+  if (archived) {
+    return (
+      <main className={styles.main}>
+        <div className={styles.grid}>
+          <Link href='/'>
+            <h3><FontAwesomeIcon icon={faAngleLeft} size="lg" /> Back to Home</h3>
+          </Link>
+          <div className={styles.title}>
+            <h2>
+              {name}
+            </h2>
+            <p>{paragraph}</p>
+          </div>
+          <Link href='/new_post' passHref>
+            <button className={styles.button}>New Post</button>
+          </Link>
+        </div>
+
+        <Center />
+        <h4>This category has been archived...</h4>
+        <p>Only moderators and administrators may access this category right now.</p>
       </main>
     )
   }
@@ -169,7 +197,7 @@ export default function Page({ params, searchParams }) {
       </main>
     )
   }
-  console.log(cards);
+
   // Display the board with its posts
   return (
     <main className={styles.main}>

@@ -47,6 +47,19 @@ def get_post(request, category_id, post_id):
     serializer = PostsSerializer(post, many=False)
     return Response(serializer.data)
 
+@api_view(['PUT'])
+def update_category(request, pk):
+    try:
+        category = Categories.objects.get(pk=pk)
+    except Categories.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    serializer = CategoriesSerializer(category, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 @api_view(['POST'])
 def create_post(request):
     serializer = PostsSerializer(data=request.data)
@@ -56,3 +69,23 @@ def create_post(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def create_category(request):
+    serializer = CategoriesSerializer(data=request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+def delete_category(request, pk):
+    try:
+        category = Categories.objects.get(pk=pk)
+    except Categories.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    category.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)

@@ -9,9 +9,10 @@ from django.db import models
     
 class Categories(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=160)
-    href = models.CharField(max_length=160)
+    name = models.CharField(max_length=160, unique=True)
+    href = models.CharField(max_length=160, unique=True)
     paragraph = models.TextField()
+    isArchived = models.BooleanField(default=False)
     
     class Meta:
         db_table = 'Categories'  # Specify the table name
