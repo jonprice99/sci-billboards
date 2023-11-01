@@ -18,6 +18,13 @@ logger = logging.getLogger('api.views')
 
 @api_view(['GET'])
 def categories_list(request):
+    categories = Categories.objects.filter(isArchived=False)
+    serializer = CategoriesSerializer(categories, many=True)
+    logger.info('Response Data: %s', serializer.data)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def mod_categories_list(request):
     categories = Categories.objects.all()
     serializer = CategoriesSerializer(categories, many=True)
     logger.info('Response Data: %s', serializer.data)

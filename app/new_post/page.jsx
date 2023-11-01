@@ -7,6 +7,9 @@ import Home_Center from "../components/Home_Center";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons'
 import { useState, useEffect } from 'react';
+
+const server_url = `http://127.0.0.1:8000`;
+
 const new_post = () => {
   // Constant to set the character limit of the post title
   const title_limit = 160;
@@ -19,8 +22,19 @@ const new_post = () => {
   const [title, setTitle] = useState('');
   const [content, setPostBody] = useState('');
 
-  // Define an array of category names (Note: To be replaced with DB connection)
-  const categories = ['Career Services', 'Classes', 'Classrooms', 'Community', 'Curriculum', 'Events', 'Lounges', 'Miscellaneous'];
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const res = await fetch(`${server_url}/api/categories/`);
+      const data = await res.json();
+      setCategories(data);
+    }
+
+    fetchData();
+  }, []);
+
+  console.log(categories)
 
   // Define a function that handles the form submission
   function handleSubmit(event) {
@@ -59,16 +73,18 @@ const new_post = () => {
           <button className={styles.button} type="submit" onClick={handleSubmit}>Submit</button>
       </div>
 
+      <Home_Center />
+
       <div className={styles.post_form}>
         {/* Note: Need to update this so it will post to database */}
-        <form>
+        <form method="post">
         <label htmlFor="category">Category:</label>
           <br />
           <select id="category" value={category} onChange={(e) => setCategory(e.target.value)}>
             <option value="">Select a category</option>
             {categories.map((cat) => (
-              <option key={cat} value={cat}>
-                {cat}
+              <option key={cat.name} value={cat.href}>
+                {cat.name}
               </option>
             ))}
           </select>
