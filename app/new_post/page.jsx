@@ -18,9 +18,9 @@ const new_post = () => {
   const [titleCount, setTitleCount] = useState(0);
   const [descriptCount, setPostBodyCount] = useState(0);
 
-  const [category, setCategory] = useState(0);
+  const [categoryStr, setCategoryStr] = useState('');
   const [title, setTitle] = useState('');
-  const [content, setPostBody] = useState('');
+  const [description, setPostBody] = useState('');
 
   const [categories, setCategories] = useState([]);
 
@@ -40,9 +40,10 @@ const new_post = () => {
     event.preventDefault();
 
     // Do something with the form data, such as sending it to an API or displaying it on the screen
-    //console.log({ category, title, content });
+    const poster_id = 1;  // To be replaced once login is handled
+    let category_id = Number(categoryStr)
 
-    const data = { title, category, content };
+    const data = { category_id, title, description, poster_id };
 
     try {
       const addResponse = await fetch(`${server_url}/api/posts/create/`, {
@@ -96,7 +97,7 @@ const new_post = () => {
         <form method="post">
         <label htmlFor="category">Category:</label>
           <br />
-          <select id="category" value={category} onChange={(e) => setCategory(e.target.value)}>
+          <select id="category" value={categoryStr} onChange={(e) => setCategoryStr(e.target.value)}>
             <option value="">Select a category</option>
             {categories.map((cat) => (
               <option key={cat.name} value={cat.id}>
@@ -121,7 +122,7 @@ const new_post = () => {
           <p>{`Characters left: ${descript_limit - descriptCount}`}</p>
           <AutoResize
             id="post_body"
-            value={content}
+            value={description}
             onChange={handlePostBodyChange}
             maxLength="2048"
             rows="5"

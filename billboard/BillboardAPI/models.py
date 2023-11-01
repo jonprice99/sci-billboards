@@ -33,11 +33,11 @@ class User_Upvotes(models.Model):
 
 class Posts(models.Model):
     category_id = models.PositiveIntegerField()
-    post_id = models.PositiveIntegerField(primary_key=True)
+    post_id = models.AutoField(primary_key=True)
     #category = models.CharField(max_length = 128)
     title = models.CharField(max_length=160)
     description = models.TextField()
-    subcategory = models.CharField(max_length=256)
+    subcategory = models.CharField(max_length=256, null=True)
     progress = models.SmallIntegerField(default=0)
     date_posted = models.DateTimeField(auto_now_add=True)
     poster_id = models.IntegerField()
