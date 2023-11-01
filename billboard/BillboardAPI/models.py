@@ -19,6 +19,17 @@ class Categories(models.Model):
 
     def __str__(self):
         return self.name
+    
+class User_Upvotes(models.Model):
+    category_id = models.PositiveIntegerField()
+    post_id = models.PositiveIntegerField()
+    user_id = models.PositiveIntegerField()
+    
+    class Meta:
+        db_table = 'User_Upvotes'
+        
+    def __str__(self):
+        return self.name
 
 class Posts(models.Model):
     category_id = models.PositiveIntegerField()
