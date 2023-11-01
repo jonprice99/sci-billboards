@@ -101,7 +101,7 @@ def delete_category(request, pk):
 def inc_upvote(request, post_id):
     try:
         post = Posts.objects.get(post_id=post_id)
-        post.upvote += 1
+        post.upvotes += 1
         post.save()
         return Response({"message": "Upvote incremented successfully"}, status=status.HTTP_200_OK)
     except Posts.DoesNotExist:
@@ -111,7 +111,7 @@ def inc_upvote(request, post_id):
 def dec_upvote(request, post_id):
     try:
         post = Posts.objects.get(post_id=post_id)
-        post.upvote -= 1
+        post.upvotes -= 1
         post.save()
         return Response({"message": "Upvote decremented successfully"}, status=status.HTTP_200_OK)
     except Posts.DoesNotExist:
