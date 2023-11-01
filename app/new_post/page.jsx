@@ -18,7 +18,7 @@ const new_post = () => {
   const [titleCount, setTitleCount] = useState(0);
   const [descriptCount, setPostBodyCount] = useState(0);
 
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState(0);
   const [title, setTitle] = useState('');
   const [content, setPostBody] = useState('');
 
@@ -99,7 +99,7 @@ const new_post = () => {
           <select id="category" value={category} onChange={(e) => setCategory(e.target.value)}>
             <option value="">Select a category</option>
             {categories.map((cat) => (
-              <option key={cat.name} value={cat.href}>
+              <option key={cat.name} value={cat.id}>
                 {cat.name}
               </option>
             ))}
