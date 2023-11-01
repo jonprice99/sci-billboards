@@ -34,15 +34,31 @@ const new_post = () => {
     fetchData();
   }, []);
 
-  console.log(categories)
-
   // Define a function that handles the form submission
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     // Prevent the default browser behavior
     event.preventDefault();
 
     // Do something with the form data, such as sending it to an API or displaying it on the screen
-    console.log({ category, title, content });
+    //console.log({ category, title, content });
+
+    const data = { title, category, content };
+
+    try {
+      const addResponse = await fetch(`${server_url}/api/posts/create/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      });
+
+      console.log("Success:", addResponse);
+      router.refresh();
+    } catch (error) {
+      // There was an error when trying to post to the db
+      console.error("Error when attempting to post to db:", error);
+    }
   }
 
   // Function to handle title character count
