@@ -83,17 +83,36 @@ export default function Page({ params, searchParams }) {
   }
 
   // Function for the upvote button
-  function UpVoteButton({ category_id, post_id }) {
+  function UpVoteButton({ category_id, post_id, upvoteCount }) {
     const router = useRouter();
+    const [upvotes, setUpvotes] = useState(upvoteCount);
 
     const handleClick = () => {
-      router.push(url = `/flag_post?category_id=${category_id}&post_id=${post_id}`);
+      // Proceed with this section if the user hasn't upvoted this post
+      //if user, post_id, category_id not in User_Upvotes
+      if (upvotes === upvoteCount) {
+        // Increment the local count
+        setUpvotes(upvotes + 1);
+        
+        // Increment the database count
+
+      } else {
+        // Decrement the local count
+        setUpvotes(upvotes)
+
+        // Decrement the database count
+
+      }
     };
 
     return (
-      <button onClick={handleClick} className={styles.iconButton}>
-        <FontAwesomeIcon icon={faThumbsUp} size="xl" style={{ color: "#ffffff", }} />
-      </button>
+      <counter>
+        <button onClick={handleClick} className={styles.iconButton}>
+          <FontAwesomeIcon icon={faThumbsUp} size="xl" style={{ color: "#ffffff", }} />
+        </button>
+        <br />
+        {upvotes}
+      </counter>
     )
   }
 
@@ -236,28 +255,26 @@ export default function Page({ params, searchParams }) {
       {/* Note: Will be updated to show posts from db */}
       <div className={styles.post_grid}>
         {cards.map((card) => (
-          <Link
-            key={card.post_id}
-            href={`/board/${href}/${card.post_id}`}
-            className={styles.card}
-            style={{ backgroundColor: pastelColors[(card.post_id - 1) % pastelColors.length] }}
-            target='_self'
-            rel='noopener noreferrer'
-          >
-            <h2>{card.title}</h2>
-            <p>{card.description}</p>
-            <footer>
+          <div key={card.post_id} className={styles.card} style={{ backgroundColor: pastelColors[(card.post_id - 1) % pastelColors.length] }}>
+            <Link
+              href={`/board/${href}/${card.post_id}`}
+              target='_self'
+              rel='noopener noreferrer'
+            >
+              <h2>{card.title}</h2>
+              <p>{card.description}</p>
+            </Link>
+
+            <footer className={styles.cardFooter}>
               <counter>
-                <UpVoteButton category_id={card.category_id} post_id={card.post_id} />
+                <UpVoteButton category_id={card.category_id} post_id={card.post_id} upvoteCount={card.upvotes} />
               </counter>
               <counter>
                 <FontAwesomeIcon icon={faMessage} flip="horizontal" size="xl" style={{ color: "#ffffff", }} /><br />{card.comments}
               </counter>
-              <counter>
-                <FlagButton category_id={card.category_id} post_id={card.post_id} />
-              </counter>
+              <FlagButton category_id={card.category_id} post_id={card.post_id} upvotes={card.upvotes} />
             </footer>
-          </Link>
+          </div>
         ))}
 
       </div>
