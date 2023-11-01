@@ -6,8 +6,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.views.decorators.csrf import csrf_exempt
 
-from BillboardAPI.models import Categories, Posts
-from BillboardAPI.serializers import CategoriesSerializer, PostsSerializer
+from BillboardAPI.models import Categories, Posts, User_Upvotes
+from BillboardAPI.serializers import CategoriesSerializer, PostsSerializer, User_UpvotesSerializer
 
 import logging
 
@@ -96,3 +96,23 @@ def delete_category(request, pk):
 
     category.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['POST'])
+def inc_upvote(request, post_id):
+    try:
+        post = Posts.objects.get(post_id=post_id)
+        post.upvote += 1
+        post.save()
+        return Response({"message": "Upvote incremented successfully"}, status=status.HTTP_200_OK)
+    except Posts.DoesNotExist:
+        return Response({"error": "Post not found"}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['POST'])
+def dec_upvote(request, post_id):
+    try:
+        post = Posts.objects.get(post_id=post_id)
+        post.upvote -= 1
+        post.save()
+        return Response({"message": "Upvote decremented successfully"}, status=status.HTTP_200_OK)
+    except Posts.DoesNotExist:
+        return Response({"error": "Post not found"}, status=status.HTTP_404_NOT_FOUND)
