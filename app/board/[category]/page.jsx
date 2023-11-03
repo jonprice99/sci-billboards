@@ -4,7 +4,7 @@ import styles from 'app/board/Board.module.css'
 import Center from 'app/components/Home_Center';
 import Error_Grid from 'app/components/Error_Grid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMessage, faFlag, faAngleLeft, faThumbsUp } from '@fortawesome/free-solid-svg-icons'
+import { faMessage, faFlag, faAngleLeft, faThumbsUp, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
 
@@ -31,8 +31,26 @@ export default function Page({ params, searchParams }) {
   const [postError, setPostError] = useState(false);
   const [foundPosts, setFoundPosts] = useState(true);
   const [href, setHref] = useState(''); // Used for post href creation
+  const [buttonFloat, setButtonFloat] = useState(false);
 
   useEffect(() => {
+
+    //create floating new post button
+    function handleScroll() {
+      if (innerWidth > 700 && window.scrollY > 30) {
+        setButtonFloat(true);
+      }
+      else {
+        setButtonFloat(false);
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    }
+
+
     // Get the necessary data from the database
     async function fetchData() {
       // Try to get the category
@@ -93,7 +111,7 @@ export default function Page({ params, searchParams }) {
       if (upvotes === upvoteCount) {
         // Increment the local count
         setUpvotes(upvotes + 1);
-        
+
         // Increment the database count
 
       } else {
@@ -247,9 +265,19 @@ export default function Page({ params, searchParams }) {
           </h2>
           <p>{paragraph}</p>
         </div>
-        <Link href='/new_post' passHref>
-          <button className={styles.button}>New Post</button>
-        </Link>
+        {buttonFloat && (
+          <Link href='/new_post' passHref>
+            <button className={styles.postButtonFloating}>
+              <FontAwesomeIcon icon={faPlus} size="xl" style={{ color: "#ffffff", }} />
+            </button>
+          </Link>
+        )}
+        {!buttonFloat && (
+          <Link href='/new_post' passHref>
+            {/* <button className={styles.button + ' ' + buttonClass}>New Post</button> */}
+            <button className={styles.button}>New Post</button>
+          </Link>
+        )}
       </div>
 
       {/* Note: Will be updated to show posts from db */}
