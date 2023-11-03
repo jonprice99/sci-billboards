@@ -12,7 +12,7 @@ urlpatterns = [
     path('posts/<int:category_id>', views.posts_list, name='posts-list'),
     path('posts/<int:category_id>/<int:post_id>', views.get_post, name='get-post'),
     path('posts/create/', views.create_post, name='create-post'),
-    path('posts/inc_upvote/<int:post_id>', views.inc_upvote, name='inc-upvote'),
-    path('posts/dec_upvote/<int:post_id>', views.dec_upvote, name='dec_upvote'),
+    path('posts/inc_upvote/<int:category_id>/<int:post_id>', views.inc_upvote, name='inc-upvote'),
+    path('posts/dec_upvote/<int:category_id>/<int:post_id>', views.dec_upvote, name='dec_upvote'),
     
 ]

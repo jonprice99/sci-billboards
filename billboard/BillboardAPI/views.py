@@ -98,9 +98,9 @@ def delete_category(request, pk):
     return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['POST'])
-def inc_upvote(request, post_id):
+def inc_upvote(request, category_id, post_id):
     try:
-        post = Posts.objects.get(post_id=post_id)
+        post = Posts.objects.get(category_id=category_id, post_id=post_id)
         post.upvotes += 1
         post.save()
         return Response({"message": "Upvote incremented successfully"}, status=status.HTTP_200_OK)
@@ -108,9 +108,9 @@ def inc_upvote(request, post_id):
         return Response({"error": "Post not found"}, status=status.HTTP_404_NOT_FOUND)
 
 @api_view(['POST'])
-def dec_upvote(request, post_id):
+def dec_upvote(request, category_id, post_id):
     try:
-        post = Posts.objects.get(post_id=post_id)
+        post = Posts.objects.get(category_id=category_id, post_id=post_id)
         post.upvotes -= 1
         post.save()
         return Response({"message": "Upvote decremented successfully"}, status=status.HTTP_200_OK)

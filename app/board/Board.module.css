@@ -53,6 +53,12 @@
   margin-right: 0.1rem;
 }
 
+.card a {
+  display: block;
+  height: 75%;
+  width: 100%;
+}
+
 .card span {
   display: inline-block;
   transition: transform 200ms;
@@ -248,7 +254,8 @@
   }
 
   .card {
-    padding: 1rem 2.5rem;
+    padding: 1rem 1rem;
+    width: 300px;
   }
 
   .card h2 {

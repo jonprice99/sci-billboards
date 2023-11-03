@@ -125,6 +125,14 @@
   font-size: 14px;
 }
 
+.post_form form input[type="checkbox"] {
+  transform: scale(1.1);
+}
+
+.post_form form #post_body {
+  height: 2rem;
+}
+
 .post_form form textarea {
   width: 20rem;
   font-size: medium;

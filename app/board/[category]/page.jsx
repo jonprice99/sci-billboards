@@ -3,6 +3,7 @@ import Link from "next/link"
 import styles from 'app/board/Board.module.css'
 import Center from 'app/components/Home_Center';
 import Error_Grid from 'app/components/Error_Grid';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMessage, faFlag, faAngleLeft, faThumbsUp, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { useState, useEffect } from 'react';
@@ -118,7 +119,7 @@ export default function Page({ params, searchParams }) {
 
       } else {
         // Decrement the local count
-        setUpvotes(upvotes)
+        setUpvotes(upvotes - 1)
 
         // Decrement the database count
 

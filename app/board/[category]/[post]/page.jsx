@@ -52,7 +52,7 @@ export default function Post({ params, searchParams }) {
 
                 // Set the appropriate date
                 const date = new Date(data.date_posted);
-                const localDate = new Date(date.getTime() + (date.getTimezoneOffset() * 60000));
+                const localDate = new Date(date.getTime());
                 const estDate = localDate.toLocaleString('en-US', { timeZone: 'America/New_York' });
                 setDate(estDate)
                 
@@ -101,8 +101,8 @@ export default function Post({ params, searchParams }) {
         <main className={styles.main}>
             {/* The grid under the header that contains back button, board name, new post button, search, sort, and filter tools */}
             <div className={styles.grid}>
-                <Link href='/'>
-                    <h3><FontAwesomeIcon icon={faAngleLeft} size="lg" /> Back to Home</h3>
+                <Link href={`/board/${params.category}`}>
+                    <h3><FontAwesomeIcon icon={faAngleLeft} size="lg" /> Back to Board</h3>
                 </Link>
                 <div className={styles.title}>
                     <h2>
@@ -110,9 +110,6 @@ export default function Post({ params, searchParams }) {
                     </h2>
                     <p></p>
                 </div>
-                <Link href='/new_post' passHref>
-                    <button className={styles.button}>New Post</button>
-                </Link>
             </div>
 
             {/* Just some basic HTML to display the details of the post for now, needs formatted */}

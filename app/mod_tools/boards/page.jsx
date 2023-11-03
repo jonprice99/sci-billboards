@@ -95,7 +95,7 @@ export default function BoardTools() {
      */
     async function addCategory({ href, name, paragraph }) {
         // Post the new category to the db
-        const data = { name: name, paragraph: paragraph, href: href }
+        const data = { name, paragraph, href }
 
         console.log(data)
 
