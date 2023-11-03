@@ -35,20 +35,7 @@ export default function Page({ params, searchParams }) {
 
   useEffect(() => {
 
-    //create floating new post button
-    function handleScroll() {
-      if (innerWidth > 700 && window.scrollY > 30) {
-        setButtonFloat(true);
-      }
-      else {
-        setButtonFloat(false);
-      }
-    }
 
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    }
 
 
     // Get the necessary data from the database
@@ -83,6 +70,21 @@ export default function Page({ params, searchParams }) {
     }
 
     fetchData();
+
+    //create floating new post button
+    function handleScroll() {
+      if (innerWidth > 700 && window.scrollY > 250) {
+        setButtonFloat(true);
+      }
+      else {
+        setButtonFloat(false);
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    }
   }, [params]);
 
   // Function for the post flag button
