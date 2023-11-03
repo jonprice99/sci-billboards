@@ -6,8 +6,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.views.decorators.csrf import csrf_exempt
 
-from BillboardAPI.models import Categories, Posts, User_Upvotes
-from BillboardAPI.serializers import CategoriesSerializer, PostsSerializer, User_UpvotesSerializer
+from BillboardAPI.models import *
+from BillboardAPI.serializers import *
 
 import logging
 

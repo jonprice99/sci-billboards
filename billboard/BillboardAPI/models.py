@@ -6,6 +6,17 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
+
+class Users(models.Model):
+    user_id = models.AutoField(primary_key=True)
+    username = models.CharField(max_length=128)
+    role = models.PositiveIntegerField()
+    
+    class Meta:
+        db_table = 'Users'  # Specify the table name
+
+    def __str__(self):
+        return self.name
     
 class Categories(models.Model):
     id = models.AutoField(primary_key=True)
@@ -50,6 +61,51 @@ class Posts(models.Model):
     class Meta:
         db_table = 'Posts'  # Specify the table name
 
+    def __str__(self):
+        return self.title
+    
+class Posts_Pending_Mod(models.Model):
+    category_id = models.PositiveIntegerField()
+    post_id = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=160)
+    description = models.TextField()
+    poster_id = models.IntegerField()
+    poster_name = models.CharField(max_length=128, null=True)
+    
+    class Meta:
+        db_table = 'Posts_Pending_Mod'  # Specify the table name
+
+    def __str__(self):
+        return self.title
+    
+class Comments(models.Model):
+    category_id = models.PositiveIntegerField()
+    post_id = models.PositiveIntegerField()
+    comment_id = models.AutoField(primary_key=True)
+    user_id = models.PositiveIntegerField()
+    user_name = models.CharField(max_length=128, null=True)
+    body = models.CharField(max_length=256)
+    comment_date = models.DateTimeField(auto_now_add=True)
+    is_pending_mod = models.BooleanField(default=False)
+    is_hidden = models.BooleanField(default=False)
+    
+    class Meta:
+        db_table = 'Comments'
+    
+    def __str__(self):
+        return self.title
+    
+class Comments_Pending_Mod(models.Model):
+    category_id = models.PositiveIntegerField()
+    post_id = models.PositiveIntegerField()
+    comment_id = models.AutoField(primary_key=True)
+    body = models.CharField(max_length=256)
+    user_id = models.PositiveIntegerField()
+    user_name = models.CharField(max_length=128, null=True)
+    
+    class Meta:
+        db_table = 'Comments_Pending_Mod'
+    
     def __str__(self):
         return self.title
     
