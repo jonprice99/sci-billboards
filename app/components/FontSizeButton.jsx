@@ -8,7 +8,7 @@ import 'app/globals.css'
 import styles from './FontSizeButton.module.css'
 import Link from 'next/link'
 
-export default function FontSizeButton() {
+export default function FontSizeButton({closeMenu}) {
     const [fontSize, setFontSize] = useState(100);
 
     const increaseSize = () => {
@@ -25,7 +25,7 @@ export default function FontSizeButton() {
         <div className={styles.button_layout}>
             <div>
                 <Link href={"/"}>
-                    <button className={styles.font_size_button}>Login</button>
+                    <button className={styles.font_size_button} onClick={closeMenu}>Login</button>
                 </Link>
             </div>
             <div>
@@ -36,7 +36,7 @@ export default function FontSizeButton() {
             </div>
             <div>
                 <Link href={"/mod_tools"}>
-                    <button className={styles.font_size_button}>Mod Tools</button>
+                    <button className={styles.font_size_button} onClick={closeMenu}>Mod Tools</button>
                 </Link>
             </div>
 

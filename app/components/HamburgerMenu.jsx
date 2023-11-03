@@ -9,7 +9,7 @@ import 'app/globals.css';
 import styles from "./HamburgerMenu.module.css";
 import FontSizeButton from './FontSizeButton'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars, faX} from '@fortawesome/free-solid-svg-icons'
+import { faBars, faX } from '@fortawesome/free-solid-svg-icons'
 
 export default function HamburgerMenu() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -43,6 +43,11 @@ export default function HamburgerMenu() {
         setIsMenuOpen(!isMenuOpen);
     };
 
+    /* close menu when navigating to another page */
+    const closeMenu = () => {
+        setIsMenuOpen(false);
+    };
+
 
     return (
         <div>
@@ -62,7 +67,7 @@ export default function HamburgerMenu() {
                         <FontAwesomeIcon icon={faX} size="lg" style={{ color: "#003594", }} />
                     </div>
                     <div>
-                        <FontSizeButton />
+                        <FontSizeButton closeMenu={closeMenu} />
                     </div>
                 </div>
             )}
