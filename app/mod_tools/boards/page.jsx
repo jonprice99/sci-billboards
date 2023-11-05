@@ -5,6 +5,10 @@
  */
 
 'use client';
+import 'devextreme/dist/css/dx.light.css';
+import ExtremeDataGrid, { Column, ColumnChooser, ColumnFixing, Editing, FilterRow, Popup, Paging, Search, SearchPanel, Selection, Toolbar, Item, Lookup, Form } from 'devextreme-react/data-grid';
+import 'devextreme-react/text-area';
+import { Button } from 'devextreme-react/button';
 import Link from "next/link"
 import styles from 'app/mod_tools/boards/BoardTools.module.css'
 import AutoResize from 'react-textarea-autosize';
@@ -37,6 +41,15 @@ export default function BoardTools() {
     
         fetchData();
       }, []);
+
+    // Columns for the table
+    const columns = [
+        { dataField: 'isArchived', caption: 'isArchived'},
+        { dataField: 'id', caption: 'id', allowEditing: false, allowAdding: false },
+        { dataField: 'name', caption: 'name' },
+        { dataField: 'href', caption: 'href' },
+        { dataField: 'paragraph', caption: 'paragraph'},
+    ];
 
     // Define a function that handles the new category submission
     function handleSubmitNewCategory(event) {
@@ -88,16 +101,16 @@ export default function BoardTools() {
 
     /**
      * Function to add a new category
-     * @param {*} href The href of the board
-     * @param {*} name The name of the board in the Card
-     * @param {*} paragraph The paragraph/description of the Card
-     * @param {*} isArchived Boolean of whether the board archived by default
      */
-    async function addCategory({ href, name, paragraph }) {
-        // Post the new category to the db
-        const data = { name, paragraph, href }
+    async function addCategory( event ) {
+        let changes = event.data
 
-        console.log(data)
+        // Post the new category to the db
+        let name = changes.name;
+        let paragraph = changes.paragraph;
+        let href = changes.href;
+        let isArchived = changes.isArchived;
+        const data = { name, paragraph, href, isArchived }
 
         try {
             const addResponse = await fetch(`${server_url}/api/categories/create`, {
@@ -117,18 +130,21 @@ export default function BoardTools() {
     }
 
     /**
-     * Function to toggle whether a category is archived
-     * @param {*} href The href of the board
+     * Function to update a category
      */
-    async function toggleArchivedCategory({ href }) {
+    async function updateCategory( event ) {
+        let changes = event.data;
+
+        // Format the data for the database
+        let id = changes.id;
+        let name = changes.name;
+        let paragraph = changes.paragraph;
+        let href = changes.href;
+        let isArchived = changes.isArchived;
+        const data = { name, paragraph, href, isArchived }
+        
         // Get the current data for the board
         try {
-            const response = await fetch(`${server_url}/api/categories/${href}`);
-            const data = await response.json();
-
-            // Toggle the isArchived value
-            data.isArchived = !data.isArchived;
-
             // Send the PUT request with the updated data
             const putResponse = await fetch(`${server_url}/api/categories/update/${data.id}`, {
                 method: "PUT",
@@ -146,15 +162,21 @@ export default function BoardTools() {
     }
 
     /**
-     * Function to remove a card from the grid based on the title
-     * @param {*} href The href of the category you wish to remove
+     * Function to remove a category
      */
-    async function removeCategory(href) {
+    async function removeCategory( event ) {
+        let changes = event.data
+
+        // Format the data for the database
+        let id = changes.id;
+        let name = changes.name;
+        let paragraph = changes.paragraph;
+        let href = changes.href;
+        let isArchived = changes.isArchived;
+        const data = { id, name, paragraph, href, isArchived }
+
         // Get the current data for the board
         try {
-            const response = await fetch(`${server_url}/api/categories/${href}`);
-            const data = await response.json();
-
             // Send the DELETE request to remove the category from the db
             const deleteResponse = await fetch(`${server_url}/api/categories/delete/${data.id}`, {
                 method: "DELETE"
@@ -183,89 +205,38 @@ export default function BoardTools() {
                 <div></div>
             </div>
 
-            <h3>Board List (id | name | href | isArchived):</h3>
-            <ul>
-                {categories.map((category) => (
-                    <li key={category.id}>{category.id} | {category.name} | {category.href} | {(category.isArchived).toString()}</li>
-                ))}
-            </ul>
             <br />
-            <br />
-            <h3>Create a new category:</h3>
-            <div className={styles.post_form}>
-                {/* Note: Need to update this so it will post to database */}
-                <form onSubmit={handleSubmitNewCategory}>
-                    <label htmlFor="name">name:</label>
-                    <p>{`Characters left: ${charLimit - nameCount}`}</p>
-                    <AutoResize
-                        type="text"
-                        id="name"
-                        value={name}
-                        onChange={handleNameChange}
-                        maxLength={charLimit}
+            <div style={{ width: '100%' }}>
+                <ExtremeDataGrid
+                    dataSource={categories}
+                    columns={columns}
+                    columnAutoWidth={true}
+                    allowColumnReordering={true}
+                    allowColumnResizing={true}
+                    keyExpr={"id"}
+                    onRowInserted={addCategory}
+                    onRowUpdated={updateCategory}
+                    onRowRemoved={removeCategory}
+                >
+                    <ColumnChooser enabled={true} />
+                    <ColumnFixing enabled={true} />
+                    <FilterRow visible={true} />
+                    <SearchPanel visible={true} />
+                    <Selection mode="single" />
+                    <Editing
+                        mode="form"
+                        allowUpdating={true}
+                        allowDeleting={true}
+                        allowAdding={true}
                     />
-                    <br></br>
-                    <br></br>
-                    <label htmlFor="href">href:</label>
-                    <p>{`Characters left: ${charLimit - hrefCount}`}</p>
-                    <AutoResize
-                        id="href"
-                        value={href}
-                        onChange={handleHrefChange}
-                        maxLength={charLimit}
-                    />
-                    <br></br>
-                    <br></br>
-                    <label htmlFor="paragraph">paragraph:</label>
-                    <p>{`Characters left: ${charLimit - paragraphCount}`}</p>
-                    <AutoResize
-                        id="paragraph"
-                        value={paragraph}
-                        onChange={handleParagraphChange}
-                        maxLength={charLimit}
-                    />
-                    <br />
-                    <button className={styles.button} type="submit">Add New Category</button>
-                </form>
+                    <Toolbar>
+                        <Item name="addRowButton" showText="in-menu" />
+                        <Item name="searchPanel" />
+                    </Toolbar>
+                </ExtremeDataGrid>
             </div>
             <br />
             <br />
-            <h3>Show/Archive Category:</h3>
-            <div className={styles.post_form}>
-                <form>
-                    <label htmlFor="category">category:</label>
-                    <br />
-                    <select id="category" value={visHref} onChange={(e) => setVisHref(e.target.value)}>
-                        <option value="">Select a category</option>
-                        {categories.map((cat) => (
-                            <option key={cat.name} value={cat.href}>
-                                {cat.name}
-                            </option>
-                        ))}
-                    </select>
-                    <br />
-                    <button className={styles.button} type="submit" onClick={handleUpdateVisibility}>Update Category Visibilty</button>
-                </form>
-            </div>
-            <br />
-            <br />
-            <h3>Delete Category (Admin):</h3>
-            <div className={styles.post_form}>
-                <form>
-                    <label htmlFor="category">category:</label>
-                    <br />
-                    <select id="category" value={delHref} onChange={(e) => setDelHref(e.target.value)}>
-                        <option value="">Select a category</option>
-                        {categories.map((cat) => (
-                            <option key={cat.name} value={cat.href}>
-                                {cat.name}
-                            </option>
-                        ))}
-                    </select>
-                    <br />
-                    <button className={styles.button} type="submit" onClick={handleDelCategory}>Delete Category</button>
-                </form>
-            </div>
         </main>
     )
 }

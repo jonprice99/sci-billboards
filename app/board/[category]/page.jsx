@@ -35,10 +35,6 @@ export default function Page({ params, searchParams }) {
   const [buttonFloat, setButtonFloat] = useState(false);
 
   useEffect(() => {
-
-
-
-
     // Get the necessary data from the database
     async function fetchData() {
       // Try to get the category

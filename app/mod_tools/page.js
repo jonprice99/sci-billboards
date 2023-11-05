@@ -3,6 +3,8 @@ import styles from './ModTools.module.css'
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from "next/navigation";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faAngleLeft } from '@fortawesome/free-solid-svg-icons'
 
 const server_url = `http://127.0.0.1:8000`;
 
@@ -43,8 +45,20 @@ export default function ModTools() {
 
     return (
         <main className={styles.main}>
-
             <div className={styles.grid}>
+                <Link href='/'>
+                    <h3><FontAwesomeIcon icon={faAngleLeft} size="lg" /> Back to Home</h3>
+                </Link>
+                <div className={styles.title}>
+                    <h2>
+                        Mod Tools
+                    </h2>
+                    <p>Manage the Idea Board</p>
+                </div>
+                <div></div>
+            </div>
+            
+            <div className={styles.tool_grid}>
                 {cards.map((card, index) => (
                     <a
                         key={index}

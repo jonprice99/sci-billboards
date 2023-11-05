@@ -1,13 +1,34 @@
 .main {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     align-items: center;
     padding: 2rem;
     min-height: 70vh;
 }
 
 .grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(25%, auto));
+    max-width: 100%;
+    width: var(--max-width);
+    align-content: center;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.grid .title {
+    font-size: 1rem;
+}
+
+.grid .title h2 {
+    font-size: 1.4rem;
+}
+
+.grid .title p {
+    font-size: .8rem;
+}
+
+.tool_grid {
     /* display: grid;
     grid-template-columns: repeat(4, minmax(25%, auto));
     max-width: 100%;
@@ -80,6 +101,14 @@
     }
 
     .grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        margin-bottom: 40px;
+        max-width: 320px;
+        text-align: center;
+    }
+
+    .tool_grid {
         grid-template-columns: 1fr;
         margin-bottom: 120px;
         max-width: 320px;
