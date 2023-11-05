@@ -17,6 +17,13 @@ logger = logging.getLogger('api.views')
 # Create your views here.
 
 @api_view(['GET'])
+def users_list(request):
+    users = Users.objects.all()
+    serializer = UsersSerializer(users, many=True)
+    logger.info('Response Data: %s', serializer.data)
+    return Response(serializer.data)
+
+@api_view(['GET'])
 def categories_list(request):
     categories = Categories.objects.filter(isArchived=False)
     serializer = CategoriesSerializer(categories, many=True)
@@ -43,6 +50,12 @@ def get_all_posts(request):
     return Response(serializer.data)
 
 @api_view(['GET'])
+def get_all_comments(request):
+    comments = Comments.objects.all()
+    serializer = CommentsSerializer(comments, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
 def category_by_href(request, href):
     category = Categories.objects.get(href=href)
     serializer = CategoriesSerializer(category)
@@ -55,9 +68,9 @@ def get_post(request, category_id, post_id):
     return Response(serializer.data)
 
 @api_view(['PUT'])
-def update_category(request, pk):
+def update_category(request, category_id):
     try:
-        category = Categories.objects.get(pk=pk)
+        category = Categories.objects.get(category_id=category_id)
     except Categories.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -65,6 +78,65 @@ def update_category(request, pk):
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PUT'])
+def mod_update_post(request, category_id, post_id):
+    try:
+        post = Posts.objects.get(category_id=category_id, post_id=post_id)
+    except Posts.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    serializer = PostsSerializer(post, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PUT'])
+def mod_update_comment(request, category_id, post_id, comment_id):
+    try:
+        comment = Comments.objects.get(category_id=category_id, post_id=post_id, comment_id=comment_id)
+    except Comments.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    serializer = PostsSerializer(comment, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PUT'])
+def update_user(request, id):
+    try:
+        user = Users.objects.get(id=id)
+    except Users.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    serializer = PostsSerializer(user, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def add_user(request):
+    serializer = UsersSerializer(data=request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def create_comment(request):
+    serializer = CommentsSerializer(data=request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
@@ -88,13 +160,43 @@ def create_category(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['DELETE'])
-def delete_category(request, pk):
+def delete_category(request, category_id):
     try:
-        category = Categories.objects.get(pk=pk)
+        category = Categories.objects.get(category_id=category_id)
     except Categories.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     category.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['DELETE'])
+def delete_post(request, category_id, post_id):
+    try:
+        post = Posts.objects.get(category_id=category_id, post_id=post_id)
+    except Posts.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    post.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['DELETE'])
+def delete_comment(request, category_id, post_id, comment_id):
+    try:
+        comment = Comments.objects.get(category_id=category_id, post_id=post_id, comment_id=comment_id)
+    except Posts.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    comment.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['DELETE'])
+def delete_user(request, id):
+    try:
+        user = Users.objects.get(id=id)
+    except Users.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    user.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['POST'])

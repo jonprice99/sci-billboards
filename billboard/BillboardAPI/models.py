@@ -8,9 +8,10 @@
 from django.db import models
 
 class Users(models.Model):
-    user_id = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     username = models.CharField(max_length=128)
     role = models.PositiveIntegerField()
+    isDisallowed = models.BooleanField(default=False)
     
     class Meta:
         db_table = 'Users'  # Specify the table name
@@ -45,7 +46,6 @@ class User_Upvotes(models.Model):
 class Posts(models.Model):
     category_id = models.PositiveIntegerField()
     post_id = models.AutoField(primary_key=True)
-    #category = models.CharField(max_length = 128)
     title = models.CharField(max_length=160)
     description = models.TextField()
     subcategory = models.CharField(max_length=256, null=True)
@@ -86,8 +86,8 @@ class Comments(models.Model):
     user_name = models.CharField(max_length=128, null=True)
     body = models.CharField(max_length=256)
     comment_date = models.DateTimeField(auto_now_add=True)
-    is_pending_mod = models.BooleanField(default=False)
-    is_hidden = models.BooleanField(default=False)
+    isPendingMod = models.BooleanField(default=False)
+    isHidden = models.BooleanField(default=False)
     
     class Meta:
         db_table = 'Comments'

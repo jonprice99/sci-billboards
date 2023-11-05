@@ -1,8 +1,6 @@
 'use client';
 import styles from './ModTools.module.css'
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons'
 
@@ -40,7 +38,7 @@ export default function ModTools() {
             rel: 'noopener noreferrer',
             header: 'Comments',
         },
-    ]
+    ];
 
 
     return (
@@ -60,7 +58,7 @@ export default function ModTools() {
             
             <div className={styles.tool_grid}>
                 {cards.map((card, index) => (
-                    <a
+                    <Link
                         key={index}
                         href={card.href}
                         className={card.className}
@@ -69,7 +67,7 @@ export default function ModTools() {
                         rel={card.rel}
                     >
                         <h2>{card.header}</h2>
-                    </a>
+                    </Link>
                 ))}
 
             </div>
