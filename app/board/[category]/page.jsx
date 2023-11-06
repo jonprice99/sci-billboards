@@ -89,7 +89,7 @@ export default function Page({ params, searchParams }) {
     const router = useRouter();
 
     const handleClick = () => {
-      router.push(url = `/flag_post?category_id=${category_id}&post_id=${post_id}`);
+      router.push(`/flag_post?category_id=${category_id}&post_id=${post_id}`, );
     };
 
     return (

@@ -1,0 +1,263 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem;
+  min-height: 70vh;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(25%, auto));
+  max-width: 100%;
+  width: var(--max-width);
+  align-content: center;
+  justify-content: space-between;
+  text-align: center;
+}
+
+.grid h3 {
+  max-height: 3rem;
+}
+
+.card {
+  padding: 1.5rem 1.7rem;
+  border-radius: var(--border-radius);
+  background: rgba(var(--card-rgb), 0);
+  border: 1px solid rgba(var(--card-border-rgb), 0);
+  transition: background 200ms, border 200ms;
+  z-index: 1;
+  margin-top: 0.5rem;
+  margin-left: 0.25rem;
+  margin-right: 0.1rem;
+}
+
+.card span {
+  display: inline-block;
+  transition: transform 200ms;
+}
+
+.card h2 {
+  font-weight: 600;
+  font-size: 1.25rem;
+  margin-bottom: 0.7rem;
+  color: #fff;
+}
+
+.card p {
+  margin: 0;
+  opacity: 0.8;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  max-width: 30ch;
+  color: #FFF;
+  font-weight: 400;
+}
+
+.description {
+  display: inherit;
+  justify-content: inherit;
+  align-items: inherit;
+  font-size: 0.85rem;
+  max-width: var(--max-width);
+  width: 100%;
+  z-index: 2;
+  font-family: var(--font-mono);
+}
+
+.description a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.description p {
+  position: relative;
+  margin: 0;
+  padding: 1rem;
+  background-color: rgba(var(--callout-rgb), 0.5);
+  border: 1px solid rgba(var(--callout-border-rgb), 0.3);
+  border-radius: var(--border-radius);
+}
+
+.button {
+  background-color: rgba(0, 53, 148, 1); /* Pitt Royal */
+  color: white;
+  padding: 14px 22px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+  max-height: 3rem;
+}
+
+.button:active {
+  background-color: rgba(255, 184, 28, 1);
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+.button:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.1), 0 17px 50px 0 rgba(0, 0, 0, 0.075);
+}
+
+.post_form {
+  font-size: 14px;
+}
+
+.post_form p {
+  padding-left: 0.2rem;
+}
+
+.post_form form label {
+  font-weight: 600;
+  font-size: 16px;
+  padding-left: 0.2rem;
+}
+
+.post_form form select {
+  width: 20rem;
+  height: 2rem;
+  font-size: 14px;
+}
+
+.post_form form input[type="checkbox"] {
+  transform: scale(1.1);
+}
+
+.post_form form #post_body {
+  height: 2rem;
+}
+
+.post_form form textarea {
+  width: 20rem;
+  font-size: medium;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Enable hover only on non-touch devices */
+@media (hover: hover) and (pointer: fine) {
+  .card:hover {
+    background: rgba(var(--card-rgb), 0.1);
+    border: 1px solid rgba(var(--card-border-rgb), 0.15);
+  }
+
+  .card:hover span {
+    transform: translateX(4px);
+  }
+}
+
+@media (prefers-reduced-motion) {
+  .card:hover span {
+    transform: none;
+  }
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+  .main {
+    padding: 3rem;
+  }
+
+  .content {
+    padding: 3rem;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    margin-bottom: 120px;
+    max-width: 320px;
+    text-align: center;
+    gap: 20px;
+  }
+
+  .card {
+    padding: 1rem 2.5rem;
+  }
+
+  .card h2 {
+    margin-bottom: 0.5rem;
+    text-align: center;
+  }
+
+  .center {
+    padding: 6rem 0 4rem;
+  }
+
+  .center::before {
+    transform: none;
+    height: 300px;
+  }
+
+  .description {
+    font-size: 0.8rem;
+  }
+
+  .description a {
+    padding: 1rem;
+  }
+
+  .description p,
+  .description div {
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    width: 100%;
+  }
+
+  .description p {
+    align-items: center;
+    inset: 0 0 auto;
+    padding: 2rem 1rem 1.4rem;
+    border-radius: 0;
+    border: none;
+    border-bottom: 1px solid rgba(var(--callout-border-rgb), 0.25);
+    background: linear-gradient(to bottom,
+        rgba(var(--background-start-rgb), 1),
+        rgba(var(--callout-rgb), 0.5));
+    background-clip: padding-box;
+  }
+
+  .description div {
+    align-items: flex-end;
+    pointer-events: none;
+    inset: auto 0 0;
+    padding: 2rem;
+    height: 200px;
+    background: linear-gradient(to bottom,
+        transparent 0%,
+        rgb(var(--background-end-rgb)) 40%);
+    z-index: 1;
+  }
+}
+
+/* Tablet and Smaller Desktop */
+@media (min-width: 701px) and (max-width: 1120px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(25%, auto));
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .vercelLogo {
+    /*filter: invert(1);*/
+  }
+
+  .logo {
+    /*filter: invert(1) drop-shadow(0 0 0.3rem #ffffff70);*/
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(360deg);
+  }
+
+  to {
+    transform: rotate(0deg);
+  }
+}
