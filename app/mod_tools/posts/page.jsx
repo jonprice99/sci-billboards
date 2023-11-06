@@ -101,33 +101,20 @@ export default function PostsTools() {
     async function updatePost( event ) {
         let changes = event.data;
 
-        let data = {};
-
         // Format the data for the database
-        if (!isAdmin) {
-            // Mod data
-            let category_id = changes.category_id;
-            let post_id = changes.post_id;
-            let progress = changes.progress;
-            let is_hidden = changes.is_hidden;
-            let is_pending_mod = changes.is_pending_mod;
-            data = { category_id, post_id, progress, is_hidden, is_pending_mod }
-        } else {
-            // Admin data
-            let category_id = changes.category_id;
-            let post_id = changes.post_id;
-            let title = changes.title;
-            let description = changes.description;
-            let progress = changes.progress;
-            let date_posted = changes.date_posted;
-            let poster_id = changes.poster_id;
-            let poster_name = changes.poster_name;
-            let upvotes = changes.upvotes;
-            let comments = changes.comments;
-            let is_hidden = changes.is_hidden;
-            let is_pending_mod = changes.is_pending_mod;
-            data = { category_id, post_id, title, description, progress, date_posted, poster_id, poster_name, upvotes, comments, is_hidden, is_pending_mod }
-        }
+        let category_id = changes.category_id;
+        let post_id = changes.post_id;
+        let title = changes.title;
+        let description = changes.description;
+        let progress = changes.progress;
+        let date_posted = changes.date_posted;
+        let poster_id = changes.poster_id;
+        let poster_name = changes.poster_name;
+        let upvotes = changes.upvotes;
+        let comments = changes.comments;
+        let is_hidden = changes.is_hidden;
+        let is_pending_mod = changes.is_pending_mod;
+        const data = { category_id, post_id, title, description, progress, date_posted, poster_id, poster_name, upvotes, comments, is_hidden, is_pending_mod }
         
         // Send the data into the database
         try {
@@ -252,7 +239,7 @@ export default function PostsTools() {
                 <div style={{ width: '100%' }}>
                     <ExtremeDataGrid
                         dataSource={allPosts}
-                        columns={columns}
+                        columns={adminColumns}
                         columnAutoWidth={true}
                         allowColumnReordering={true}
                         allowColumnResizing={true}

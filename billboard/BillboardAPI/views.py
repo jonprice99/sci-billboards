@@ -68,9 +68,9 @@ def get_post(request, category_id, post_id):
     return Response(serializer.data)
 
 @api_view(['PUT'])
-def update_category(request, category_id):
+def update_category(request, id):
     try:
-        category = Categories.objects.get(category_id=category_id)
+        category = Categories.objects.get(id=id)
     except Categories.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -160,9 +160,9 @@ def create_category(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['DELETE'])
-def delete_category(request, category_id):
+def delete_category(request, id):
     try:
-        category = Categories.objects.get(category_id=category_id)
+        category = Categories.objects.get(id=id)
     except Categories.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 

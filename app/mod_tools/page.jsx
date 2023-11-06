@@ -16,7 +16,7 @@ export default function ModTools() {
             target: '_self',
             rel: 'noopener noreferrer',
             header: 'Boards',
-            parargraph: 'Control adding, editing or deleting a board category'
+            parargraph: 'Add, edit, or remove categories'
         },
         {
             href: '/mod_tools/users',
@@ -24,7 +24,7 @@ export default function ModTools() {
             target: '_self',
             rel: 'noopener noreferrer',
             header: 'Users',
-            parargraph: 'Control and ban powers to users'
+            parargraph: 'View/edit user info & allow/disallow users'
         },
         {
             href: '/mod_tools/posts',
@@ -32,7 +32,7 @@ export default function ModTools() {
             target: '_self',
             rel: 'noopener noreferrer',
             header: 'Posts',
-            parargraph: 'Control hiding and deleting a post'
+            parargraph: 'Manage board posts and their visibility'
         },
         {
             href: '/mod_tools/comments',
@@ -40,7 +40,7 @@ export default function ModTools() {
             target: '_self',
             rel: 'noopener noreferrer',
             header: 'Comments',
-            parargraph: 'Control deleting and commenting privileges'
+            parargraph: 'Manage comments on board posts and their visibility'
         },
     ]
 

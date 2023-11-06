@@ -79,7 +79,7 @@ export default function BoardTools() {
         }
 
         try {
-            const addResponse = await fetch(`${server_url}/api/categories/create`, {
+            const addResponse = await fetch(`${server_url}/api/categories/create/`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -112,7 +112,7 @@ export default function BoardTools() {
         // Get the current data for the board
         try {
             // Send the PUT request with the updated data
-            const putResponse = await fetch(`${server_url}/api/categories/update/${data.id}`, {
+            const putResponse = await fetch(`${server_url}/api/categories/update/${data.id}/`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json"
@@ -144,7 +144,7 @@ export default function BoardTools() {
         // Get the current data for the board
         try {
             // Send the DELETE request to remove the category from the db
-            const deleteResponse = await fetch(`${server_url}/api/categories/delete/${data.id}`, {
+            const deleteResponse = await fetch(`${server_url}/api/categories/delete/${data.id}/`, {
                 method: "DELETE"
             });
 

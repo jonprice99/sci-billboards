@@ -64,7 +64,7 @@ export default function CommentsTools() {
     async function addComment( event ) {
         let changes = event.data
 
-        // Admin data
+        // Format the data for the database
         let category_id = changes.category_id;
         let post_id = changes.post_id;
         let comment_id = changes.comment_id;
@@ -98,30 +98,18 @@ export default function CommentsTools() {
      */
     async function updateComment( event ) {
         let changes = event.data;
-        let data = {};
 
         // Format the data for the database
-        if (!isAdmin) {
-            // Mod data
-            let category_id = changes.category_id;
-            let post_id = changes.post_id;
-            let comment_id = changes.comment_id;
-            let is_hidden = changes.is_hidden;
-            let is_pending_mod = changes.is_pending_mod;
-            data = { category_id, post_id, comment_id, is_hidden, is_pending_mod }
-        } else {
-            // Admin data
-            let category_id = changes.category_id;
-            let post_id = changes.post_id;
-            let comment_id = changes.comment_id;
-            let user_id = changes.user_id;
-            let user_name = changes.user_name;
-            let body = changes.body;
-            let comment_date = changes.comment_date;
-            let is_hidden = changes.is_hidden;
-            let is_pending_mod = changes.is_pending_mod;
-            data = { category_id, post_id, comment_id, user_id, user_name, body, comment_date, is_hidden, is_pending_mod }
-        }
+        let category_id = changes.category_id;
+        let post_id = changes.post_id;
+        let comment_id = changes.comment_id;
+        let user_id = changes.user_id;
+        let user_name = changes.user_name;
+        let body = changes.body;
+        let comment_date = changes.comment_date;
+        let is_hidden = changes.is_hidden;
+        let is_pending_mod = changes.is_pending_mod;
+        const data = { category_id, post_id, comment_id, user_id, user_name, body, comment_date, is_hidden, is_pending_mod }
         
         // Send the data into the database
         try {

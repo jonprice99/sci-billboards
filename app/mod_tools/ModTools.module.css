@@ -71,6 +71,10 @@
     color: #fff;
 }
 
+.card p {
+    color: #fff;
+}
+
 
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
