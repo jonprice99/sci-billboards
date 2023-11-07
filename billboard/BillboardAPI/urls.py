@@ -22,6 +22,7 @@ urlpatterns = [
     path("posts/delete/<int:category_id>/<int:post_id>", views.delete_post, name="delete_post"),
     path('posts/inc_upvote/<int:category_id>/<int:post_id>', views.inc_upvote, name='inc-upvote'),
     path('posts/dec_upvote/<int:category_id>/<int:post_id>', views.dec_upvote, name='dec_upvote'),
-    path('comments/create', views.create_comment, name='create-comment'),
-    path("comments/delete/<int:category_id>/<int:post_id>/<int:comment_id>", views.delete_comment, name="mod-delete-comment"),
+    path('comments/create/', views.create_comment, name='create-comment'),
+    path('comments/<int:category_id>/<int:post_id>/', views.get_post_comments, name='get-post-comments'),
+    path("comments/delete/<int:category_id>/<int:post_id>/<int:comment_id>/", views.delete_comment, name="mod-delete-comment"),
 ]

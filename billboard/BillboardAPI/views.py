@@ -56,6 +56,12 @@ def get_all_comments(request):
     return Response(serializer.data)
 
 @api_view(['GET'])
+def get_post_comments(request, category_id, post_id):
+    comments = Comments.objects.filter(category_id=category_id, post_id=post_id, isHidden=False)
+    serializer = CommentsSerializer(comments, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
 def category_by_href(request, href):
     category = Categories.objects.get(href=href)
     serializer = CategoriesSerializer(category)
