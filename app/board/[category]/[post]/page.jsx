@@ -210,7 +210,7 @@ export default function Post({ params, searchParams }) {
 
             <div className={styles.post_grid}>
                 {cards.map((card) => (
-                    <div key={card.post_id} className={styles.card} style={{ backgroundColor: pastelColors[(card.post_id - 1) % pastelColors.length] }}>
+                    <div key={params.post} className={styles.card} style={{ backgroundColor: pastelColors[(params.post - 1) % pastelColors.length] }}>
                         <Link
                             href={`/`}
                             target='_self'
@@ -220,16 +220,6 @@ export default function Post({ params, searchParams }) {
                             <p>{card.body}</p>
                             <p>{card.comment_date}</p>
                         </Link>
-
-                        <footer className={styles.cardFooter}>
-                            <counter>
-                                <UpVoteButton category_id={categoryID} post_id={params.post} upvoteCount={upvotes} />
-                            </counter>
-                            <counter>
-                                <FontAwesomeIcon icon={faMessage} flip="horizontal" size="xl" style={{ color: "#ffffff", }} /><br />{card.comments}
-                            </counter>
-                            <FlagButton category_id={categoryID} post_id={params.post} />
-                        </footer>
                     </div>
                 ))}
 

@@ -30,7 +30,8 @@
 }
 
 .paragraph {
-  width: 100%;
+  max-width: 100%;
+  width: var(--max-width);
 }
 
 .paragraph h3 {
@@ -38,9 +39,10 @@
 }
 
 .extraInfo {
-  width: 100%;
   display: flex;
   justify-content: space-between;
+  max-width: 100%;
+  width: var(--max-width);
 }
 
 .dateInfo {
@@ -67,7 +69,8 @@
 }
 
 .commentsTitle {
-  width: 100%;
+  max-width: 100%;
+  width: var(--max-width);
 }
 
 .commentsTitle h4 {
@@ -391,12 +394,17 @@
     padding-top: 20px;
   }
 
+  .paragraph {
+    /* text-align: center; */
+    padding-left: 20px;
+  }
+
   .progressText {
     padding-top: 20px;
   }
 
   .extraInfo {
-    padding-top: 40px;
+    padding-top: 45px;
   }
 
   .dateInfo {
@@ -404,7 +412,7 @@
   }
 
   .commentsTitle {
-    padding-top: 40px;
+    padding-top: 50px;
   }
 }
 
