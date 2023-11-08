@@ -15,5 +15,7 @@ urlpatterns = [
     path('posts/inc_upvote/<int:category_id>/<int:post_id>', views.inc_upvote, name='inc-upvote'),
     path('posts/dec_upvote/<int:category_id>/<int:post_id>', views.dec_upvote, name='dec_upvote'),
     path('posts/flag_post/<int:category_id>/<int:post_id>', views.flag_post, name='flag_post'),
+    path('comments/create/', views.create_comment, name='create-comment'),
+
 
 ]
