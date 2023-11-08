@@ -19,7 +19,7 @@ import { useRouter } from "next/navigation";
 const server_url = `http://127.0.0.1:8000`;
 
 // Flag for mod/admin power separation (to be replaced by login power check)
-const isAdmin = false;
+const isAdmin = true;
 
 export default function UsersTools() {
     const [allUsers, setAllUsers] = useState([]);
