@@ -205,7 +205,7 @@ def delete_user(request, id):
     user.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
 
-@api_view(['POST'])
+@api_view(['PATCH'])
 def inc_upvote(request, category_id, post_id):
     try:
         post = Posts.objects.get(category_id=category_id, post_id=post_id)
@@ -215,7 +215,7 @@ def inc_upvote(request, category_id, post_id):
     except Posts.DoesNotExist:
         return Response({"error": "Post not found"}, status=status.HTTP_404_NOT_FOUND)
 
-@api_view(['POST'])
+@api_view(['PATCH'])
 def dec_upvote(request, category_id, post_id):
     try:
         post = Posts.objects.get(category_id=category_id, post_id=post_id)
@@ -224,3 +224,15 @@ def dec_upvote(request, category_id, post_id):
         return Response({"message": "Upvote decremented successfully"}, status=status.HTTP_200_OK)
     except Posts.DoesNotExist:
         return Response({"error": "Post not found"}, status=status.HTTP_404_NOT_FOUND)
+    
+@api_view(['PATCH'])
+def flag_post(request, category_id, post_id):
+    try:
+        post = Posts.objects.get(category_id=category_id, post_id=post_id)
+        post.is_pending_mod = True
+        post.is_hidden = True
+        post.save()
+        return Response({"message": "Post flagged successfully"}, status=status.HTTP_200_OK)
+    except Posts.DoesNotExist:
+        return Response({"error": "Post not found"}, status=status.HTTP_404_NOT_FOUND)
+    
