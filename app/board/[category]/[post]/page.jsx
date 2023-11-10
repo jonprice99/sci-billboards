@@ -117,7 +117,7 @@ export default function Post({ params, searchParams }) {
 
         return (
             <button onClick={handleClick} className={`${styles.iconButton} ${styles.flagButton}`}>
-                <FontAwesomeIcon icon={faFlag} size="xl" style={{ color: "#ffffff", }} />
+                <FontAwesomeIcon icon={faFlag} size="xl" />
             </button>
         )
     }
@@ -148,7 +148,7 @@ export default function Post({ params, searchParams }) {
         return (
             <counter>
                 <button onClick={handleClick} className={styles.iconButton}>
-                    <FontAwesomeIcon icon={faThumbsUp} size="xl" style={{ color: "#ffffff", }} />
+                    <FontAwesomeIcon icon={faThumbsUp} size="xl" />
                 </button>
                 <br />
                 {upvotes}
@@ -202,7 +202,7 @@ export default function Post({ params, searchParams }) {
             <div className={styles.commentsTitle}>
                 <div className="commentsInfo">
                     <h4>
-                        <FontAwesomeIcon icon={faMessage} flip="horizontal" size="xl" style={{ color: "#ffffff", marginRight: "10px" }}></FontAwesomeIcon>
+                        <FontAwesomeIcon icon={faMessage} flip="horizontal" size="xl" style={{ marginRight: "10px" }}></FontAwesomeIcon>
                         Comments
                     </h4>
                 </div>

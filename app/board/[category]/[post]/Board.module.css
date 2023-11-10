@@ -149,7 +149,6 @@
 }
 
 .card footer counter {
-  color: #fff;
   z-index: 4;
 }
 
@@ -253,7 +252,6 @@
 
 .iconButton {
   background: transparent;
-  color: white;
   border: none;
 }
 

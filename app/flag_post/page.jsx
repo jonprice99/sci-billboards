@@ -151,18 +151,6 @@ export default function flag_post({ params, searchParams }) {
 
         <div className={styles.post_form}>
           <form method="post">
-            <label htmlFor="category">Category:</label>
-            <br />
-            <select id="category" value={categoryStr} onChange={(e) => setCategoryStr(e.target.value)}>
-              <option value="">Select a category</option>
-              {categories.map((cat) => (
-                <option key={cat.name} value={cat.id}>
-                  {cat.name}
-                </option>
-              ))}
-            </select>
-            <br></br>
-            <br></br>
             <label htmlFor="flagReason">Reason for flagging:</label>
             <br />
             <select id="flagReason" value={flagReasonStr} onChange={(e) => setFlagReasonStr(e.target.value)}>
