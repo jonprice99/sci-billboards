@@ -25,8 +25,8 @@ export default function Header() {
                             className={styles.logo}
                             src={DarkLogo}
                             alt="University of Pittsburgh Logo"
-                            width={200}
-                            height={70}
+                            width={230}
+                            height={50}
                             priority
                         />
                     </picture>
@@ -34,15 +34,21 @@ export default function Header() {
             </div>
 
             <div className={styles.header_text}>
-                <h1>
-                    {/* Note: This is a placeholder name. */}
-                    SCI Idea Board
-                </h1>
+                {/* <a href={"/"} className={styles.vertical_line}>
+                </a> */}
+                <Link href={"/"}>
+                    <div className={styles.titleInfo}>
+                        <h4>
+                            Idea Board
+                        </h4>
+                        <p>School of Computing and Information</p>
+                    </div>
+                </Link>
             </div>
 
             <div className={styles.menu_placer}>
                 <HamburgerMenu />
             </div>
-        </header>
+        </header >
     )
 }
