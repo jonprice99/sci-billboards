@@ -1,0 +1,141 @@
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    min-height: 70vh;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(25%, auto));
+    max-width: 100%;
+    width: var(--max-width);
+    align-content: center;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.grid .title {
+    font-size: 1rem;
+}
+
+.grid .title h2 {
+    font-size: 1.4rem;
+}
+
+.grid .title p {
+    font-size: .8rem;
+}
+
+.tool_grid {
+    /* display: grid;
+    grid-template-columns: repeat(4, minmax(25%, auto));
+    max-width: 100%;
+    width: var(--max-width); */
+
+    display: grid;
+    grid-template-columns: 1fr;
+    padding-top: 10px;
+    max-width: 550px;
+    width: var(--max-width);
+
+}
+
+.card {
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    background: rgba(var(--card-rgb), 0);
+    border: 1px solid rgba(var(--card-border-rgb), 0);
+    transition: background 200ms, border 200ms;
+    z-index: 1;
+    margin-top: 0.75rem;
+    margin-left: 0.25rem;
+    margin-right: 0.1rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+}
+
+.card span {
+    display: inline-block;
+    transition: transform 200ms;
+}
+
+.card h2 {
+    font-weight: 500;
+    font-size: 1.5rem;
+    margin-bottom: 0.7rem;
+    color: #fff;
+}
+
+.card p {
+    color: #fff;
+}
+
+
+/* Enable hover only on non-touch devices */
+@media (hover: hover) and (pointer: fine) {
+    .card:hover {
+        background: rgba(var(--card-rgb), 0.1);
+        border: 1px solid rgba(var(--card-border-rgb), 0.15);
+    }
+
+    .card:hover span {
+        transform: translateX(4px);
+    }
+}
+
+@media (prefers-reduced-motion) {
+    .card:hover span {
+        transform: none;
+    }
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+    .main {
+        padding: 3rem;
+    }
+
+    .content {
+        padding: 3rem;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        margin-bottom: 40px;
+        max-width: 320px;
+        text-align: center;
+    }
+
+    .tool_grid {
+        grid-template-columns: 1fr;
+        margin-bottom: 120px;
+        max-width: 320px;
+        text-align: center;
+    }
+
+    .card {
+        padding: 1rem 2.5rem;
+    }
+
+    .card h2 {
+        margin-bottom: 0.5rem;
+        text-align: center;
+    }
+}
+
+
+@keyframes rotate {
+    from {
+        transform: rotate(360deg);
+    }
+
+    to {
+        transform: rotate(0deg);
+    }
+}

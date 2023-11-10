@@ -1,15 +1,16 @@
 /**
- * This is where all comments will be accessible to mods
- * and administration
+ * This page has the mod and admin tools to manage
+ * boards (i.e., adding new ones, hiding them from
+ * public view, and deleting them)
  */
 
 'use client';
 import 'devextreme/dist/css/dx.light.css';
-import ExtremeDataGrid, { Column, ColumnChooser, ColumnFixing, Editing, FilterRow, Popup, Paging, Scrolling, Search, SearchPanel, Selection, Toolbar, Item, Lookup, Form } from 'devextreme-react/data-grid';
+import ExtremeDataGrid, { Column, ColumnChooser, ColumnFixing, Editing, FilterRow, Popup, Paging, Search, SearchPanel, Selection, Toolbar, Item, Lookup, Form } from 'devextreme-react/data-grid';
 import 'devextreme-react/text-area';
 import { Button } from 'devextreme-react/button';
 import Link from "next/link"
-import styles from 'app/mod_tools/comments/CommentsTools.module.css'
+import styles from 'app/mod_tools/boards/BoardTools.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMessage, faFlag, faAngleLeft, faThumbsUp } from '@fortawesome/free-solid-svg-icons'
 import { useState, useEffect } from 'react';
@@ -20,15 +21,15 @@ const server_url = `http://127.0.0.1:8000`;
 // Flag for mod/admin power separation (to be replaced by login power check)
 const isAdmin = false;
 
-export default function CommentsTools() {
-    const [allComments, setAllComments] = useState([]);
+export default function BoardTools() {
+    const [categories, setCategories] = useState([]);
     const router = useRouter();
 
     useEffect(() => {
         async function fetchData() {
-          const res = await fetch(`${server_url}/api/mod/comments/`);
+          const res = await fetch(`${server_url}/api/mod/categories/`);
           const data = await res.json();
-          setAllComments(data);
+          setCategories(data);
         }
     
         fetchData();
@@ -36,48 +37,49 @@ export default function CommentsTools() {
 
     // Columns for the mod table
     const columns = [
-        { dataField: 'is_pending_mod', caption: 'isPendingMod', allowEditing: true, allowAdding: false, sortOrder: 'desc' },
-        { dataField: 'is_hidden', caption: 'isHidden', allowEditing: true, allowAdding: false},
-        { dataField: 'category_id', caption: 'category_id', allowEditing: false, allowAdding: false },
-        { dataField: 'post_id', caption: 'post_id', allowEditing: false, allowAdding: false },
-        { dataField: 'comment_id', caption: 'comment_id', allowEditing: false, allowAdding: false },
-        { dataField: 'user_id', caption: 'user_id', allowEditing: false, allowAdding: false },
-        { dataField: 'user_name', caption: 'poster_name', allowEditing: false, allowAdding: false },
-        { dataField: 'body', caption: 'body', allowEditing: false, allowAdding: false }
+        { dataField: 'isArchived', caption: 'isArchived'},
+        { dataField: 'id', caption: 'id', allowEditing: false, allowAdding: false },
+        { dataField: 'name', caption: 'name' },
+        { dataField: 'href', caption: 'href' },
+        { dataField: 'paragraph', caption: 'paragraph'},
     ];
 
     // Columns for the admin table
     const adminColumns = [
-        { dataField: 'is_pending_mod', caption: 'isPendingMod', allowEditing: true, allowAdding: true, sortOrder: 'desc' },
-        { dataField: 'is_hidden', caption: 'isHidden', allowEditing: true, allowAdding: true},
-        { dataField: 'category_id', caption: 'category_id', allowEditing: true, allowAdding: true },
-        { dataField: 'post_id', caption: 'post_id', allowEditing: true, allowAdding: true },
-        { dataField: 'comment_id', caption: 'comment_id', allowEditing: true, allowAdding: true },
-        { dataField: 'user_id', caption: 'user_id', allowEditing: true, allowAdding: true },
-        { dataField: 'user_name', caption: 'poster_name', allowEditing: true, allowAdding: true },
-        { dataField: 'body', caption: 'body', allowEditing: true, allowAdding: true }
+        { dataField: 'isArchived', caption: 'isArchived'},
+        { dataField: 'id', caption: 'id', allowEditing: true, allowAdding: true },
+        { dataField: 'name', caption: 'name' },
+        { dataField: 'href', caption: 'href' },
+        { dataField: 'paragraph', caption: 'paragraph'},
     ];
 
     /**
-     * Function to add a new comment
+     * Function to add a new category
      */
-    async function addComment( event ) {
-        let changes = event.data
+    async function addCategory( event ) {
+        let changes = event.data;
+        let data = {};
 
-        // Format the data for the database
-        let category_id = changes.category_id;
-        let post_id = changes.post_id;
-        let comment_id = changes.comment_id;
-        let user_id = changes.user_id;
-        let user_name = changes.user_name;
-        let body = changes.body;
-        let comment_date = changes.comment_date;
-        let is_hidden = changes.is_hidden;
-        let is_pending_mod = changes.is_pending_mod;
-        const data = { category_id, post_id, comment_id, user_id, user_name, body, comment_date, is_hidden, is_pending_mod }
+        // Post the new category to the db
+        if (!isAdmin) {
+            // Mod data
+            let name = changes.name;
+            let paragraph = changes.paragraph;
+            let href = changes.href;
+            let isArchived = changes.isArchived;
+            data = { name, paragraph, href, isArchived }
+        } else {
+            // Admin data
+            let id = changes.id;
+            let name = changes.name;
+            let paragraph = changes.paragraph;
+            let href = changes.href;
+            let isArchived = changes.isArchived;
+            data = { id, name, paragraph, href, isArchived }
+        }
 
         try {
-            const addResponse = await fetch(`${server_url}/api/comments/create`, {
+            const addResponse = await fetch(`${server_url}/api/categories/create/`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -94,27 +96,23 @@ export default function CommentsTools() {
     }
 
     /**
-     * Function for mods to update a comment
+     * Function to update a category
      */
-    async function updateComment( event ) {
+    async function updateCategory( event ) {
         let changes = event.data;
 
         // Format the data for the database
-        let category_id = changes.category_id;
-        let post_id = changes.post_id;
-        let comment_id = changes.comment_id;
-        let user_id = changes.user_id;
-        let user_name = changes.user_name;
-        let body = changes.body;
-        let comment_date = changes.comment_date;
-        let is_hidden = changes.is_hidden;
-        let is_pending_mod = changes.is_pending_mod;
-        const data = { category_id, post_id, comment_id, user_id, user_name, body, comment_date, is_hidden, is_pending_mod }
+        let id = changes.id;
+        let name = changes.name;
+        let paragraph = changes.paragraph;
+        let href = changes.href;
+        let isArchived = changes.isArchived;
+        const data = { id, name, paragraph, href, isArchived }
         
-        // Send the data into the database
+        // Get the current data for the board
         try {
             // Send the PUT request with the updated data
-            const putResponse = await fetch(`${server_url}/api/mod/comments/update/${data.category_id}/${data.post_id}/${data.comment_id}`, {
+            const putResponse = await fetch(`${server_url}/api/categories/update/${data.id}/`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json"
@@ -130,27 +128,23 @@ export default function CommentsTools() {
     }
 
     /**
-     * Function to remove a post
+     * Function to remove a category
      */
-    async function removeComment( event ) {
+    async function removeCategory( event ) {
         let changes = event.data
 
         // Format the data for the database
-        let category_id = changes.category_id;
-        let post_id = changes.post_id;
-        let comment_id = changes.comment_id;
-        let user_id = changes.user_id;
-        let user_name = changes.user_name;
-        let body = changes.body;
-        let comment_date = changes.comment_date;
-        let is_hidden = changes.is_hidden;
-        let is_pending_mod = changes.is_pending_mod;
-        const data = { category_id, post_id, comment_id, user_id, user_name, body, comment_date, is_hidden, is_pending_mod }
+        let id = changes.id;
+        let name = changes.name;
+        let paragraph = changes.paragraph;
+        let href = changes.href;
+        let isArchived = changes.isArchived;
+        const data = { id, name, paragraph, href, isArchived }
 
         // Get the current data for the board
         try {
             // Send the DELETE request to remove the category from the db
-            const deleteResponse = await fetch(`${server_url}/api/comments/delete/${data.category_id}/${data.post_id}/${data.comment_id}`, {
+            const deleteResponse = await fetch(`${server_url}/api/categories/delete/${data.id}/`, {
                 method: "DELETE"
             });
 
@@ -161,7 +155,7 @@ export default function CommentsTools() {
         }
     }
 
-    // Display the Mod Comment Tools page
+    // Display the Board Tools page
     if (!isAdmin) {
         return (
             <main className={styles.main}>
@@ -171,7 +165,7 @@ export default function CommentsTools() {
                     </Link>
                     <div>
                         <h2>
-                            Comments (Moderator)
+                            Boards (Moderator)
                         </h2>
                         <p></p>
                     </div>
@@ -179,26 +173,27 @@ export default function CommentsTools() {
                 </div>
     
                 <br />
-                <div style={{ width: '100%', height: '00px' }}>
+                <div style={{ width: '100%' }}>
                     <ExtremeDataGrid
-                        dataSource={allComments}
+                        dataSource={categories}
                         columns={columns}
                         columnAutoWidth={true}
                         allowColumnReordering={true}
                         allowColumnResizing={true}
-                        onRowUpdated={updateComment}
+                        keyExpr={"id"}
+                        onRowInserted={addCategory}
+                        onRowUpdated={updateCategory}
                     >
                         <ColumnChooser enabled={true} />
                         <ColumnFixing enabled={true} />
                         <FilterRow visible={true} />
-                        <Scrolling mode='infinite' />
                         <SearchPanel visible={true} />
                         <Selection mode="single" />
                         <Editing
-                            mode="row"
+                            mode="form"
                             allowUpdating={true}
                             allowDeleting={false}
-                            allowAdding={false}
+                            allowAdding={true}
                         />
                         <Toolbar>
                             <Item name="addRowButton" showText="in-menu" />
@@ -212,7 +207,6 @@ export default function CommentsTools() {
             </main>
         )
     } else {
-        // Return the Admin Comment Tools
         return (
             <main className={styles.main}>
                 <div className={styles.grid}>
@@ -221,7 +215,7 @@ export default function CommentsTools() {
                     </Link>
                     <div>
                         <h2>
-                            Comments (Admin)
+                            Boards (Admin)
                         </h2>
                         <p></p>
                     </div>
@@ -231,23 +225,23 @@ export default function CommentsTools() {
                 <br />
                 <div style={{ width: '100%' }}>
                     <ExtremeDataGrid
-                        dataSource={allComments}
+                        dataSource={categories}
                         columns={adminColumns}
                         columnAutoWidth={true}
                         allowColumnReordering={true}
                         allowColumnResizing={true}
-                        onRowUpdated={updateComment}
-                        onRowInserted={addComment}
-                        onRowRemoved={removeComment}
+                        keyExpr={"id"}
+                        onRowInserted={addCategory}
+                        onRowUpdated={updateCategory}
+                        onRowRemoved={removeCategory}
                     >
                         <ColumnChooser enabled={true} />
                         <ColumnFixing enabled={true} />
                         <FilterRow visible={true} />
-                        <Scrolling mode='infinite' />
                         <SearchPanel visible={true} />
                         <Selection mode="single" />
                         <Editing
-                            mode="row"
+                            mode="form"
                             allowUpdating={true}
                             allowDeleting={true}
                             allowAdding={true}
