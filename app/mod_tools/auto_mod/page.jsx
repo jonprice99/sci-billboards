@@ -19,7 +19,7 @@ import { useRouter } from "next/navigation";
 const server_url = `http://127.0.0.1:8000`;
 
 // Flag for mod/admin power separation (to be replaced by login power check)
-const isAdmin = false;
+const isAdmin = true;
 
 export default function AutoModTools() {
     const [phrases, setPhrases] = useState([]);
@@ -43,8 +43,8 @@ export default function AutoModTools() {
 
     // Columns for the admin table
     const adminColumns = [
-        { dataField: 'id', caption: 'id', allowEditing: true, allowAdding: true },
-        { dataField: 'name', caption: 'name' },
+        { dataField: 'id', caption: 'id', allowEditing: true, allowAdding: true, sortOrder: 'asc' },
+        { dataField: 'phrase', caption: 'phrase' },
     ];
 
     /**
@@ -151,7 +151,7 @@ export default function AutoModTools() {
                         <h2>
                             AutoMod (Moderator)
                         </h2>
-                        <p>Add new terms or modify current terms blocked by AutoMod</p>
+                        <p>Add or modify terms blocked by AutoMod</p>
                     </div>
                     <div></div>
                 </div>
@@ -201,7 +201,7 @@ export default function AutoModTools() {
                         <h2>
                             AutoMod (Admin)
                         </h2>
-                        <p></p>
+                        <p>Add, modify, or delete terms blocked by AutoMod</p>
                     </div>
                     <div></div>
                 </div>
