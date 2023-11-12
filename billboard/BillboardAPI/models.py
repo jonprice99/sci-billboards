@@ -64,20 +64,6 @@ class Posts(models.Model):
     def __str__(self):
         return self.title
     
-class Posts_Pending_Mod(models.Model):
-    category_id = models.PositiveIntegerField()
-    post_id = models.AutoField(primary_key=True)
-    title = models.CharField(max_length=160)
-    description = models.TextField()
-    poster_id = models.IntegerField()
-    poster_name = models.CharField(max_length=128, null=True)
-    
-    class Meta:
-        db_table = 'Posts_Pending_Mod'  # Specify the table name
-
-    def __str__(self):
-        return self.title
-    
 class Comments(models.Model):
     category_id = models.PositiveIntegerField()
     post_id = models.PositiveIntegerField()
@@ -95,17 +81,12 @@ class Comments(models.Model):
     def __str__(self):
         return self.title
     
-class Comments_Pending_Mod(models.Model):
-    category_id = models.PositiveIntegerField()
-    post_id = models.PositiveIntegerField()
-    comment_id = models.AutoField(primary_key=True)
-    body = models.CharField(max_length=256)
-    user_id = models.PositiveIntegerField()
-    user_name = models.CharField(max_length=128, null=True)
+class AutoMod_Terms(models.Model):
+    id = models.AutoField(primary_key=True)
+    phrase = models.CharField(max_length=128)
     
     class Meta:
-        db_table = 'Comments_Pending_Mod'
-    
+        db_table = 'AutoMod_Terms'
+        
     def __str__(self):
-        return self.title
-    
+        return self.name

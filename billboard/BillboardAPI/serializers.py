@@ -21,17 +21,12 @@ class PostsSerializer(serializers.ModelSerializer):
         model = Posts
         fields = '__all__'
         
-class Posts_Pending_ModSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Posts_Pending_Mod
-        fields = '__all__'
-        
 class CommentsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comments
         fields = '__all__'
         
-class Comments_Pending_ModSerializer(serializers.ModelSerializer):
+class AutoMod_TermsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Comments_Pending_Mod
+        model = AutoMod_Terms
         fields = '__all__'
