@@ -93,11 +93,13 @@ export default function PostsTools() {
         // Format the arrays in JSON format
         const categoriesJSON = JSON.stringify(categories, null, 2);
         const postsJSON = JSON.stringify(allPosts, null, 2);
+        const commentsJSON = JSON.stringify(allComments, null, 2);
       
         // Create the zip file
         const zip = new JSZip();
         zip.file('categories.json', categoriesJSON);
         zip.file('posts.json', postsJSON);
+        zip.file('comments.json', commentsJSON);
 
         // Set the filename
         const filename = `SCI_Idea_Board_Data.zip`; 
