@@ -18,6 +18,7 @@
     "babel-plugin-macros": "^3.1.0",
     "devextreme": "23.1.6",
     "devextreme-react": "23.1.6",
+    "jszip": "^3.10.1",
     "mysql2": "^3.6.2",
     "net": "^1.0.2",
     "next": "^14.0.0",
