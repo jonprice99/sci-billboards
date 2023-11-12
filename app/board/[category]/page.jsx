@@ -8,10 +8,27 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMessage, faFlag, faAngleLeft, faThumbsUp, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
+import { Select } from "react-dropdown-select";
+import { text } from "@fortawesome/fontawesome-svg-core";
 
 const server_url = `http://127.0.0.1:8000`;
 
+// get dropdown values
+const options = [
+  {
+    value: "recent",
+    label: "Most Recent",
+  },
+  {
+    value: "upvoted",
+    label: "Most Upvoted"
+  }
+];
+<Select options={options} onChange={(values) => setSelectedValues(values)} />
+
+
 export default function Page({ params, searchParams }) {
+
   // The colors of the cards
   const pastelColors = [
     'rgba(0, 53, 148, 1)',
@@ -33,6 +50,14 @@ export default function Page({ params, searchParams }) {
   const [foundPosts, setFoundPosts] = useState(true);
   const [href, setHref] = useState(''); // Used for post href creation
   const [buttonFloat, setButtonFloat] = useState(false);
+  const [selectedValues, setSelectedValues] = useState([]);
+
+
+  //function to handle changes in sort drop down menu
+  const handleSelectChange = (selectedOptions) => {
+    console.log(selectedOptions);
+  }
+
 
   useEffect(() => {
     // Get the necessary data from the database
@@ -89,7 +114,7 @@ export default function Page({ params, searchParams }) {
     const router = useRouter();
 
     const handleClick = () => {
-      router.push(`/flag_post?category_id=${category_id}&post_id=${post_id}`, );
+      router.push(`/flag_post?category_id=${category_id}&post_id=${post_id}`,);
     };
 
     return (
@@ -131,6 +156,31 @@ export default function Page({ params, searchParams }) {
         {upvotes}
       </counter>
     )
+  }
+
+  function SearchBar({ onSearch }) {
+
+    const [searchQuery, setSearchQuery] = useState('');
+
+    const handleSearch = () => {
+      onSearch(searchQuery);
+    };
+
+    const handleChange = (e) => {
+      setSearchQuery(e.target.value);
+    };
+
+    return (
+      < div className={styles.searchBar} >
+        <input
+          type="text"
+          placeholder="Search..."
+          value={searchQuery}
+          onChange={handleChange}
+        />
+        <button onClick={handleSearch}>Search</button>
+      </div >
+    );
   }
 
   // Display an error page if we try to access a board that doesn't exist
@@ -264,19 +314,36 @@ export default function Page({ params, searchParams }) {
           </h2>
           <p>{paragraph}</p>
         </div>
-        {buttonFloat && (
-          <Link href='/new_post' passHref>
-            <button className={styles.postButtonFloating}>
-              <FontAwesomeIcon icon={faPlus} size="xl" style={{ color: "#ffffff", }} />
-            </button>
-          </Link>
-        )}
-        {!buttonFloat && (
-          <Link href='/new_post' passHref>
-            {/* <button className={styles.button + ' ' + buttonClass}>New Post</button> */}
-            <button className={styles.button}>New Post</button>
-          </Link>
-        )}
+        <div>
+          {buttonFloat && (
+            <Link href='/new_post' passHref>
+              <button className={styles.postButtonFloating}>
+                <FontAwesomeIcon icon={faPlus} size="xl" style={{ color: "#ffffff", }} />
+              </button>
+            </Link>
+          )}
+          {!buttonFloat && (
+            <Link href='/new_post' passHref>
+              {/* <button className={styles.button + ' ' + buttonClass}>New Post</button> */}
+              <button className={styles.button}>New Post</button>
+            </Link>
+          )}
+        </div>
+      </div>
+
+      <div className={styles.interactions}>
+        <div className="search">
+          <SearchBar onSearch={(query) => handleSearch(query)} />
+        </div>
+
+        <div className="dropDown">
+          <Select
+            options={options}
+            onChange={handleSelectChange}
+            placeholder="Sort by"
+            style={{ color: 'grey' }}
+          />
+        </div>
       </div>
 
       {/* Note: Will be updated to show posts from db */}

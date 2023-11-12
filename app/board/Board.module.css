@@ -29,6 +29,20 @@
   font-size: .8rem;
 }
 
+.interactions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(10%, auto));
+  max-width: 100%;
+  width: var(--max-width);
+  align-items: center;
+  justify-content: flex-end;
+  padding-top: 20%;
+}
+
+.searchBar {
+  padding-right: 20px;
+}
+
 .post_grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(50%, auto));
@@ -167,7 +181,8 @@
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background-color: rgba(0, 53, 148, 1); /* Pitt Royal */
+  background-color: rgba(0, 53, 148, 1);
+  /* Pitt Royal */
   color: white;
   display: flex;
   justify-content: center;
@@ -243,6 +258,30 @@
     margin-bottom: 40px;
     max-width: 320px;
     text-align: center;
+  }
+
+  .interactions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-end;
+  }
+
+  .search {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .searchBar {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    padding: 0;
+    margin-bottom: 20px;
+  }
+
+  .dropDown {
+    width: 100%;
   }
 
   .post_grid {
@@ -342,22 +381,7 @@
   }
 }
 
-/* Tablet and Smaller Desktop */
-@media (min-width: 701px) and (max-width: 1120px) {
-  .grid {
-    grid-template-columns: repeat(3, minmax(25%, auto));
-  }
 
-  .card footer counter {
-    color: #fff;
-    font-size: 14px;
-  }
-
-  .card footer datetime {
-    font-size: 0.55rem;
-    color: #fff;
-  }
-}
 
 @media (prefers-color-scheme: dark) {
   .vercelLogo {
