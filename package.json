@@ -23,6 +23,7 @@
     "next": "^14.0.0",
     "react": "latest",
     "react-dom": "latest",
+    "react-dropdown-select": "^4.10.0",
     "react-infinite-scroll-component": "^6.1.0",
     "react-textarea-autosize": "^8.5.3",
     "tls": "^0.0.1"

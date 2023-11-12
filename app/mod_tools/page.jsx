@@ -11,6 +11,14 @@ export default function ModTools() {
     // The set of cards with their appropriate links and details
     const cards = [
         {
+            href: '/mod_tools/dashboard',
+            className: styles.card,
+            target: '_self',
+            rel: 'noopener noreferrer',
+            header: 'Dashboard',
+            parargraph: 'View and download data from the database'
+        },
+        {
             href: '/mod_tools/boards',
             className: styles.card,
             target: '_self',
@@ -42,6 +50,14 @@ export default function ModTools() {
             header: 'Comments',
             parargraph: 'Manage comments on board posts and their visibility'
         },
+        {
+            href: '/mod_tools/auto_mod',
+            className: styles.card,
+            target: '_self',
+            rel: 'noopener noreferrer',
+            header: 'AutoMod',
+            parargraph: 'Manage disallowed words/phrases'
+        },
     ]
 
 
@@ -62,7 +78,7 @@ export default function ModTools() {
 
             <div className={styles.tool_grid}>
                 {cards.map((card, index) => (
-                    <a
+                    <Link
                         key={index}
                         href={card.href}
                         className={card.className}
@@ -72,7 +88,7 @@ export default function ModTools() {
                     >
                         <h2>{card.header}</h2>
                         <p>{card.parargraph}</p>
-                    </a>
+                    </Link>
                 ))}
 
             </div>

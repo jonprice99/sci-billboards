@@ -24,6 +24,13 @@ def users_list(request):
     return Response(serializer.data)
 
 @api_view(['GET'])
+def get_auto_mod_terms(request):
+    terms = AutoMod_Terms.objects.all()
+    serializer = AutoMod_TermsSerializer(terms, many=True)
+    logger.info('Response Data: %s', serializer.data)
+    return Response(serializer.data)
+
+@api_view(['GET'])
 def categories_list(request):
     categories = Categories.objects.filter(isArchived=False)
     serializer = CategoriesSerializer(categories, many=True)
@@ -72,6 +79,19 @@ def get_post(request, category_id, post_id):
     post = Posts.objects.get(category_id=category_id, post_id=post_id)
     serializer = PostsSerializer(post, many=False)
     return Response(serializer.data)
+
+@api_view(['PUT'])
+def update_auto_mod_term(request, id):
+    try:
+        term = AutoMod_Terms.objects.get(id=id)
+    except AutoMod_Terms.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    serializer = AutoMod_TermsSerializer(term, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['PUT'])
 def update_category(request, id):
@@ -126,6 +146,16 @@ def update_user(request, id):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
+def add_disallowed_phrase(request):
+    serializer = AutoMod_TermsSerializer(data=request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
 def add_user(request):
     serializer = UsersSerializer(data=request.data)
 
@@ -164,6 +194,16 @@ def create_category(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+def delete_auto_mod_term(request, id):
+    try:
+        term = AutoMod_Terms.objects.get(id=id)
+    except AutoMod_Terms.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    term.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['DELETE'])
 def delete_category(request, id):
