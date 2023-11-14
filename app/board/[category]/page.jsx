@@ -13,8 +13,8 @@ import { text } from "@fortawesome/fontawesome-svg-core";
 
 const server_url = `http://127.0.0.1:8000`;
 
-// get dropdown values
-const options = [
+// get sort dropdown values
+const sortOptions = [
   {
     value: "recent",
     label: "Most Recent",
@@ -24,7 +24,28 @@ const options = [
     label: "Most Upvoted"
   }
 ];
-<Select options={options} onChange={(values) => setSelectedValues(values)} />
+<Select options={sortOptions} onChange={(values) => setSelectedSortValues(values)} />
+
+// get filter dropdown values
+const filterOptions = [
+  {
+    value: "notProgressed",
+    label: "Not in progress",
+  },
+  {
+    value: "inTalks",
+    label: "In talks"
+  },
+  {
+    value: "inProgress",
+    label: "In progress",
+  },
+  {
+    value: "complete",
+    label: "Complete"
+  }
+];
+<Select options={filterOptions} onChange={(values) => setSelectedFilterValues(values)} />
 
 
 export default function Page({ params, searchParams }) {
@@ -50,7 +71,8 @@ export default function Page({ params, searchParams }) {
   const [foundPosts, setFoundPosts] = useState(true);
   const [href, setHref] = useState(''); // Used for post href creation
   const [buttonFloat, setButtonFloat] = useState(false);
-  const [selectedValues, setSelectedValues] = useState([]);
+  const [selectedSortValues, setSelectedSortValues] = useState([]);
+  const [selectedFilterValues, setSelectedFilterValues] = useState([]);
 
 
   //function to handle changes in sort drop down menu
@@ -336,18 +358,31 @@ export default function Page({ params, searchParams }) {
       </div>
 
       <div className={styles.interactions}>
-        <div className="search">
+        <div className={styles.search}>
           <SearchBar onSearch={(query) => handleSearch(query)} />
         </div>
 
-        <div className="dropDown">
-          <Select
-            options={options}
-            onChange={handleSelectChange}
-            placeholder="Sort by"
-            style={{ color: 'grey' }}
-          />
+        <div className={styles.dropDown}>
+          <div className={styles.sortDropDown}>
+            <Select
+              options={sortOptions}
+              onChange={handleSelectChange}
+              placeholder="Sort by"
+              style={{ color: 'grey' }}
+            />
+          </div>
+
+          <div className={styles.filterDropDown}>
+            <Select
+              options={filterOptions}
+              onChange={handleSelectChange}
+              placeholder="Filter by"
+              style={{ color: 'grey' }}
+            />
+          </div>
+
         </div>
+
       </div>
 
       {/* Note: Will be updated to show posts from db */}

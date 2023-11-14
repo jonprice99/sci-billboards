@@ -30,8 +30,8 @@
 }
 
 .interactions {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(10%, auto));
+  display: flex;
+  grid-template-columns: repeat(3, minmax(10%, auto));
   max-width: 100%;
   width: var(--max-width);
   align-items: center;
@@ -39,7 +39,16 @@
   padding-top: 10%;
 }
 
+.dropDown {
+  display: flex;
+  align-items: center;
+}
+
 .searchBar {
+  padding-right: 20px;
+}
+
+.sortDropDown {
   padding-right: 20px;
 }
 
@@ -265,6 +274,13 @@
     flex-direction: column;
     align-items: flex-end;
     justify-content: flex-end;
+    padding-top: 20%;
+  }
+
+  .dropDown {
+    width: 100%;
+    align-items: flex-end;
+    justify-content: flex-end;
   }
 
   .search {
@@ -280,9 +296,6 @@
     margin-bottom: 20px;
   }
 
-  .dropDown {
-    width: 100%;
-  }
 
   .post_grid {
     grid-template-columns: repeat(1, minmax(50%, auto));
