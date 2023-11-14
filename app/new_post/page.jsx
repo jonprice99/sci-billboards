@@ -122,7 +122,6 @@ const new_post = () => {
       <Home_Center />
 
       <div className={styles.post_form}>
-        {/* Note: Need to update this so it will post to database */}
         <form method="post">
         <label htmlFor="category">Category:</label>
           <br />
