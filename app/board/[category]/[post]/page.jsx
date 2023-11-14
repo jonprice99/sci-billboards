@@ -102,7 +102,7 @@ export default function Post({ params, searchParams }) {
     } else if (progress === 1) {
         progressText = "Being deliberated";
     } else if (progress === 2) {
-        progressText = "In development";
+        progressText = "In progress";
     } else if (progress === 3) {
         progressText = "Implemented";
     }
