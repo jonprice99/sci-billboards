@@ -1,6 +1,6 @@
 'use client';
 import styles from './page.module.css'
-import Center from './components/Home_Center';
+import Center from './components/WordCloud_Center';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from "next/navigation";

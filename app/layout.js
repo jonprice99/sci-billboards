@@ -6,13 +6,6 @@
 import './globals.css'
 import Header from './components/Header'
 import Footer from './components/Footer'
-import Center from './components/Home_Center'
-import Link from 'next/link'
-import Image from 'next/image'
-import styles from 'app/page.module.css'
-import DarkLogo from 'public/University_of_Pittsburgh_Logo_CMYK_Secondary_Reverse_2-Color.png'
-import DarkSeal from 'public/Shield_White.png'
-import LightSeal from 'public/Shield_Black.png'
 import { Inter } from 'next/font/google'  // Default Next font
 import { Rubik } from 'next/font/google'  // Primary Pitt font
 import { Open_Sans } from 'next/font/google'  // Secondary Pitt font

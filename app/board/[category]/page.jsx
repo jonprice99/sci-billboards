@@ -129,7 +129,7 @@ export default function Page({ params, searchParams }) {
     const router = useRouter();
     const [upvotes, setUpvotes] = useState(upvoteCount);
 
-    const handleClick = () => {
+    const handleClick = async () => {
       // Proceed with this section if the user hasn't upvoted this post
       //if user, post_id, category_id not in User_Upvotes
       if (upvotes === upvoteCount) {
@@ -137,13 +137,17 @@ export default function Page({ params, searchParams }) {
         setUpvotes(upvotes + 1);
 
         // Increment the database count
-
+        const response = await fetch(`${server_url}/posts/inc_upvote/${category_id}/${post_id}`);
+        const data = await response.json();
+        console.log(data)
       } else {
         // Decrement the local count
         setUpvotes(upvotes - 1)
 
         // Decrement the database count
-
+        const response = await fetch(`${server_url}/posts/dec_upvote/${category_id}/${post_id}`);
+        const data = await response.json();
+        console.log(data)
       }
     };
 
