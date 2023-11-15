@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.contrib.auth import authenticate, get_user_model, login, logout
 from datetime import date
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -236,3 +237,18 @@ def flag_post(request, category_id, post_id):
     except Posts.DoesNotExist:
         return Response({"error": "Post not found"}, status=status.HTTP_404_NOT_FOUND)
     
+
+@api_view(['POST'])
+def user_login(request):
+    
+    data = json.loads(request.body)
+    username = data.get('username')
+    password = data.get('password')
+    user = authenticate(username=username, password=password)
+    
+    if user is not None:
+        login(request, user)
+        request.session['username'] = username
+        return Response("Login!", status=status.HTTP_202_ACCEPTED)
+    else:
+        return Response("Failed LOGIN!", status=status.HTTP_401_UNAUTHORIZED)
