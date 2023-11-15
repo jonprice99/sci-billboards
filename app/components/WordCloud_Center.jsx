@@ -32,72 +32,97 @@ export default function Home_Center() {
         {
           word: 'Lorem',
           value: 52,
-          group: 'Career Services'
+          group: ''
         },
         {
           word: 'ipsum',
           value: 25,
-          group: 'Community'
+          group: ''
         },
         {
           word: 'dolor',
           value: 51,
-          group: 'Curriculum'
+          group: ''
         },
         {
           word: 'amet',
           value: 40,
-          group: 'Classes'
+          group: ''
         },
         {
           word: 'consectetur',
           value: 25,
-          group: 'Classrooms'
+          group: ''
         },
         {
           word: 'adipiscing',
           value: 36,
-          group: 'Community'
+          group: ''
         },
         {
           word: 'elit',
           value: 40,
-          group: 'Career Services'
+          group: ''
         },
         {
           word: 'Duis',
           value: 18,
-          group: 'Events'
+          group: ''
         },
         {
           word: 'erat',
           value: 18,
-          group: 'Career Services'
+          group: ''
         },
         {
           word: 'auctor',
           value: 18,
-          group: 'Miscellaneous'
+          group: ''
         },
         {
           word: 'purus',
           value: 18,
-          group: 'Events'
+          group: ''
         },
         {
           word: 'ullamcorper',
           value: 18,
-          group: 'Lounges'
+          group: ''
         },
         {
           word: 'porta',
           value: 52,
-          group: 'Lounges'
+          group: ''
         },
         {
           word: 'Pellentesque',
           value: 40,
-          group: 'Miscellaneous'
+          group: ''
+        },
+        {
+          word: 'jeans',
+          value: 18,
+          group: ''
+        },
+        {
+          word: 'beans',
+          value: 52,
+          group: ''
+        },
+        {
+          word: 'potatoes',
+          value: 40,
+          group: ''
+        },
+        {
+          word: 'tomatoes',
+          value: 65,
+          group: ''
+        },
+        {
+          word: 'yams',
+          value: 76,
+          group: ''
         },
       ]
     )
@@ -107,10 +132,12 @@ export default function Home_Center() {
 
   return (
     <div className={styles.center}>
-      <WordCloudChart
-        data={wordData}
-        options={options}
-      ></WordCloudChart>
+      <div className={styles.chart}>
+        <WordCloudChart
+          data={wordData}
+          options={options}
+        ></WordCloudChart>
+      </div>
     </div>
   )
 }
