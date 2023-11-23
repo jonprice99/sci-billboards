@@ -50,14 +50,6 @@ export default function ModTools() {
             header: 'Comments',
             parargraph: 'Manage comments on board posts and their visibility'
         },
-        {
-            href: '/mod_tools/auto_mod',
-            className: styles.card,
-            target: '_self',
-            rel: 'noopener noreferrer',
-            header: 'AutoMod',
-            parargraph: 'Manage disallowed words/phrases'
-        },
     ]
 
 

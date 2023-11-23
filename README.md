@@ -12,19 +12,19 @@ This is a web app developed for the University of Pittsburgh's School of Computi
 - Next.js 14
 - MySQL Database *(Please ensure that it has all underlying tables with the schema defined in `./billboard/BillboardAPI/models.py` is accessible prior to running this project.)*
 
-_To install additional dependencies related to the Django database API:_
+To install additional dependencies related to the Django database API:
 ```bash
 # from the project root directory
 pip install -r requirements.txt
 ```
 
-_To install additional dependencies related to the Next.js web app:_
+To install additional dependencies related to the Next.js web app:
 ```bash
 # from the project root directory
 npm install
 ```
 
-_To install the virtual environment for the Django database API:_
+To install the virtual environment for the Django database API:
 ```bash
 # from the project root directory
 python3 -m venv myenv
