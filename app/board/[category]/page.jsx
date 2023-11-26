@@ -9,7 +9,6 @@ import { faMessage, faFlag, faAngleLeft, faThumbsUp, faPlus } from '@fortawesome
 import { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
 import { Select } from "react-dropdown-select";
-import { text } from "@fortawesome/fontawesome-svg-core";
 
 const server_url = `http://127.0.0.1:8000`;
 
@@ -24,7 +23,6 @@ const sortOptions = [
     label: "Most Upvoted"
   }
 ];
-<Select options={sortOptions} onChange={(values) => setSelectedSortValues(values)} />
 
 // get filter dropdown values
 const filterOptions = [
@@ -45,11 +43,8 @@ const filterOptions = [
     label: "Complete"
   }
 ];
-<Select options={filterOptions} onChange={(values) => setSelectedFilterValues(values)} />
-
 
 export default function Page({ params, searchParams }) {
-
   // The colors of the cards
   const pastelColors = [
     'rgba(0, 53, 148, 1)',
@@ -71,15 +66,14 @@ export default function Page({ params, searchParams }) {
   const [foundPosts, setFoundPosts] = useState(true);
   const [href, setHref] = useState(''); // Used for post href creation
   const [buttonFloat, setButtonFloat] = useState(false);
-  const [selectedSortValues, setSelectedSortValues] = useState([]);
-  const [selectedFilterValues, setSelectedFilterValues] = useState([]);
 
+  // Hold the json version of the posts for easier sorts/filters
+  let postsJSON;
 
   //function to handle changes in sort drop down menu
   const handleSelectChange = (selectedOptions) => {
     console.log(selectedOptions);
   }
-
 
   useEffect(() => {
     // Get the necessary data from the database
@@ -97,6 +91,7 @@ export default function Page({ params, searchParams }) {
         try {
           const cardResponse = await fetch(`${server_url}/api/posts/${data.id}`);
           const cardData = await cardResponse.json();
+          postsJSON = cardData;
           setCards(cardData);
 
           // Check if we have no posts for this category
@@ -113,7 +108,13 @@ export default function Page({ params, searchParams }) {
       }
     }
 
+    // Check the user's permissions
+    async function checkUser() {
+
+    }
+
     fetchData();
+    checkUser();
 
     //create floating new post button
     function handleScroll() {
@@ -136,7 +137,7 @@ export default function Page({ params, searchParams }) {
     const router = useRouter();
 
     const handleClick = () => {
-      router.push(`/flag_post?category_id=${category_id}&post_id=${post_id}`,);
+      router.push(`/flag_post?category_id=${category_id}&post_id=${post_id}`, {shallow: false});
     };
 
     return (
@@ -159,17 +160,27 @@ export default function Page({ params, searchParams }) {
         setUpvotes(upvotes + 1);
 
         // Increment the database count
-        const response = await fetch(`${server_url}/posts/inc_upvote/${category_id}/${post_id}`);
-        const data = await response.json();
-        console.log(data)
+        //const response = await fetch(`${server_url}/posts/inc_upvote/${category_id}/${post_id}`, {
+        //  method: "PATCH",
+        //  headers: {
+        //    "Content-Type": "application/json"
+        //  },
+        //  body: JSON.stringify(data)
+        //});
+        //console.log(response);
       } else {
         // Decrement the local count
         setUpvotes(upvotes - 1)
 
         // Decrement the database count
-        const response = await fetch(`${server_url}/posts/dec_upvote/${category_id}/${post_id}`);
-        const data = await response.json();
-        console.log(data)
+        //const response = await fetch(`${server_url}/posts/dec_upvote/${category_id}/${post_id}`, {
+        //  method: "PATCH",
+        //  headers: {
+        //    "Content-Type": "application/json"
+        //  },
+        //  body: JSON.stringify(data)
+        //});
+        //console.log(response);
       }
     };
 
@@ -184,6 +195,7 @@ export default function Page({ params, searchParams }) {
     )
   }
 
+  // Function that creates the search bar for the category
   function SearchBar({ onSearch }) {
 
     const [searchQuery, setSearchQuery] = useState('');
@@ -207,6 +219,89 @@ export default function Page({ params, searchParams }) {
         <button onClick={handleSearch}>Search</button>
       </div >
     );
+  }
+
+  // Function to handle sorting the posts
+  function handleSort({ sortBy }) {
+    // Sort by most recent
+    if (sortBy === 'recent') {
+      let mostRecent = postsJSON.sort((a, b) => new Date(b.date_posted) - new Date(a.date_posted));
+
+      setCards(mostRecent);
+    }
+
+    // Sort by least recent
+    if (sortBy === 'leastRecent') {
+      let leastRecent = postsJSON.sort((a, b) => new Date(a.date_posted) - new Date(b.date_posted));
+
+      setCards(leastRecent);
+    }
+
+    // Sort by most upvotes
+    if (sortBy == 'upvoted') {
+      let mostUpvotes = postsJSON.sort((a, b) => new b.upvotes - new a.upvotes);
+
+      setCards(mostUpvotes);
+    }
+
+    // Sort by least upvotes
+    if (sortBy == 'leastUpvoted') {
+      let leastUpvotes = postsJSON.sort((a, b) => new a.upvotes - new b.upvotes);
+
+      setCards(leastUpvotes);
+    }
+
+    // Sort by most comments
+    if (sortBy == 'comments') {
+      let mostComments = postsJSON.sort((a, b) => new b.comments - new a.comments);
+
+      setCards(mostComments);
+    }
+
+    // Sort by least comments
+    if (sortBy == 'leastComments') {
+      let leastComments = postsJSON.sort((a, b) => new a.comments - new b.comments);
+
+      setCards(leastComments);
+    }
+  }
+
+  // Function to handle filtering the posts by progress
+  function handleFilter({ filterBy }) {
+    // Filter by only "not in progress"
+    if (filterBy == "notProgressed") {
+      let filteredPosts = postsJSON.filter(post => post.category === 0);
+
+      setCards(filteredPosts);
+    }
+
+    // Filter by only "in talks"
+    if (filterBy == "inTalks") {
+      let filteredPosts = postsJSON.filter(post => post.category === 1);
+
+      setCards(filteredPosts);
+    }
+
+    // Filter by only "in progress"
+    if (filterBy == "inProgress") {
+      let filteredPosts = postsJSON.filter(post => post.category === 2);
+
+      setCards(filteredPosts);
+    }
+
+    // Filter by only "complete"
+    if (filterBy == "complete") {
+      let filteredPosts = postsJSON.filter(post => post.category === 3);
+
+      setCards(filteredPosts);
+    }
+  }
+
+  // Function to handle searching title/description of posts
+  function handleSearch({ searchTerm }) {
+    let foundPosts = postsJSON.filter(post => post.title.includes(searchTerm) || post.description.includes(searchTerm));
+
+    setCards(foundPosts);
   }
 
   // Display an error page if we try to access a board that doesn't exist
