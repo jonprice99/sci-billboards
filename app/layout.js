@@ -18,7 +18,7 @@ const open_sans = Open_Sans({ subsets: ['latin'] })
 const merriweather = Merriweather({ subsets: ['latin'], weight: ['400'] })
 
 export const metadata = {
-  title: 'School of Computing and Information - Idea Board',
+  title: 'Idea Board - School of Computing and Information',
   description: "Virtual billboards for the University of Pittsburgh's School of Computing and Information to field ideas, projects, suggestions, and feedback from guests, students, staff, and faculty.",
   keywords: 'Pitt, University of Pittsburgh, SCI, School of Computing and Information, feedback, What Do You Want, idea, Idea Board'
 }
@@ -26,7 +26,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={rubik.className}>
+      <body className={open_sans.className}>
         <Header />
         
         {children}

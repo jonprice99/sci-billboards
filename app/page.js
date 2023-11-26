@@ -8,7 +8,6 @@ import { useRouter } from "next/navigation";
 const server_url = `http://127.0.0.1:8000`;
 
 export default function Home() {
-  const router = useRouter();
   
   // The set of colors to be used as backgrounds for the link cards
   const pastelColors = [

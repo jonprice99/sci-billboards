@@ -324,7 +324,7 @@ footer .links a {
 
   .grid {
     grid-template-columns: 1fr;
-    margin-bottom: 120px;
+    margin-bottom: 1rem;
     max-width: 320px;
     text-align: center;
   }
@@ -339,7 +339,7 @@ footer .links a {
   }
 
   .center {
-    padding: 6rem 0 4rem;
+    padding: 6rem 0 2rem;
   }
 
   .center::before {

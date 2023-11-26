@@ -123,6 +123,10 @@
   top: calc(100% - 10px);
 }
 
+.card footer button:hover {
+  cursor: pointer;
+}
+
 .card footer counter {
   color: #fff;
   z-index: 4;
@@ -130,6 +134,10 @@
 
 .card footer counter button {
   z-index: 5;
+}
+
+.card footer counter button:hover {
+  cursor: pointer;
 }
 
 .description {
@@ -391,18 +399,6 @@
         transparent 0%,
         rgb(var(--background-end-rgb)) 40%);
     z-index: 1;
-  }
-}
-
-
-
-@media (prefers-color-scheme: dark) {
-  .vercelLogo {
-    /*filter: invert(1);*/
-  }
-
-  .logo {
-    /*filter: invert(1) drop-shadow(0 0 0.3rem #ffffff70);*/
   }
 }
 

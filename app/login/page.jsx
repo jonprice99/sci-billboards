@@ -44,7 +44,7 @@ const login = () => {
       //  body: JSON.stringify(data)
       //});
 
-      console.log("Success:", addResponse);
+      //console.log("Success:", addResponse);
       router.push(`/`);
     } catch (error) {
       // There was an error when trying to connect to the db
@@ -91,6 +91,7 @@ const login = () => {
             onChange={handleUsernameChange}
             value={usrStr}
             rows={1}
+            size={30}
             required
           />
           <br />
@@ -103,6 +104,7 @@ const login = () => {
             onChange={handlePassChange}
             value={pasStr}
             rows={1}
+            size={30}
             required
           />
         </form>
