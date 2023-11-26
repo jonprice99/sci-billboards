@@ -37,7 +37,13 @@ const new_post = () => {
       setCategories(data.filter(item => item.name != 'Trending'));
     }
 
+    // Check the user's permissions
+    async function checkUser() {
+
+    }
+
     fetchData();
+    checkUser();
   }, []);
 
   // Define a function that handles the form submission

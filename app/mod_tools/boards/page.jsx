@@ -31,9 +31,15 @@ export default function BoardTools() {
           const data = await res.json();
           setCategories(data);
         }
+
+        // Check the user's permissions
+        async function checkUser() {
+
+        }
     
         fetchData();
-      }, []);
+        checkUser();
+    }, []);
 
     // Columns for the mod table
     const columns = [

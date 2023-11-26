@@ -30,8 +30,14 @@ export default function PostsTools() {
           const data = await res.json();
           setAllPosts(data);
         }
+
+        // Check the user's permissions
+        async function checkUser() {
+
+        }
     
         fetchData();
+        checkUser();
       }, []);
 
     // Columns for the mod table

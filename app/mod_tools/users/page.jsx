@@ -31,8 +31,14 @@ export default function UsersTools() {
           const data = await res.json();
           setAllUsers(data);
         }
+
+        // Check the user's permissions
+        async function checkUser() {
+
+        }
     
         fetchData();
+        checkUser();
       }, []);
 
     // Columns for the admin table
