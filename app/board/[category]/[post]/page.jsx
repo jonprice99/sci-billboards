@@ -83,7 +83,14 @@ export default function Post({ params, searchParams }) {
             console.log(params.post);
             console.log(upvotes);
         }
+
+        // Check the user's permissions
+        async function checkUser() {
+
+        }
+
         fetchData();
+        checkUser();
     }, [params]);
 
 
@@ -135,7 +142,7 @@ export default function Post({ params, searchParams }) {
                 setUpvotes(upvotes + 1);
 
                 // Increment the database count
-
+                
             } else {
                 // Decrement the local count
                 setUpvotes(upvotes - 1)

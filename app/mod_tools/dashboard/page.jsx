@@ -43,7 +43,13 @@ export default function PostsTools() {
             setAllComments(dataComm);
         }
 
+        // Check user's permissions
+        async function checkUser() {
+
+        }
+
         fetchData();
+        checkUser();
     }, []);
 
     // Columns for the categories overview table
@@ -57,29 +63,26 @@ export default function PostsTools() {
 
     // Columns for the posts overview table
     const postsColumns = [
-        { dataField: 'is_pending_mod', caption: 'isPendingMod', allowEditing: true, allowAdding: false, width: 60 },
-        { dataField: 'is_hidden', caption: 'isHidden', allowEditing: true, allowAdding: false, width: 60 },
         { dataField: 'category_id', caption: 'category_id', allowEditing: false, allowAdding: false, sortOrder: 'asc', width: 80 },
         { dataField: 'post_id', caption: 'post_id', allowEditing: false, allowAdding: false, sortOrder: 'asc', width: 80 },
-        { dataField: 'poster_id', caption: 'poster_id', allowEditing: false, allowAdding: false },
         { dataField: 'poster_name', caption: 'poster_name', allowEditing: false, allowAdding: false },
         { dataField: 'progress', caption: 'progress', allowEditing: true, allowAdding: false },
         { dataField: 'title', caption: 'title', allowEditing: false, allowAdding: false },
-        { dataField: 'description', caption: 'description', allowEditing: false, allowAdding: false },
         { dataField: 'upvotes', caption: 'upvotes', allowEditing: false, allowAdding: false },
         { dataField: 'comments', caption: 'comments', allowEditing: false, allowAdding: false },
+        { dataField: 'is_pending_mod', caption: 'isPendingMod', allowEditing: true, allowAdding: false, width: 60 },
+        { dataField: 'is_hidden', caption: 'isHidden', allowEditing: true, allowAdding: false, width: 60 },
     ];
 
     // Columns for the comments overview table
     const commentsColumns = [
-        { dataField: 'is_pending_mod', caption: 'isPendingMod', allowEditing: true, allowAdding: false, sortOrder: 'desc' },
-        { dataField: 'is_hidden', caption: 'isHidden', allowEditing: true, allowAdding: false},
         { dataField: 'category_id', caption: 'category_id', allowEditing: false, allowAdding: false },
         { dataField: 'post_id', caption: 'post_id', allowEditing: false, allowAdding: false },
         { dataField: 'comment_id', caption: 'comment_id', allowEditing: false, allowAdding: false },
-        { dataField: 'user_id', caption: 'user_id', allowEditing: false, allowAdding: false },
-        { dataField: 'user_name', caption: 'poster_name', allowEditing: false, allowAdding: false },
-        { dataField: 'body', caption: 'body', allowEditing: false, allowAdding: false }
+        { dataField: 'user_name', caption: 'user_name', allowEditing: false, allowAdding: false },
+        { dataField: 'body', caption: 'body', allowEditing: false, allowAdding: false },
+        { dataField: 'is_pending_mod', caption: 'isPendingMod', allowEditing: true, allowAdding: false, sortOrder: 'desc' },
+        { dataField: 'is_hidden', caption: 'isHidden', allowEditing: true, allowAdding: false},
     ];
 
     // Columns for the recent posts table

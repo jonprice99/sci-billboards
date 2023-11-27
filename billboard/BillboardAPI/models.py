@@ -11,10 +11,18 @@ class Users(models.Model):
     id = models.AutoField(primary_key=True)
     username = models.CharField(max_length=128)
     role = models.PositiveIntegerField()
-    isDisallowed = models.BooleanField(default=False)
     
     class Meta:
         db_table = 'Users'  # Specify the table name
+
+    def __str__(self):
+        return self.name
+    
+class Disallowed_Users(models.Model):
+    username = models.CharField(primary_key=True, max_length=128)
+    
+    class Meta:
+        db_table = 'Disallowed_Users'  # Specify the table name
 
     def __str__(self):
         return self.name
@@ -80,13 +88,3 @@ class Comments(models.Model):
     
     def __str__(self):
         return self.title
-    
-class AutoMod_Terms(models.Model):
-    id = models.AutoField(primary_key=True)
-    phrase = models.CharField(max_length=128)
-    
-    class Meta:
-        db_table = 'AutoMod_Terms'
-        
-    def __str__(self):
-        return self.name

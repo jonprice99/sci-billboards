@@ -100,7 +100,7 @@ export default function Home_Center() {
           group: ''
         },
         {
-          word: 'jeans',
+          word: 'corn',
           value: 18,
           group: ''
         },

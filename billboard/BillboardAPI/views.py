@@ -24,9 +24,9 @@ def users_list(request):
     return Response(serializer.data)
 
 @api_view(['GET'])
-def get_auto_mod_terms(request):
-    terms = AutoMod_Terms.objects.all()
-    serializer = AutoMod_TermsSerializer(terms, many=True)
+def disallowed_users_list(request):
+    users = Disallowed_Users.objects.all()
+    serializer = Disallowed_UsersSerializer(users, many=True)
     logger.info('Response Data: %s', serializer.data)
     return Response(serializer.data)
 
@@ -81,19 +81,6 @@ def get_post(request, category_id, post_id):
     return Response(serializer.data)
 
 @api_view(['PUT'])
-def update_auto_mod_term(request, id):
-    try:
-        term = AutoMod_Terms.objects.get(id=id)
-    except AutoMod_Terms.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    serializer = AutoMod_TermsSerializer(term, data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-@api_view(['PUT'])
 def update_category(request, id):
     try:
         category = Categories.objects.get(id=id)
@@ -139,15 +126,28 @@ def update_user(request, id):
     except Users.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     
-    serializer = PostsSerializer(user, data=request.data)
+    serializer = UsersSerializer(user, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PUT'])
+def update_disallowed_user(request, username):
+    try:
+        user = Disallowed_Users.objects.get(username=username)
+    except Disallowed_Users.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    serializer = Disallowed_UsersSerializer(user, data=request.data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
-def add_disallowed_phrase(request):
-    serializer = AutoMod_TermsSerializer(data=request.data)
+def add_user(request):
+    serializer = UsersSerializer(data=request.data)
 
     if serializer.is_valid():
         serializer.save()
@@ -156,8 +156,8 @@ def add_disallowed_phrase(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
-def add_user(request):
-    serializer = UsersSerializer(data=request.data)
+def add_disallowed_user(request):
+    serializer = Disallowed_UsersSerializer(data=request.data)
 
     if serializer.is_valid():
         serializer.save()
@@ -196,16 +196,6 @@ def create_category(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['DELETE'])
-def delete_auto_mod_term(request, id):
-    try:
-        term = AutoMod_Terms.objects.get(id=id)
-    except AutoMod_Terms.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    term.delete()
-    return Response(status=status.HTTP_204_NO_CONTENT)
-
-@api_view(['DELETE'])
 def delete_category(request, id):
     try:
         category = Categories.objects.get(id=id)
@@ -240,6 +230,16 @@ def delete_user(request, id):
     try:
         user = Users.objects.get(id=id)
     except Users.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    user.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['DELETE'])
+def delete_disallowed_user(request, username):
+    try:
+        user = Disallowed_Users.objects.get(username=username)
+    except Disallowed_Users.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     user.delete()

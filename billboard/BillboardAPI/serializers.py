@@ -11,6 +11,11 @@ class UsersSerializer(serializers.ModelSerializer):
         model = Users
         fields = '__all__'
         
+class Disallowed_UsersSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Disallowed_Users
+        fields = '__all__'
+        
 class User_UpvotesSerializer(serializers.ModelSerializer):
     class Meta:
         model = User_Upvotes
@@ -24,9 +29,4 @@ class PostsSerializer(serializers.ModelSerializer):
 class CommentsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comments
-        fields = '__all__'
-        
-class AutoMod_TermsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = AutoMod_Terms
         fields = '__all__'
