@@ -70,6 +70,9 @@ export default function Page({ params, searchParams }) {
   // Hold the json version of the posts for easier sorts/filters
   let postsJSON;
 
+  // Hold the json version of the upvotes for easier parsing
+  let upvotesJSON;
+
   //function to handle changes in sort drop down menu
   const handleSelectChange = (selectedOptions) => {
     console.log(selectedOptions);
@@ -106,6 +109,11 @@ export default function Page({ params, searchParams }) {
         // There was an error getting the category (i.e., it doesn't exist)
         setBoardError(true);
       }
+
+      // Get the User_Upvotes data
+      //const upvotesResponse = await fetch(`${server_url}/api/user_upvotes`);
+      //const upvotesData = await upvotesResponse.json();
+      //upvotesJSON = upvotesData;
     }
 
     // Check the user's permissions
@@ -160,27 +168,19 @@ export default function Page({ params, searchParams }) {
         setUpvotes(upvotes + 1);
 
         // Increment the database count
-        //const response = await fetch(`${server_url}/posts/inc_upvote/${category_id}/${post_id}`, {
-        //  method: "PATCH",
-        //  headers: {
-        //    "Content-Type": "application/json"
-        //  },
-        //  body: JSON.stringify(data)
-        //});
-        //console.log(response);
+        const response = await fetch(`${server_url}/api/posts/inc_upvote/${category_id}/${post_id}`, {
+          method: "PATCH"
+        });
+        console.log(response);
       } else {
         // Decrement the local count
         setUpvotes(upvotes - 1)
 
         // Decrement the database count
-        //const response = await fetch(`${server_url}/posts/dec_upvote/${category_id}/${post_id}`, {
-        //  method: "PATCH",
-        //  headers: {
-        //    "Content-Type": "application/json"
-        //  },
-        //  body: JSON.stringify(data)
-        //});
-        //console.log(response);
+        const response = await fetch(`${server_url}/api/posts/dec_upvote/${category_id}/${post_id}`, {
+          method: "PATCH",
+        });
+        console.log(response);
       }
     };
 

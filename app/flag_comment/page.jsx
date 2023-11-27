@@ -44,17 +44,19 @@ export default function flag_comment({ params, searchParams }) {
 
     // Submit the form data to the database
     try {
-      //const addResponse = await fetch(`${server_url}/api/posts/create/`, {
-      //  method: "POST",
-      //  headers: {
-      //    "Content-Type": "application/json"
-      //  },
-      //  body: JSON.stringify(data)
-      //});
+      const addResponse = await fetch(`${server_url}/api/comments/flag_comment/${searchParams.category_id}/${searchParams.post_id}/${searchParams.comment_id}`, {
+        method: "PATCH",
+      });
 
-      //console.log("Success:", addResponse);
       alert("Your report has been submitted!");
-      router.push(`/`);
+
+      // Go back to the category board page in history
+      if (window.history.length > 2) {
+        router.back();
+        router.back();
+      } else {
+        router.push(`/`);
+      }
     } catch (error) {
       // There was an error when trying to post to the db
       console.error("Error when attempting to post to db:", error);

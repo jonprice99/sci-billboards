@@ -41,6 +41,9 @@ export default function Post({ params, searchParams }) {
     let progressText;
     let catData;
 
+    // Hold the json version of the upvotes for easier parsing
+    let upvotesJSON;
+
     useEffect(() => {
         // Get the necessary data from the database
         async function fetchData() {
@@ -72,6 +75,11 @@ export default function Post({ params, searchParams }) {
             } catch (error) {
                 setError(true);
             }
+
+            // Get the User_Upvotes data
+            //const upvotesResponse = await fetch(`${server_url}/api/user_upvotes`);
+            //const upvotesData = await upvotesResponse.json();
+            //upvotesJSON = upvotesData;
 
             // Get the comments for this post
             const cardResponse = await fetch(`${server_url}/api/comments/${catData.id}/${params.post}`);
@@ -134,7 +142,7 @@ export default function Post({ params, searchParams }) {
         const router = useRouter();
         const [upvotes, setUpvotes] = useState(upvoteCount);
 
-        const handleClick = () => {
+        const handleClick = async () => {
             // Proceed with this section if the user hasn't upvoted this post
             //if user, post_id, category_id not in User_Upvotes
             if (upvotes === upvoteCount) {
@@ -142,13 +150,19 @@ export default function Post({ params, searchParams }) {
                 setUpvotes(upvotes + 1);
 
                 // Increment the database count
-                
+                const response = await fetch(`${server_url}/api/posts/inc_upvote/${category_id}/${post_id}`, {
+                    method: "PATCH"
+                });
+                console.log(response);
             } else {
                 // Decrement the local count
                 setUpvotes(upvotes - 1)
 
                 // Decrement the database count
-
+                const response = await fetch(`${server_url}/api/posts/dec_upvote/${category_id}/${post_id}`, {
+                    method: "PATCH",
+                });
+                console.log(response);
             }
         };
 

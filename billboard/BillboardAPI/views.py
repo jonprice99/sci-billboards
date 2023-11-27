@@ -23,6 +23,13 @@ def users_list(request):
     logger.info('Response Data: %s', serializer.data)
     return Response(serializer.data)
 
+#@api_view(['GET'])
+#def user_upvotes_list(request):
+#    upvotes = User_Upvotes.objects.all()
+#    serializer = User_UpvotesSerializer(upvotes, many=True)
+#    logger.info('Response Data: %s', serializer.data)
+#    return Response(serializer.data)
+
 @api_view(['GET'])
 def disallowed_users_list(request):
     users = Disallowed_Users.objects.all()
