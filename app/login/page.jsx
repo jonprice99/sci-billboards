@@ -23,7 +23,12 @@ const login = () => {
     //  setCategories(data.filter(item => item.name != 'Trending'));
     //}
 
+    async function isLoggedInCheck() {
+
+    }
+
     //fetchData();
+    isLoggedInCheck();
   }, []);
 
   // Define a function that handles the form submission
