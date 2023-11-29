@@ -33,7 +33,7 @@ class Categories(models.Model):
     href = models.CharField(max_length=160, unique=True)
     paragraph = models.TextField()
     isArchived = models.BooleanField(default=False)
-    post_count = models.PositiveIntegerField()
+    post_count = models.PositiveIntegerField(default=0)
     
     class Meta:
         db_table = 'Categories'  # Specify the table name
@@ -53,7 +53,7 @@ class User_Upvotes(models.Model):
         return self.name
 
 class Posts(models.Model):
-    category_id = models.PositiveIntegerField()
+    category_id = models.PositiveIntegerField(default=0)
     post_id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=160)
     description = models.TextField()
