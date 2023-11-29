@@ -29,12 +29,6 @@ export default function FontSizeButton({closeMenu}) {
                 </Link>
             </div>
             <div>
-                <button className={styles.font_size_button} onClick={increaseSize}>Increase Font Size</button>
-            </div>
-            <div>
-                <button className={styles.font_size_button} onClick={decreaseSize}>Decrease Font Size</button>
-            </div>
-            <div>
                 <Link href={"/mod_tools"}>
                     <button className={styles.font_size_button} onClick={closeMenu}>Mod Tools</button>
                 </Link>
