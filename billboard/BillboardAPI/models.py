@@ -66,7 +66,7 @@ class Posts(models.Model):
     comments = models.IntegerField(default=0)
     is_pending_mod = models.BooleanField(default=False)
     is_hidden = models.BooleanField(default=False)
-    post_count = models.PositiveIntegerField(default=0)
+    comment_count = models.PositiveIntegerField(default=0)
     
     class Meta:
         db_table = 'Posts'  # Specify the table name
@@ -84,7 +84,6 @@ class Comments(models.Model):
     comment_date = models.DateTimeField(auto_now_add=True)
     is_pending_mod = models.BooleanField(default=False)
     is_hidden = models.BooleanField(default=False)
-    comment_count = models.PositiveIntegerField(default=0)
     
     class Meta:
         db_table = 'Comments'
