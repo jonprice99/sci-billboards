@@ -5,6 +5,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from django.views.decorators.csrf import csrf_exempt
+import json
 
 from django.contrib.auth import login
 
@@ -29,9 +30,9 @@ def user_login(request):
         data = json.loads(request.body)
         username = data.get('username')
         password = data.get('password')
-        valid = authenticate(username=username, password=password)
+        user = authenticate(username=username, password=password)
         
-        if valid:
+        if user is not None:
             login(request, user)
             request.session['username'] = username
             return Response("Login!", status=status.HTTP_202_ACCEPTED)
@@ -278,9 +279,7 @@ def delete_disallowed_user(request, username):
 @api_view(['PATCH'])
 def inc_upvote(request, category_id, post_id):
     try:
-        post = Posts.objects.get(category_id=category_id, post_id=post_id)
-        post.upvotes += 1
-        post.save()
+        Posts.objects.filter(category_id=category_id, post_id=post_id).update(upvotes=F('upvotes') + 1)
         return Response({"message": "Upvote incremented successfully"}, status=status.HTTP_200_OK)
     except Posts.DoesNotExist:
         return Response({"error": "Post not found"}, status=status.HTTP_404_NOT_FOUND)
@@ -288,9 +287,7 @@ def inc_upvote(request, category_id, post_id):
 @api_view(['PATCH'])
 def dec_upvote(request, category_id, post_id):
     try:
-        post = Posts.objects.get(category_id=category_id, post_id=post_id)
-        post.upvotes -= 1
-        post.save()
+        Posts.objects.filter(category_id=category_id, post_id=post_id).update(upvotes=F('upvotes') - 1)
         return Response({"message": "Upvote decremented successfully"}, status=status.HTTP_200_OK)
     except Posts.DoesNotExist:
         return Response({"error": "Post not found"}, status=status.HTTP_404_NOT_FOUND)
@@ -298,10 +295,9 @@ def dec_upvote(request, category_id, post_id):
 @api_view(['PATCH'])
 def flag_post(request, category_id, post_id):
     try:
-        post = Posts.objects.get(category_id=category_id, post_id=post_id)
-        post.is_pending_mod = True
-        post.is_hidden = True
-        post.save()
+        Posts.objects.filter(category_id=category_id, post_id=post_id).update(is_pending_mod=F(True))
+        Posts.objects.filter(category_id=category_id, post_id=post_id).update(is_hidden=F(True))
+    
         return Response({"message": "Post flagged successfully"}, status=status.HTTP_200_OK)
     except Posts.DoesNotExist:
         return Response({"error": "Post not found"}, status=status.HTTP_404_NOT_FOUND)
