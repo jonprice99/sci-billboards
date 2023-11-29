@@ -30,5 +30,6 @@ urlpatterns = [
     path('comments/<int:category_id>/<int:post_id>/', views.get_post_comments, name='get-post-comments'),
     path("comments/delete/<int:category_id>/<int:post_id>/<int:comment_id>/", views.delete_comment, name="mod-delete-comment"),
     path('posts/flag_post/<int:category_id>/<int:post_id>', views.flag_post, name='flag_post'),
+    path("user/sign-in",views.user_login ,name="user_login"),
     #path('user_upvotes/', views.user_upvotes_list, name='get-user-upvotes'),
 ]
