@@ -33,6 +33,7 @@ class Categories(models.Model):
     href = models.CharField(max_length=160, unique=True)
     paragraph = models.TextField()
     isArchived = models.BooleanField(default=False)
+    post_count = models.PositiveIntegerField()
     
     class Meta:
         db_table = 'Categories'  # Specify the table name
