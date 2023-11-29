@@ -9,6 +9,7 @@ import { faMessage, faFlag, faAngleLeft, faThumbsUp, faPlus } from '@fortawesome
 import { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
 import { Select } from "react-dropdown-select";
+import Dropdown from 'app/board/Dropdown.js';
 
 const server_url = `http://127.0.0.1:8000`;
 
@@ -23,6 +24,8 @@ const sortOptions = [
     label: "Most Upvoted"
   }
 ];
+
+<Select options={sortOptions} onChange={(values) => setSelectedSortValues(values)} />
 
 // get filter dropdown values
 const filterOptions = [
@@ -43,6 +46,8 @@ const filterOptions = [
     label: "Complete"
   }
 ];
+<Select options={filterOptions} onChange={(values) => setSelectedFilterValues(values)} />
+
 
 export default function Page({ params, searchParams }) {
   // The colors of the cards
@@ -66,6 +71,8 @@ export default function Page({ params, searchParams }) {
   const [foundPosts, setFoundPosts] = useState(true);
   const [href, setHref] = useState(''); // Used for post href creation
   const [buttonFloat, setButtonFloat] = useState(false);
+  const [selectedSortValues, setSelectedSortValues] = useState([]);
+  const [selectedFilterValues, setSelectedFilterValues] = useState([]);
 
   // Hold the json version of the posts for easier sorts/filters
   let postsJSON;
@@ -459,20 +466,22 @@ export default function Page({ params, searchParams }) {
 
         <div className={styles.dropDown}>
           <div className={styles.sortDropDown}>
-            <Select
+            <Dropdown
               options={sortOptions}
               onChange={handleSelectChange}
-              placeholder="Sort by"
+              defaultPlaceholder="Sort by"
               style={{ color: 'grey' }}
+              values={selectedSortValues}
             />
           </div>
 
           <div className={styles.filterDropDown}>
-            <Select
+            <Dropdown
               options={filterOptions}
               onChange={handleSelectChange}
-              placeholder="Filter by"
+              defaultPlaceholder="Filter by"
               style={{ color: 'grey' }}
+              values={selectedFilterValues}
             />
           </div>
 
