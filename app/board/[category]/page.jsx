@@ -20,8 +20,16 @@ const sortOptions = [
     label: "Most Recent",
   },
   {
+    value: "leastRecent",
+    label: "Least Recent",
+  },
+  {
     value: "upvoted",
     label: "Most Upvoted"
+  },
+  {
+    value: "leastUpvoted",
+    label: "Least Upvoted"
   }
 ];
 
