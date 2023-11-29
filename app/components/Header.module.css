@@ -70,8 +70,30 @@
     }
 
     .menu_placer {
-        position: relative;
-        padding-left: 2rem;
+        padding: 0;
+        margin-right: 10px;
     }
 
 }
+
+/* Tablet and Smaller Desktop */
+@media (min-width: 701px) and (max-width: 1120px) {
+    .header {
+        padding-left: 0rem;
+        height: auto;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .logo {
+        height: 54px;
+        width: 150px;
+        position: relative;
+        padding-left: 0.25rem;
+    }
+
+    .menu_placer {
+        padding: 0;
+        margin-right: 10px;
+    }
+  }
