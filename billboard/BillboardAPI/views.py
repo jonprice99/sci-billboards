@@ -32,11 +32,9 @@ def user_login(request):
         data = json.loads(request.body)
         username = data.get('username')
         password = data.get('password')
-        user = authenticate(username=username, password=password)
+        valid = authenticate(username=username, password=password)
         
-        if user is not None:
-            login(request, user)
-            request.session['username'] = username
+        if valid:
             return Response("Login!", status=status.HTTP_202_ACCEPTED)
         else:
             return Response("Failed LOGIN!", status=status.HTTP_401_UNAUTHORIZED)
