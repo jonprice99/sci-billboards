@@ -24,7 +24,7 @@ export default function FontSizeButton({closeMenu}) {
     return (
         <div className={styles.button_layout}>
             <div>
-                <Link href={"/"}>
+                <Link href={"/login"}>
                     <button className={styles.font_size_button} onClick={closeMenu}>Login</button>
                 </Link>
             </div>
