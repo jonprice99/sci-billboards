@@ -6,6 +6,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.views.decorators.csrf import csrf_exempt
 
+from django.contrib.auth import login
+
 from BillboardAPI.models import *
 from BillboardAPI.serializers import *
 
@@ -15,6 +17,27 @@ logger = logging.getLogger('api.views')
 
 
 # Create your views here.
+
+# dummy authenticator ... TO BE IMPLEMENTED
+def authenticate(username, password):
+    return True
+
+# Login handler
+@api_view(['POST'])
+def user_login(request):
+    if request.method=='POST':
+        data = json.loads(request.body)
+        username = data.get('username')
+        password = data.get('password')
+        valid = authenticate(username=username, password=password)
+        
+        if valid:
+            login(request, user)
+            request.session['username'] = username
+            return Response("Login!", status=status.HTTP_202_ACCEPTED)
+        else:
+            return Response("Failed LOGIN!", status=status.HTTP_401_UNAUTHORIZED)
+        
 
 @api_view(['GET'])
 def users_list(request):
