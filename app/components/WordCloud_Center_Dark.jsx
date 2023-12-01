@@ -4,15 +4,15 @@
  */
 
 import 'app/globals.css'
-import styles from './WordCloud_Center.module.css'
+import styles from './WordCloud_Center_Dark.module.css'
 import { WordCloudChart } from '@carbon/charts-react'
 import '@carbon/charts-react/styles.css'
-import options from './wordcloud_options.js'
+import options from './wordcloud_dark_options.js'
 import { useEffect, useState } from 'react'
 
 const server_url = `http://127.0.0.1:8000`;
 
-export default function Home_Center() {
+export default function Home_Center_Dark() {
   const [wordData, setWordData] = useState([]);
   let keywordJSON;
   

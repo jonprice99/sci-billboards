@@ -17,5 +17,5 @@ export default {
     },
     height: '400px',
     width: 'auto',
-    theme: 'g10',
+    theme: 'g100',
   }

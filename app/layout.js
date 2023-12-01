@@ -8,7 +8,7 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 import localFont from 'next/font/local'
 import { Inter } from 'next/font/google'  // Default Next font
-import { Rubik } from 'next/font/google'  // Primary Pitt font
+//import { Rubik } from 'next/font/google'  // Primary Pitt font
 //import { Open_Sans } from 'next/font/google'  // Secondary Pitt font
 import { Merriweather } from 'next/font/google' // Tertiary Pitt font
 
