@@ -21,12 +21,7 @@ const server_url = `http://127.0.0.1:8000`;
 export default function PostsTools() {
     const [categories, setCategories] = useState([]);
     const [allPosts, setAllPosts] = useState([]);
-    const [hiddenPosts, setHiddenPosts] = useState([]);
-    const [recentPosts, setRecentPosts] = useState([]);
     const [allComments, setAllComments] = useState([]);
-    const [hiddenComments, setHiddenComments] = useState([]);
-    const [recentComments, setRecentComments] = useState([]);
-    const router = useRouter();
 
     useEffect(() => {
         async function fetchData() {
@@ -59,6 +54,7 @@ export default function PostsTools() {
         { dataField: 'name', caption: 'name' },
         { dataField: 'href', caption: 'href' },
         { dataField: 'paragraph', caption: 'paragraph'},
+        { dataField: 'post_count', caption: 'post_count'},
     ];
 
     // Columns for the posts overview table
@@ -69,7 +65,8 @@ export default function PostsTools() {
         { dataField: 'progress', caption: 'progress', allowEditing: true, allowAdding: false },
         { dataField: 'title', caption: 'title', allowEditing: false, allowAdding: false },
         { dataField: 'upvotes', caption: 'upvotes', allowEditing: false, allowAdding: false },
-        { dataField: 'comments', caption: 'comments', allowEditing: false, allowAdding: false },
+        { dataField: 'date_posted', caption: 'date_posted', allowEditing: false, allowAdding: false },
+        { dataField: 'comment_count', caption: 'comment_count', allowEditing: false, allowAdding: false },
         { dataField: 'is_pending_mod', caption: 'isPendingMod', allowEditing: true, allowAdding: false, width: 60 },
         { dataField: 'is_hidden', caption: 'isHidden', allowEditing: true, allowAdding: false, width: 60 },
     ];
@@ -81,15 +78,10 @@ export default function PostsTools() {
         { dataField: 'comment_id', caption: 'comment_id', allowEditing: false, allowAdding: false },
         { dataField: 'user_name', caption: 'user_name', allowEditing: false, allowAdding: false },
         { dataField: 'body', caption: 'body', allowEditing: false, allowAdding: false },
+        { dataField: 'comment_date', caption: 'comment_date', allowEditing: false, allowAdding: false },
         { dataField: 'is_pending_mod', caption: 'isPendingMod', allowEditing: true, allowAdding: false, sortOrder: 'desc' },
         { dataField: 'is_hidden', caption: 'isHidden', allowEditing: true, allowAdding: false},
     ];
-
-    // Columns for the recent posts table
-    const recentPostsColumns = [];
-
-    // Columns for the recent comments table
-    const recentCommentsColumns = [];
 
     // Function to download the categories and posts in JSON form
     function downloadJSONs() {

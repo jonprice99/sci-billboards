@@ -1,33 +1,44 @@
 'use client';
 import Link from "next/link"
 import styles from './Login.module.css'
-import AutoResize from 'react-textarea-autosize';
 import Home_Center from "../components/Home_Center";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons'
 import { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
+import { setCookie, getCookie, deleteCookie, hasCookie } from 'cookies-next';
 
 const server_url = `http://127.0.0.1:8000`;
 
 const login = () => {
   const router = useRouter();
 
-  const [usrStr, setUsrStr] = useState('');
-  const [pasStr, setPasStr] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  
+  let usersJSON;
+  let disallowedJSON;
 
   useEffect(() => {
-    //async function fetchData() {
-    //  const res = await fetch(`${server_url}/api/categories/`);
-    //  const data = await res.json();
-    //  setCategories(data.filter(item => item.name != 'Trending'));
-    //}
+    async function fetchData() {
+      const res = await fetch(`${server_url}/api/mod/users/`);
+      const data = await res.json();
+      usersJSON = data;
 
-    async function isLoggedInCheck() {
-
+      const disallowedRes = await fetch(`${server_url}/api/mod/disallowed_users`);
+      const disallowedData = await disallowedRes.json();
+      disallowedJSON = disallowedData;
     }
 
-    //fetchData();
+    async function isLoggedInCheck() {
+      if (hasCookie('pittID')) {
+        // Redirect the user back to the homepage
+        router.push('/');
+        alert("You're already logged in!");
+      }
+    }
+
+    fetchData();
     isLoggedInCheck();
   }, []);
 
@@ -36,36 +47,65 @@ const login = () => {
     // Prevent the default browser behavior
     event.preventDefault();
 
+    // Make the letters of the username capitalized to ensure all usernames in Users, Posts, & Comments are standardized (i.e., abc123 => ABC123)
+    setUsername(username.replace(/[a-zA-Z]+/g, match => match.toUpperCase()));
+
     //Set the form data so we can send it to the Django API
-    const data = { usrStr, pasStr }
+    const data = { username, password }
 
     // Cross reference the form data to the database
     try {
-      //const addResponse = await fetch(`${server_url}/api/posts/create/`, {
-      //  method: "POST",
-      //  headers: {
-      //    "Content-Type": "application/json"
-      //  },
-      //  body: JSON.stringify(data)
-      //});
+      const addResponse = await fetch(`${server_url}/api/user/sign-in/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      });
+
+      // Possibly: Add check for empty/null array here
+
+      // (if no error/non-null array) Set the login
+      setCookie('pittID', username);
+
+      // Check if the user is a superuser in Users table to set permissions
+      const object = usersJSON.find(item => item.username === username);
+      if (object) {
+        // Found the user, so set the permission level
+        if (object.role === 1) {
+          // User is an admin
+          setCookie('authorization', 1);
+        } else if (object.role === 2) {
+          // User is a mod
+          setCookie('authorization', 2);
+        }
+      } else {
+        // Go through disallowed to find username
+        const disallowedObject = disallowedJSON.find(item => item.username === username);
+        if (!disallowedObject) {
+          // We have an authorized standard user
+          setCookie('authorization', 0);
+
+          // Note: If we find a disallowed user, they don't get an authorization cookie
+        }
+      }
 
       //console.log("Success:", addResponse);
-      router.push(`/`);
     } catch (error) {
       // There was an error when trying to connect to the db
-      console.error("Error when attempting to connect to db:", error);
+      console.error("Login denied - invalid username/password:", error);
       router.refresh();
     }
   }
 
   // Function to handle username box
   const handleUsernameChange = (e) => {
-    setUsrStr(e.target.value);
+    setUsername(e.target.value);
   };
 
   // Function to handle password box
   const handlePassChange = (e) => {
-    setPasStr(e.target.value);
+    setPassword(e.target.value);
   };
 
   return (
@@ -94,7 +134,7 @@ const login = () => {
             type="text"
             id="username"
             onChange={handleUsernameChange}
-            value={usrStr}
+            value={username}
             rows={1}
             size={30}
             required
@@ -107,7 +147,7 @@ const login = () => {
             id="password"
             type="password"
             onChange={handlePassChange}
-            value={pasStr}
+            value={password}
             rows={1}
             size={30}
             required
