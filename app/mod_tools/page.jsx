@@ -1,15 +1,32 @@
 'use client';
 import styles from './ModTools.module.css'
 import Link from 'next/link';
+import { useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons'
 
 const server_url = `http://127.0.0.1:8000`;
 
 export default function ModTools() {
+    useEffect(() => {
+        // Check the user's permissions
+        async function checkUser() {
+
+        }
+        
+        checkUser();
+    }, []);
 
     // The set of cards with their appropriate links and details
     const cards = [
+        {
+            href: '/mod_tools/dashboard',
+            className: styles.card,
+            target: '_self',
+            rel: 'noopener noreferrer',
+            header: 'Dashboard',
+            parargraph: 'View and download data from the database'
+        },
         {
             href: '/mod_tools/boards',
             className: styles.card,
@@ -62,7 +79,7 @@ export default function ModTools() {
 
             <div className={styles.tool_grid}>
                 {cards.map((card, index) => (
-                    <a
+                    <Link
                         key={index}
                         href={card.href}
                         className={card.className}
@@ -72,7 +89,7 @@ export default function ModTools() {
                     >
                         <h2>{card.header}</h2>
                         <p>{card.parargraph}</p>
-                    </a>
+                    </Link>
                 ))}
 
             </div>

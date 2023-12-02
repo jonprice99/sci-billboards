@@ -15,7 +15,7 @@ const poster_name = 'Roc' // To be replaced with mock login function info
 
 const new_post = () => {
   const router = useRouter();
-  
+
   // Constant to set the character limit of the post title
   const title_limit = 160;
   const descript_limit = 2048;
@@ -25,6 +25,7 @@ const new_post = () => {
 
   const [categoryStr, setCategoryStr] = useState('');
   const [title, setTitle] = useState('');
+  const [tags, setTag] = useState('');
   const [description, setPostBody] = useState('');
   const [showName, setShowName] = useState(false);
 
@@ -37,7 +38,13 @@ const new_post = () => {
       setCategories(data.filter(item => item.name != 'Trending'));
     }
 
+    // Check the user's permissions
+    async function checkUser() {
+
+    }
+
     fetchData();
+    checkUser();
   }, []);
 
   // Define a function that handles the form submission
@@ -91,6 +98,11 @@ const new_post = () => {
     setTitleCount(e.target.value.length);
   };
 
+  // Function to handle title character count
+  const handleTagChange = (e) => {
+    setTag(e.target.value);
+  };
+
   // Function to handle body character count
   const handlePostBodyChange = (e) => {
     setPostBody(e.target.value);
@@ -108,7 +120,7 @@ const new_post = () => {
 
       <div className={styles.grid}>
         <Link href='/'>
-        <h3><FontAwesomeIcon icon={faAngleLeft} size="lg" /> Back to Home</h3>
+          <h3><FontAwesomeIcon icon={faAngleLeft} size="lg" /> Back to Home</h3>
         </Link>
         <div>
           <h2>
@@ -116,15 +128,14 @@ const new_post = () => {
           </h2>
           <p>Enter your feedback for us below...</p>
         </div>
-          <div />
+        <div />
       </div>
 
       <Home_Center />
 
       <div className={styles.post_form}>
-        {/* Note: Need to update this so it will post to database */}
         <form method="post">
-        <label htmlFor="category">Category:</label>
+          <label htmlFor="category">Category:</label>
           <br />
           <select id="category" value={categoryStr} onChange={(e) => setCategoryStr(e.target.value)}>
             <option value="">Select a category</option>
@@ -144,6 +155,17 @@ const new_post = () => {
             value={title}
             onChange={handleTitleChange}
             maxLength={title_limit}
+            required
+          />
+          <br></br>
+          <br></br>
+          <label htmlFor="tag">Provide tags:</label>
+          <br></br>
+          <AutoResize
+            type="text"
+            id="tags"
+            value={tags}
+            onChange={handleTagChange}
             required
           />
           <br></br>

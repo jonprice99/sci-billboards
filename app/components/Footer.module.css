@@ -163,7 +163,7 @@ footer .container .Link {
 
     .footer .container {
         padding: 0px;
-        width: 100%;
+        width: auto;
         margin-left: 40px;
     }
 
@@ -173,7 +173,7 @@ footer .container .Link {
     }
 
     .footer_logo {
-        width: 100%;
+        width: auto;
         margin: 0px;
     }
 
@@ -195,19 +195,19 @@ footer .container .Link {
     }
 
     .contact {
-        width: 100%;
+        width: auto;
         margin-left: 5px;
         text-align: left;
         margin-bottom: 1rem;
     }
 
     .footer_links {
-        width: 100%;
+        width: auto;
         padding-bottom: 2rem;
     }
 
     .resourcesList {
-        width: 100%;
+        width: auto;
         text-align: left;
         margin-left: 5px;
     }
@@ -218,14 +218,14 @@ footer .container .Link {
     }
 
     .socials {
-        width: 100%;
+        width: auto;
         margin: 0px;
         padding-left: 2rem;
         padding-bottom: 2rem;
     }
 
     .copyright {
-        width: 100%;
+        width: auto;
         text-align: left;
         margin-top: 1rem;
         margin-left: 5px;

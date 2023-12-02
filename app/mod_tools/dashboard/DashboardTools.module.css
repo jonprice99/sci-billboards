@@ -29,29 +29,6 @@
   font-size: .8rem;
 }
 
-.interactions {
-  display: flex;
-  grid-template-columns: repeat(3, minmax(10%, auto));
-  max-width: 100%;
-  width: var(--max-width);
-  align-items: center;
-  justify-content: flex-end;
-  padding-top: 10%;
-}
-
-.dropDown {
-  display: flex;
-  align-items: center;
-}
-
-.searchBar {
-  padding-right: 20px;
-}
-
-.sortDropDown {
-  padding-right: 20px;
-}
-
 .post_grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(50%, auto));
@@ -74,12 +51,6 @@
   margin-top: 0.5rem;
   margin-left: 0.25rem;
   margin-right: 0.1rem;
-}
-
-.card a {
-  display: block;
-  height: 75%;
-  width: 100%;
 }
 
 .card span {
@@ -107,9 +78,8 @@
   font-weight: 400;
   text-align: left;
   bottom: calc(100% - 10px);
-  -webkit-line-clamp: 4;
-  /* number of lines to show */
-  line-clamp: 4;
+  -webkit-line-clamp: 4; /* number of lines to show */
+          line-clamp: 4; 
   -webkit-box-orient: vertical;
 }
 
@@ -123,21 +93,8 @@
   top: calc(100% - 10px);
 }
 
-.card footer button:hover {
-  cursor: pointer;
-}
-
 .card footer counter {
   color: #fff;
-  z-index: 4;
-}
-
-.card footer counter button {
-  z-index: 5;
-}
-
-.card footer counter button:hover {
-  cursor: pointer;
 }
 
 .description {
@@ -168,8 +125,7 @@
 }
 
 .button {
-  background-color: rgba(0, 53, 148, 1);
-  /* Pitt Royal */
+  background-color: rgba(0, 53, 148, 1); /* Pitt Royal */
   color: white;
   padding: 14px 22px;
   text-align: center;
@@ -188,58 +144,34 @@
 }
 
 .button:hover {
-  box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.1), 0 17px 50px 0 rgba(0, 0, 0, 0.075);
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.1), 0 17px 50px 0 rgba(0, 0, 0, 0.075);
 }
 
-.postButtonFloating {
-  position: fixed;
-  bottom: 200px;
-  right: 50px;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background-color: rgba(0, 53, 148, 1);
-  /* Pitt Royal */
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-decoration: none;
-  z-index: 2;
-  transition: background-color 0.3s, transform 0.3s;
+.post_form {
+  font-size: 14px;
 }
 
-.postButtonFloating::before {
-  content: "New Post";
-  position: absolute;
-  top: -40%;
-  left: 50%;
-  background-color: rgba(255, 184, 28, 1);
-  color: black;
-  padding: 5px 10px;
-  border-radius: 4px;
-  font-size: 12px;
-  transform: translateX(-50%);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s transform 0.3s;
+.post_form p {
+  padding-left: 0.2rem;
 }
 
-.postButtonFloating:hover {
-  transform: translateY(4px);
+.post_form form label {
+  font-weight: 600;
+  font-size: 16px;
+  padding-left: 0.2rem;
 }
 
-.postButtonFloating:hover::before {
-  opacity: 1;
-  transform: translate(-50%, -30px);
+.post_form form select {
+  width: 20rem;
+  height: 2rem;
+  font-size: 14px;
 }
 
-.iconButton {
-  background: transparent;
-  color: white;
-  border: none;
+.post_form form textarea {
+  width: 20rem;
+  font-size: medium;
+  font-family: Arial, Helvetica, sans-serif;
 }
-
 
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
@@ -277,34 +209,6 @@
     text-align: center;
   }
 
-  .interactions {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    justify-content: flex-end;
-    padding-top: 20%;
-  }
-
-  .dropDown {
-    width: 100%;
-    align-items: flex-end;
-    justify-content: flex-end;
-  }
-
-  .search {
-    width: 100%;
-    margin-bottom: 20px;
-  }
-
-  .searchBar {
-    display: flex;
-    justify-content: flex-end;
-    width: 100%;
-    padding: 0;
-    margin-bottom: 20px;
-  }
-
-
   .post_grid {
     grid-template-columns: repeat(1, minmax(50%, auto));
     grid-auto-rows: 200px;
@@ -314,8 +218,7 @@
   }
 
   .card {
-    padding: 1rem 1rem;
-    width: 300px;
+    padding: 1rem 2.5rem;
   }
 
   .card h2 {
@@ -335,9 +238,8 @@
     font-weight: 400;
     text-align: left;
     bottom: calc(100% - 10px);
-    -webkit-line-clamp: 3;
-    /* number of lines to show */
-    line-clamp: 3;
+    -webkit-line-clamp: 3; /* number of lines to show */
+            line-clamp: 3; 
     -webkit-box-orient: vertical;
   }
 
@@ -345,7 +247,7 @@
     color: #fff;
     font-size: 12px;
   }
-
+  
   .card footer datetime {
     font-size: 0.5rem;
     color: #fff;
@@ -399,6 +301,33 @@
         transparent 0%,
         rgb(var(--background-end-rgb)) 40%);
     z-index: 1;
+  }
+}
+
+/* Tablet and Smaller Desktop */
+@media (min-width: 701px) and (max-width: 1120px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(25%, auto));
+  }
+
+  .card footer counter {
+    color: #fff;
+    font-size: 14px;
+  }
+  
+  .card footer datetime {
+    font-size: 0.55rem;
+    color: #fff;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .vercelLogo {
+    /*filter: invert(1);*/
+  }
+
+  .logo {
+    /*filter: invert(1) drop-shadow(0 0 0.3rem #ffffff70);*/
   }
 }
 

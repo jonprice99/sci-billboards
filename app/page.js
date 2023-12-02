@@ -1,6 +1,7 @@
 'use client';
 import styles from './page.module.css'
-import Center from './components/Home_Center';
+import Center from './components/WordCloud_Center';
+import Dark_Center from './components/WordCloud_Center_Dark';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from "next/navigation";
@@ -8,7 +9,6 @@ import { useRouter } from "next/navigation";
 const server_url = `http://127.0.0.1:8000`;
 
 export default function Home() {
-  const router = useRouter();
   
   // The set of colors to be used as backgrounds for the link cards
   const pastelColors = [
@@ -25,6 +25,10 @@ export default function Home() {
   // The set of cards with their appropriate links and details
   const [cards, setCards] = useState([]);
 
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  const router = useRouter()
+
   useEffect(() => {
     async function fetchData() {
       const res = await fetch(`${server_url}/api/categories/`);
@@ -32,14 +36,29 @@ export default function Home() {
       setCards(data);
     }
 
+    // Refresh the page when a change in color scheme is detected
+    const onChange = () => {
+      window.location.reload();
+    }
+
+    // Set the current color scheme
+    setIsDarkMode(window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+    // Await a change in the color scheme
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', onChange);
+
     fetchData();
+
+    return () => {
+      window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', onChange);
+    }
   }, []);
 
   // Display the homepage
   return (
     <main className={styles.main}>
 
-      <Center />
+      {isDarkMode ? <Dark_Center /> : <Center />}
 
       <div className={styles.grid}>
         {cards.map((card) => (

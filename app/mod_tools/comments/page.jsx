@@ -30,8 +30,14 @@ export default function CommentsTools() {
           const data = await res.json();
           setAllComments(data);
         }
+
+        // Check the user's permissions
+        async function checkUser() {
+
+        }
     
         fetchData();
+        checkUser();
       }, []);
 
     // Columns for the mod table

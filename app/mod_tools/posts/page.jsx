@@ -30,8 +30,14 @@ export default function PostsTools() {
           const data = await res.json();
           setAllPosts(data);
         }
+
+        // Check the user's permissions
+        async function checkUser() {
+
+        }
     
         fetchData();
+        checkUser();
       }, []);
 
     // Columns for the mod table
@@ -40,7 +46,6 @@ export default function PostsTools() {
         { dataField: 'is_hidden', caption: 'isHidden', allowEditing: true, allowAdding: false},
         { dataField: 'category_id', caption: 'category_id', allowEditing: false, allowAdding: false },
         { dataField: 'post_id', caption: 'post_id', allowEditing: false, allowAdding: false },
-        { dataField: 'poster_id', caption: 'poster_id', allowEditing: false, allowAdding: false },
         { dataField: 'poster_name', caption: 'poster_name', allowEditing: false, allowAdding: false },
         { dataField: 'progress', caption: 'progress', allowEditing: true, allowAdding: false },
         { dataField: 'title', caption: 'title', allowEditing: false, allowAdding: false },
@@ -55,7 +60,6 @@ export default function PostsTools() {
         { dataField: 'is_hidden', caption: 'isHidden', allowEditing: true, allowAdding: true},
         { dataField: 'category_id', caption: 'category_id', allowEditing: true, allowAdding: true },
         { dataField: 'post_id', caption: 'post_id', allowEditing: true, allowAdding: true },
-        { dataField: 'poster_id', caption: 'poster_id', allowEditing: true, allowAdding: true },
         { dataField: 'poster_name', caption: 'poster_name', allowEditing: true, allowAdding: true },
         { dataField: 'progress', caption: 'progress', allowEditing: true, allowAdding: true },
         { dataField: 'title', caption: 'title', allowEditing: true, allowAdding: true },

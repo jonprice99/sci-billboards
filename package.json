@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@carbon/charts-react": "^1.13.7",
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
     "@fortawesome/free-brands-svg-icons": "^6.4.2",
     "@fortawesome/free-regular-svg-icons": "^6.4.2",
@@ -16,13 +17,19 @@
     "@fortawesome/react-fontawesome": "^0.2.0",
     "babel": "^6.23.0",
     "babel-plugin-macros": "^3.1.0",
+    "cookies-next": "^4.1.0",
+    "d3": "^7.8.5",
+    "d3-cloud": "^1.2.7",
+    "d3-sankey": "^0.12.3",
     "devextreme": "23.1.6",
     "devextreme-react": "23.1.6",
+    "jszip": "^3.10.1",
     "mysql2": "^3.6.2",
     "net": "^1.0.2",
     "next": "^14.0.0",
     "react": "latest",
     "react-dom": "latest",
+    "react-dropdown-select": "^4.10.0",
     "react-infinite-scroll-component": "^6.1.0",
     "react-textarea-autosize": "^8.5.3",
     "tls": "^0.0.1"

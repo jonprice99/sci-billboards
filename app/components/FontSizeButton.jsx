@@ -24,15 +24,9 @@ export default function FontSizeButton({closeMenu}) {
     return (
         <div className={styles.button_layout}>
             <div>
-                <Link href={"/"}>
+                <Link href={"/login"}>
                     <button className={styles.font_size_button} onClick={closeMenu}>Login</button>
                 </Link>
-            </div>
-            <div>
-                <button className={styles.font_size_button} onClick={increaseSize}>Increase Font Size</button>
-            </div>
-            <div>
-                <button className={styles.font_size_button} onClick={decreaseSize}>Decrease Font Size</button>
             </div>
             <div>
                 <Link href={"/mod_tools"}>

@@ -19,10 +19,11 @@ import { useRouter } from "next/navigation";
 const server_url = `http://127.0.0.1:8000`;
 
 // Flag for mod/admin power separation (to be replaced by login power check)
-const isAdmin = false;
+const isAdmin = true;
 
 export default function UsersTools() {
     const [allUsers, setAllUsers] = useState([]);
+    const [disallowedUsers, setDisallowedUsers] = useState([]);
     const router = useRouter();
 
     useEffect(() => {
@@ -30,21 +31,34 @@ export default function UsersTools() {
           const res = await fetch(`${server_url}/api/mod/users/`);
           const data = await res.json();
           setAllUsers(data);
+
+          const disallowedRes = await fetch(`${server_url}/api/mod/disallowed_users/`);
+          const disallowedData = await disallowedRes.json();
+          setDisallowedUsers(disallowedData);
+        }
+
+        // Check the user's permissions
+        async function checkUser() {
+
         }
     
         fetchData();
+        checkUser();
       }, []);
 
-    // Columns for the admin table
+    // Columns for the Users table
     const adminColumns = [
-        { dataField: 'user_id', caption: 'user_id', allowEditing: true, allowAdding: true },
-        { dataField: 'username', caption: 'poster_name', allowEditing: true, allowAdding: true },
-        { dataField: 'role', caption: 'role', allowEditing: true, allowAdding: true },
-        { dataField: 'isDisallowed', caption: 'isDisallowed', allowEditing: true, allowAdding: true }
+        { dataField: 'username', caption: 'username', allowEditing: true, allowAdding: true },
+        { dataField: 'role', caption: 'role', allowEditing: true, allowAdding: true }
+    ];
+
+    // Columns for the Users table
+    const adminDisallowedColumns = [
+        { dataField: 'username', caption: 'username', allowEditing: true, allowAdding: true },
     ];
 
     /**
-     * Function to add a new comment
+     * Function to add a new user
      */
     async function addUser( event ) {
         let changes = event.data
@@ -53,8 +67,7 @@ export default function UsersTools() {
         let user_id = changes.user_id;
         let username = changes.user_name;
         let role = changes.role;
-        let isDisallowed = changes.isDisallowed;
-        const data = { user_id, username, role, isDisallowed }
+        const data = { user_id, username, role }
 
         try {
             const addResponse = await fetch(`${server_url}/api/users/add`, {
@@ -74,7 +87,33 @@ export default function UsersTools() {
     }
 
     /**
-     * Function for mods to update a comment
+     * Function to add a new disallowed user
+     */
+    async function addDisallowedUser( event ) {
+        let changes = event.data
+
+        let username = changes.username;
+        const data = { username }
+
+        try {
+            const addResponse = await fetch(`${server_url}/api/disallowed_users/add`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            });
+
+            console.log("Success:", addResponse);
+            //router.refresh();
+        } catch (error) {
+            // There was an error when trying to post to the db
+            console.error("Error when attempting to post to db:", error);
+        }
+    }
+
+    /**
+     * Function for admins to update a user
      */
     async function updateUser( event ) {
         let changes = event.data;
@@ -83,8 +122,7 @@ export default function UsersTools() {
         let user_id = changes.user_id;
         let username = changes.user_name;
         let role = changes.role;
-        let isDisallowed = changes.isDisallowed;
-        const data = { user_id, username, role, isDisallowed };
+        const data = { user_id, username, role };
         
         // Send the data into the database
         try {
@@ -105,22 +143,71 @@ export default function UsersTools() {
     }
 
     /**
-     * Function to remove a post
+     * Function for admins to update a disallowed user
+     */
+    async function updateDisallowedUser( event ) {
+        let changes = event.data;
+
+        let username = changes.username;
+        const data = { username };
+        
+        // Send the data into the database
+        try {
+            // Send the PUT request with the updated data
+            const putResponse = await fetch(`${server_url}/api/mod/disallowed_users/update/${data.username}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            });
+
+            console.log("Success:", putResponse);
+            //router.refresh();
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+
+    /**
+     * Function to remove a user
      */
     async function removeUser( event ) {
         let changes = event.data
 
         // Admin data
-        let user_id = changes.user_id;
         let username = changes.user_name;
         let role = changes.role;
-        let isDisallowed = changes.isDisallowed;
-        const data = { user_id, username, role, isDisallowed };
+        const data = { user_id, username, role };
 
         // Get the current data for the board
         try {
             // Send the DELETE request to remove the category from the db
             const deleteResponse = await fetch(`${server_url}/api/users/delete/${data.user_id}`, {
+                method: "DELETE"
+            });
+
+            console.log("Success:", deleteResponse);
+            //router.refresh();
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+
+    /**
+     * Function to remove a disallowed user
+     */
+    async function removeDisallowedUser( event ) {
+        let changes = event.data
+
+        // Admin data
+        let username = changes.username;
+        const data = { username };
+
+        // Get the current data for the board
+        try {
+            // Send the DELETE request to remove the category from the db
+            const deleteResponse = await fetch(`${server_url}/api/disallowed_users/delete/${data.user_id}`, {
                 method: "DELETE"
             });
 
@@ -165,13 +252,14 @@ export default function UsersTools() {
                         <h2>
                             Users (Admin)
                         </h2>
-                        <p></p>
+                        <p>Manage superusers & disallowed users</p>
                     </div>
                     <div></div>
                 </div>
     
                 <br />
-                <div style={{ width: '100%' }}>
+                <h3>Users:</h3>
+                <div style={{ width: '70%' }}>
                     <ExtremeDataGrid
                         dataSource={allUsers}
                         columns={adminColumns}
@@ -202,6 +290,36 @@ export default function UsersTools() {
                 </div>
                 <br />
                 <br />
+                <h3>Disallowed Users:</h3>
+                <div style={{ width: '70%' }}>
+                    <ExtremeDataGrid
+                        dataSource={disallowedUsers}
+                        columns={adminDisallowedColumns}
+                        columnAutoWidth={true}
+                        allowColumnReordering={true}
+                        allowColumnResizing={true}
+                        onRowUpdated={updateDisallowedUser}
+                        onRowInserted={addDisallowedUser}
+                        onRowRemoved={removeDisallowedUser}
+                    >
+                        <ColumnChooser enabled={true} />
+                        <ColumnFixing enabled={true} />
+                        <FilterRow visible={true} />
+                        <Scrolling mode='infinite' />
+                        <SearchPanel visible={true} />
+                        <Selection mode="single" />
+                        <Editing
+                            mode="row"
+                            allowUpdating={true}
+                            allowDeleting={true}
+                            allowAdding={true}
+                        />
+                        <Toolbar>
+                            <Item name="addRowButton" showText="in-menu" />
+                            <Item name="searchPanel" />
+                        </Toolbar>
+                    </ExtremeDataGrid>
+                </div>
     
             </main>
         )
