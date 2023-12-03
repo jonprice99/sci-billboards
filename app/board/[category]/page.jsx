@@ -128,7 +128,6 @@ export default function Page({ params, searchParams }) {
     }
 
     fetchData();
-    checkUser();
 
     //create floating new post button
     function handleScroll() {

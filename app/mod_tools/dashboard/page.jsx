@@ -90,7 +90,7 @@ export default function PostsTools() {
         { dataField: 'category_id', caption: 'category_id', allowEditing: false, allowAdding: false },
         { dataField: 'post_id', caption: 'post_id', allowEditing: false, allowAdding: false },
         { dataField: 'poster_name', caption: 'poster_name', allowEditing: false, allowAdding: false },
-        { dataField: 'show_name', caption: 'show_name', allowEditing: false, allowAdding: false },
+        { dataField: 'showName', caption: 'showName', allowEditing: false, allowAdding: false },
         { dataField: 'progress', caption: 'progress', allowEditing: false, allowAdding: false },
         { dataField: 'title', caption: 'title', allowEditing: false, allowAdding: false },
         { dataField: 'upvotes', caption: 'upvotes', allowEditing: false, allowAdding: false },
