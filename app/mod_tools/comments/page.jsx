@@ -67,7 +67,6 @@ export default function CommentsTools() {
         { dataField: 'category_id', caption: 'category_id', allowEditing: false, allowAdding: false },
         { dataField: 'post_id', caption: 'post_id', allowEditing: false, allowAdding: false },
         { dataField: 'comment_id', caption: 'comment_id', allowEditing: false, allowAdding: false },
-        { dataField: 'user_id', caption: 'user_id', allowEditing: false, allowAdding: false },
         { dataField: 'user_name', caption: 'poster_name', allowEditing: false, allowAdding: false },
         { dataField: 'body', caption: 'body', allowEditing: false, allowAdding: false }
     ];
@@ -79,7 +78,6 @@ export default function CommentsTools() {
         { dataField: 'category_id', caption: 'category_id', allowEditing: true, allowAdding: true },
         { dataField: 'post_id', caption: 'post_id', allowEditing: true, allowAdding: true },
         { dataField: 'comment_id', caption: 'comment_id', allowEditing: true, allowAdding: true },
-        { dataField: 'user_id', caption: 'user_id', allowEditing: true, allowAdding: true },
         { dataField: 'user_name', caption: 'poster_name', allowEditing: true, allowAdding: true },
         { dataField: 'body', caption: 'body', allowEditing: true, allowAdding: true }
     ];
@@ -94,13 +92,12 @@ export default function CommentsTools() {
         let category_id = changes.category_id;
         let post_id = changes.post_id;
         let comment_id = changes.comment_id;
-        let user_id = changes.user_id;
         let user_name = changes.user_name;
         let body = changes.body;
         let comment_date = changes.comment_date;
         let is_hidden = changes.is_hidden;
         let is_pending_mod = changes.is_pending_mod;
-        const data = { category_id, post_id, comment_id, user_id, user_name, body, comment_date, is_hidden, is_pending_mod }
+        const data = { category_id, post_id, comment_id, user_name, body, comment_date, is_hidden, is_pending_mod }
 
         try {
             const addResponse = await fetch(`${server_url}/api/comments/create`, {
@@ -129,7 +126,6 @@ export default function CommentsTools() {
         let category_id = changes.category_id;
         let post_id = changes.post_id;
         let comment_id = changes.comment_id;
-        let user_id = changes.user_id;
         let user_name = changes.user_name;
         let body = changes.body;
         let comment_date = changes.comment_date;
@@ -165,13 +161,12 @@ export default function CommentsTools() {
         let category_id = changes.category_id;
         let post_id = changes.post_id;
         let comment_id = changes.comment_id;
-        let user_id = changes.user_id;
         let user_name = changes.user_name;
         let body = changes.body;
         let comment_date = changes.comment_date;
         let is_hidden = changes.is_hidden;
         let is_pending_mod = changes.is_pending_mod;
-        const data = { category_id, post_id, comment_id, user_id, user_name, body, comment_date, is_hidden, is_pending_mod }
+        const data = { category_id, post_id, comment_id, user_name, body, comment_date, is_hidden, is_pending_mod }
 
         // Get the current data for the board
         try {
