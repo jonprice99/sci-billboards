@@ -62,30 +62,36 @@ export default function PostsTools() {
 
     // Columns for the mod table
     const columns = [
+        { dataField: 'flag_weight', caption: 'flag_weight', allowEditing: true, allowAdding: false, sortOrder: 'desc' },
         { dataField: 'is_pending_mod', caption: 'isPendingMod', allowEditing: true, allowAdding: false, sortOrder: 'desc' },
         { dataField: 'is_hidden', caption: 'isHidden', allowEditing: true, allowAdding: false},
         { dataField: 'category_id', caption: 'category_id', allowEditing: false, allowAdding: false },
         { dataField: 'post_id', caption: 'post_id', allowEditing: false, allowAdding: false },
         { dataField: 'poster_name', caption: 'poster_name', allowEditing: false, allowAdding: false },
+        { dataField: 'show_name', caption: 'show_name', allowEditing: false, allowAdding: false },
         { dataField: 'progress', caption: 'progress', allowEditing: true, allowAdding: false },
         { dataField: 'title', caption: 'title', allowEditing: false, allowAdding: false },
         { dataField: 'description', caption: 'description', allowEditing: false, allowAdding: false },
         { dataField: 'upvotes', caption: 'upvotes', allowEditing: false, allowAdding: false },
-        { dataField: 'comments', caption: 'comments', allowEditing: false, allowAdding: false },
+        { dataField: 'comment_count', caption: 'comments', allowEditing: false, allowAdding: false },
+        { dataField: 'keywords', caption: 'keywords', allowEditing: false, allowAdding: false },
     ];
 
     // Columns for the admin table
     const adminColumns = [
+        { dataField: 'flag_weight', caption: 'flag_weight', allowEditing: true, allowAdding: true, sortOrder: 'desc' },
         { dataField: 'is_pending_mod', caption: 'isPendingMod', allowEditing: true, allowAdding: true, sortOrder: 'desc' },
         { dataField: 'is_hidden', caption: 'isHidden', allowEditing: true, allowAdding: true},
         { dataField: 'category_id', caption: 'category_id', allowEditing: true, allowAdding: true },
         { dataField: 'post_id', caption: 'post_id', allowEditing: true, allowAdding: true },
         { dataField: 'poster_name', caption: 'poster_name', allowEditing: true, allowAdding: true },
+        { dataField: 'show_name', caption: 'show_name', allowEditing: false, allowAdding: false },
         { dataField: 'progress', caption: 'progress', allowEditing: true, allowAdding: true },
         { dataField: 'title', caption: 'title', allowEditing: true, allowAdding: true },
         { dataField: 'description', caption: 'description', allowEditing: true, allowAdding: true },
         { dataField: 'upvotes', caption: 'upvotes', allowEditing: true, allowAdding: true },
-        { dataField: 'comments', caption: 'comments', allowEditing: true, allowAdding: true },
+        { dataField: 'comment_count', caption: 'comments', allowEditing: false, allowAdding: false },
+        { dataField: 'keywords', caption: 'keywords', allowEditing: false, allowAdding: false },
     ];
 
     /**
@@ -95,12 +101,22 @@ export default function PostsTools() {
         let changes = event.data
 
         // Admin data
-        let id = changes.id;
-        let name = changes.name;
-        let paragraph = changes.paragraph;
-        let href = changes.href;
-        let isArchived = changes.isArchived;
-        const data = { id, name, paragraph, href, isArchived }
+        let category_id = changes.category_id;
+        let post_id = changes.post_id;
+        let title = changes.title;
+        let description = changes.description;
+        let keywords = changes.keywords;
+        let progress = changes.progress;
+        let date_posted = changes.date_posted;
+        let poster_name = changes.poster_name;
+        let upvotes = changes.upvotes;
+        let comments = changes.comments;
+        let is_hidden = changes.is_hidden;
+        let is_pending_mod = changes.is_pending_mod;
+        let comment_count = changes.comment_count;
+        let showName = changes.showName;
+        let flag_weight = changes.flag_weight;
+        const data = { category_id, post_id, title, description, keywords, progress, date_posted, poster_name, upvotes, comments, is_hidden, is_pending_mod, comment_count, showName, flag_weight };
 
         try {
             const addResponse = await fetch(`${server_url}/api/posts/create`, {
@@ -130,15 +146,18 @@ export default function PostsTools() {
         let post_id = changes.post_id;
         let title = changes.title;
         let description = changes.description;
+        let keywords = changes.keywords;
         let progress = changes.progress;
         let date_posted = changes.date_posted;
-        let poster_id = changes.poster_id;
         let poster_name = changes.poster_name;
         let upvotes = changes.upvotes;
         let comments = changes.comments;
         let is_hidden = changes.is_hidden;
         let is_pending_mod = changes.is_pending_mod;
-        const data = { category_id, post_id, title, description, progress, date_posted, poster_id, poster_name, upvotes, comments, is_hidden, is_pending_mod }
+        let comment_count = changes.comment_count;
+        let showName = changes.showName;
+        let flag_weight = changes.flag_weight;
+        const data = { category_id, post_id, title, description, keywords, progress, date_posted, poster_name, upvotes, comments, is_hidden, is_pending_mod, comment_count, showName, flag_weight };
         
         // Send the data into the database
         try {
@@ -169,15 +188,18 @@ export default function PostsTools() {
         let post_id = changes.post_id;
         let title = changes.title;
         let description = changes.description;
+        let keywords = changes.keywords;
         let progress = changes.progress;
         let date_posted = changes.date_posted;
-        let poster_id = changes.poster_id;
         let poster_name = changes.poster_name;
         let upvotes = changes.upvotes;
         let comments = changes.comments;
         let is_hidden = changes.is_hidden;
         let is_pending_mod = changes.is_pending_mod;
-        const data = { category_id, post_id, title, description, progress, date_posted, poster_id, poster_name, upvotes, comments, is_hidden, is_pending_mod }
+        let comment_count = changes.commentCount;
+        let showName = changes.showName;
+        let flag_weight = changes.flag_weight;
+        const data = { category_id, post_id, title, description, keywords, progress, date_posted, poster_name, upvotes, comments, is_hidden, is_pending_mod, comment_count, showName, flag_weight }
 
         // Get the current data for the board
         try {

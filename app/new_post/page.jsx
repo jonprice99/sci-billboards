@@ -25,7 +25,7 @@ const new_post = () => {
 
   const [categoryStr, setCategoryStr] = useState('');
   const [title, setTitle] = useState('');
-  const [tags, setTag] = useState('');
+  const [keywords, setKeywords] = useState('');
   const [description, setPostBody] = useState('');
   const [showName, setShowName] = useState(false);
   const [poster_name, setPosterName] = useState('');
@@ -81,14 +81,7 @@ const new_post = () => {
     }
 
     //Set the form data so we can send it to the Django API
-    let data;
-    if (!showName) {
-      // We're keeping the post anonymous
-      data = { category_id, title, description, poster_id };
-    } else {
-      // We're adding a name to the post
-      data = { category_id, title, description, poster_id, poster_name }
-    }
+    const data = { category_id, title, description, keywords, poster_name, showName };
 
     // Get the category href we're posting to so we can put it in the router
     let selected_href = (categories.filter(item => item.id == category_id)).map((item) => item.href)
@@ -120,7 +113,7 @@ const new_post = () => {
 
   // Function to handle title character count
   const handleTagChange = (e) => {
-    setTag(e.target.value);
+    setKeywords(e.target.value);
   };
 
   // Function to handle body character count
@@ -179,12 +172,12 @@ const new_post = () => {
           />
           <br></br>
           <br></br>
-          <label htmlFor="tag">Provide tags:</label>
+          <label htmlFor="tag">Provide keywords:</label>
           <br></br>
           <AutoResize
             type="text"
-            id="tags"
-            value={tags}
+            id="keywords"
+            value={keywords}
             onChange={handleTagChange}
             required
           />

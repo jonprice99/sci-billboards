@@ -23,20 +23,29 @@ export default function PostsTools() {
     const [categories, setCategories] = useState([]);
     const [allPosts, setAllPosts] = useState([]);
     const [allComments, setAllComments] = useState([]);
+    const [allUpvotes, setAllUpvotes] = useState([]);
 
     useEffect(() => {
         async function fetchData() {
+            // Get the Posts table
             const resPosts = await fetch(`${server_url}/api/mod/posts/`);
             const dataPosts = await resPosts.json();
             setAllPosts(dataPosts);
 
+            // Get the Categories table
             const resCat = await fetch(`${server_url}/api/mod/categories/`);
             const dataCat = await resCat.json();
             setCategories(dataCat);
 
+            // Get the Comments table
             const resComm = await fetch(`${server_url}/api/mod/comments/`);
             const dataComm = await resComm.json();
             setAllComments(dataComm);
+
+            // Get the User_Upvotes table
+            const upvotesResponse = await fetch(`${server_url}/api/user_upvotes/`);
+            const upvotesData = await upvotesResponse.json();
+            setAllUpvotes(upvotesData);
         }
 
         // Check the user's permissions
@@ -76,16 +85,17 @@ export default function PostsTools() {
 
     // Columns for the posts overview table
     const postsColumns = [
-        { dataField: 'category_id', caption: 'category_id', allowEditing: false, allowAdding: false, sortOrder: 'asc', width: 80 },
-        { dataField: 'post_id', caption: 'post_id', allowEditing: false, allowAdding: false, sortOrder: 'asc', width: 80 },
+        { dataField: 'is_pending_mod', caption: 'isPendingMod', allowEditing: false, allowAdding: false, sortOrder: 'desc' },
+        { dataField: 'is_hidden', caption: 'isHidden', allowEditing: true, allowAdding: false},
+        { dataField: 'category_id', caption: 'category_id', allowEditing: false, allowAdding: false },
+        { dataField: 'post_id', caption: 'post_id', allowEditing: false, allowAdding: false },
         { dataField: 'poster_name', caption: 'poster_name', allowEditing: false, allowAdding: false },
-        { dataField: 'progress', caption: 'progress', allowEditing: true, allowAdding: false },
+        { dataField: 'show_name', caption: 'show_name', allowEditing: false, allowAdding: false },
+        { dataField: 'progress', caption: 'progress', allowEditing: false, allowAdding: false },
         { dataField: 'title', caption: 'title', allowEditing: false, allowAdding: false },
         { dataField: 'upvotes', caption: 'upvotes', allowEditing: false, allowAdding: false },
-        { dataField: 'date_posted', caption: 'date_posted', allowEditing: false, allowAdding: false },
-        { dataField: 'comment_count', caption: 'comment_count', allowEditing: false, allowAdding: false },
-        { dataField: 'is_pending_mod', caption: 'isPendingMod', allowEditing: true, allowAdding: false, width: 60 },
-        { dataField: 'is_hidden', caption: 'isHidden', allowEditing: true, allowAdding: false, width: 60 },
+        { dataField: 'comment_count', caption: 'comments', allowEditing: false, allowAdding: false },
+        { dataField: 'keywords', caption: 'keywords', allowEditing: false, allowAdding: false },
     ];
 
     // Columns for the comments overview table
@@ -106,12 +116,14 @@ export default function PostsTools() {
         const categoriesJSON = JSON.stringify(categories, null, 2);
         const postsJSON = JSON.stringify(allPosts, null, 2);
         const commentsJSON = JSON.stringify(allComments, null, 2);
+        const upvotesJSON = JSON.stringify(allUpvotes, null, 2);
       
         // Create the zip file
         const zip = new JSZip();
         zip.file('categories.json', categoriesJSON);
         zip.file('posts.json', postsJSON);
         zip.file('comments.json', commentsJSON);
+        zip.file('user_upvotes.json', upvotesJSON)
 
         // Set the filename
         const filename = `SCI_Idea_Board_Data.zip`; 

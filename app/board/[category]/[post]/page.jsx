@@ -12,7 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMessage, faFlag, faAngleLeft, faThumbsUp } from '@fortawesome/free-solid-svg-icons'
 import { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
-
+import { setCookie, getCookie, deleteCookie, hasCookie } from 'cookies-next';
 
 const server_url = `http://127.0.0.1:8000`;
 
@@ -38,11 +38,12 @@ export default function Post({ params, searchParams }) {
     const [error, setError] = useState(false);
     const [categoryID, setCategoryID] = useState(0);
     const [upvotes, setUpvotes] = useState(0);
+    const [commentCount, setCommentCount] = useState(0);
     let progressText;
     let catData;
 
-    // Hold the json version of the upvotes for easier parsing
-    let upvotesJSON;
+    // Hold the User_Upvotes table data
+    const [allUpvotes, setAllUpvotes] = useState([]);
 
     useEffect(() => {
         // Get the necessary data from the database
@@ -56,8 +57,9 @@ export default function Post({ params, searchParams }) {
                 const data = await response.json();
                 setTitle(data.title);
                 setParagraph(data.description);
-                setProgress(data.progress)
+                setProgress(data.progress);
                 setUpvotes(data.upvotes);
+                setCommentCount(data.comment_count);
 
                 // Set the appropriate date
                 const date = new Date(data.date_posted);
@@ -66,7 +68,7 @@ export default function Post({ params, searchParams }) {
                 setDate(estDate)
 
                 // Set the appropriate poster name
-                if (data.poster_name == null) {
+                if (data.showName == false) {
                     setPosterName("Anonymous")
                 } else {
                     setPosterName(data.poster_name)
@@ -77,28 +79,17 @@ export default function Post({ params, searchParams }) {
             }
 
             // Get the User_Upvotes data
-            //const upvotesResponse = await fetch(`${server_url}/api/user_upvotes`);
-            //const upvotesData = await upvotesResponse.json();
-            //upvotesJSON = upvotesData;
+            const upvotesResponse = await fetch(`${server_url}/api/user_upvotes/`);
+            const upvotesData = await upvotesResponse.json();
+            setAllUpvotes(upvotesData);
 
             // Get the comments for this post
             const cardResponse = await fetch(`${server_url}/api/comments/${catData.id}/${params.post}`);
             const cardData = await cardResponse.json();
             setCards(cardData);
-            console.log(cardData);
-
-            console.log(categoryID);
-            console.log(params.post);
-            console.log(upvotes);
-        }
-
-        // Check the user's permissions
-        async function checkUser() {
-
         }
 
         fetchData();
-        checkUser();
     }, [params]);
 
 
@@ -126,6 +117,7 @@ export default function Post({ params, searchParams }) {
     function FlagButton({ category_id, post_id }) {
         const router = useRouter();
 
+        // No need to authenticate user here since it's done in flag_post
         const handleClick = () => {
             router.push(`/flag_post?category_id=${category_id}&post_id=${post_id}`,);
         };
@@ -143,26 +135,84 @@ export default function Post({ params, searchParams }) {
         const [upvotes, setUpvotes] = useState(upvoteCount);
 
         const handleClick = async () => {
-            // Proceed with this section if the user hasn't upvoted this post
-            //if user, post_id, category_id not in User_Upvotes
-            if (upvotes === upvoteCount) {
-                // Increment the local count
-                setUpvotes(upvotes + 1);
+            let loginCookie = getCookie('pittID');
+            let authorizeCookie = getCookie('authorization');
 
-                // Increment the database count
-                const response = await fetch(`${server_url}/api/posts/inc_upvote/${category_id}/${post_id}`, {
-                    method: "PATCH"
-                });
-                console.log(response);
+            // Check if the user is logged in
+            if (loginCookie != undefined) {
+                // Check if the user is authorized to upvote
+                if (authorizeCookie != undefined) {
+                    // Check if the user has upvoted this post or not
+                    const upvotedObject = allUpvotes.find(item => item.category_id === category_id && item.post_id === post_id && item.username.toUpperCase() === username.toUpperCase());
+
+                    if (upvotes === upvoteCount) {
+                        //if user, post_id, category_id not in User_Upvotes
+                        if (!upvotedObject) {
+                            // Increment the local count
+                            setUpvotes(upvotes + 1);
+
+                            // Increment the database count
+                            const response = await fetch(`${server_url}/api/posts/inc_upvote/${category_id}/${post_id}`, {
+                                method: "PATCH"
+                            });
+                            console.log(response);
+
+                            // Add the upvote to the User_Upvotes table for tracking
+                            let username = getCookie('pittID');
+                            const data = { category_id, post_id, username }
+
+                            try {
+                                const addResponse = await fetch(`${server_url}/api/user_upvotes/add`, {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    },
+                                    body: JSON.stringify(data)
+                                });
+
+                                console.log("Success:", addResponse);
+                                //router.refresh();
+                            } catch (error) {
+                                // There was an error when trying to post to the db
+                                console.error("Error when attempting to post to db:", error);
+                            }
+                        }
+                    } else {
+                        // if user, post_id, category_id in User_Upvotes
+                        if (upvotedObject) {
+                            // Decrement the local count
+                            setUpvotes(upvotes - 1)
+
+                            // Decrement the database count
+                            const response = await fetch(`${server_url}/api/posts/dec_upvote/${category_id}/${post_id}`, {
+                                method: "PATCH",
+                            });
+                            console.log(response);
+
+                            // Remove the upvote from the User_Upvotes table
+                            let username = getCookie('pittID');
+
+                            // Get the current data for the board
+                            try {
+                                // Send the DELETE request to remove the category from the db
+                                const deleteResponse = await fetch(`${server_url}/api/user_upvotes/delete/${category_id}/${post_id}/${username}`, {
+                                    method: "DELETE"
+                                });
+
+                                console.log("Success:", deleteResponse);
+                                //router.refresh();
+                            } catch (error) {
+                                console.error("Error:", error);
+                            }
+                        }
+                    }
+                } else {
+                    // The user is logged in, but not authorized, so they must be disallowed
+                    alert("You are currently unable to upvote posts. Please contact administration for assistance.");
+                }
             } else {
-                // Decrement the local count
-                setUpvotes(upvotes - 1)
-
-                // Decrement the database count
-                const response = await fetch(`${server_url}/api/posts/dec_upvote/${category_id}/${post_id}`, {
-                    method: "PATCH",
-                });
-                console.log(response);
+                // The user isn't logged in
+                alert("You need to be logged in to upvote ideas!")
             }
         };
 

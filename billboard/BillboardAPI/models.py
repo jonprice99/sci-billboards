@@ -58,16 +58,17 @@ class Posts(models.Model):
     post_id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=160)
     description = models.TextField()
-    subcategory = models.CharField(max_length=256, null=True)
+    keywords = models.TextField(null=False)
     progress = models.SmallIntegerField(default=0)
     date_posted = models.DateTimeField(auto_now_add=True)
-    poster_id = models.IntegerField()
     poster_name = models.CharField(max_length=128, null=True)
     upvotes = models.IntegerField(default=0)
     comments = models.IntegerField(default=0)
     is_pending_mod = models.BooleanField(default=False)
     is_hidden = models.BooleanField(default=False)
     comment_count = models.PositiveIntegerField(default=0)
+    showName = models.BooleanField(default=False)
+    flag_weight = models.IntegerField(default=0)
     
     class Meta:
         db_table = 'Posts'  # Specify the table name
