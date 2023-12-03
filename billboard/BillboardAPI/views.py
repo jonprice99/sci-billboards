@@ -96,7 +96,7 @@ def get_all_comments(request):
 
 @api_view(['GET'])
 def get_post_comments(request, category_id, post_id):
-    comments = Comments.objects.filter(category_id=category_id, post_id=post_id, isHidden=False)
+    comments = Comments.objects.filter(category_id=category_id, post_id=post_id, is_hidden=False)
     serializer = CommentsSerializer(comments, many=True)
     return Response(serializer.data)
 

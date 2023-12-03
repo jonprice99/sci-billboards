@@ -282,15 +282,9 @@ export default function Post({ params, searchParams }) {
             <div className={styles.post_grid}>
                 {cards.map((card) => (
                     <div key={params.post} className={styles.card} style={{ backgroundColor: pastelColors[(params.post - 1) % pastelColors.length] }}>
-                        <Link
-                            href={`/`}
-                            target='_self'
-                            rel='noopener noreferrer'
-                        >
-                            <h2></h2>
-                            <p>{card.body}</p>
-                            <p>{card.comment_date}</p>
-                        </Link>
+                        <h2>{card.user_name}</h2>
+                        <p>{card.body}</p>
+                        <p>{card.comment_date}</p>
                     </div>
                 ))}
 

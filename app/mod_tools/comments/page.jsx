@@ -67,6 +67,7 @@ export default function CommentsTools() {
         { dataField: 'category_id', caption: 'category_id', allowEditing: false, allowAdding: false },
         { dataField: 'post_id', caption: 'post_id', allowEditing: false, allowAdding: false },
         { dataField: 'comment_id', caption: 'comment_id', allowEditing: false, allowAdding: false },
+        { dataField: 'showName', caption: 'showName', allowEditing: false, allowAdding: false },
         { dataField: 'user_name', caption: 'poster_name', allowEditing: false, allowAdding: false },
         { dataField: 'body', caption: 'body', allowEditing: false, allowAdding: false }
     ];
@@ -78,6 +79,7 @@ export default function CommentsTools() {
         { dataField: 'category_id', caption: 'category_id', allowEditing: true, allowAdding: true },
         { dataField: 'post_id', caption: 'post_id', allowEditing: true, allowAdding: true },
         { dataField: 'comment_id', caption: 'comment_id', allowEditing: true, allowAdding: true },
+        { dataField: 'showName', caption: 'showName', allowEditing: true, allowAdding: true },
         { dataField: 'user_name', caption: 'poster_name', allowEditing: true, allowAdding: true },
         { dataField: 'body', caption: 'body', allowEditing: true, allowAdding: true }
     ];

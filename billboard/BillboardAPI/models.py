@@ -85,6 +85,7 @@ class Comments(models.Model):
     comment_date = models.DateTimeField(auto_now_add=True)
     is_pending_mod = models.BooleanField(default=False)
     is_hidden = models.BooleanField(default=False)
+    showName = models.BooleanField(default=False)
     
     class Meta:
         db_table = 'Comments'
