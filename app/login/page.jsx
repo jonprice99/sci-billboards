@@ -66,7 +66,7 @@ const login = () => {
       // Possibly: Add check for empty/null array here
 
       // (if no error/non-null array) Set the login
-      setCookie('pittID', username);
+      setCookie('pittID', username, {maxAge: 1200 * 6 * 24 });
 
       // Check if the user is a superuser in Users table to set permissions
       const object = usersJSON.find(item => item.username.toUpperCase() === username.toUpperCase());
@@ -75,17 +75,17 @@ const login = () => {
         // Found the user, so set the permission level
         if (object.role === 1) {
           // User is an admin
-          setCookie('authorization', 1);
+          setCookie('authorization', 1, {maxAge: 1200 * 6 * 24 });
         } else if (object.role === 2) {
           // User is a mod
-          setCookie('authorization', 2);
+          setCookie('authorization', 2, {maxAge: 1200 * 6 * 24 });
         }
       } else {
         // Go through disallowed to find username
         const disallowedObject = disallowedJSON.find(item => item.username === username);
         if (!disallowedObject) {
           // We have an authorized standard user
-          setCookie('authorization', 0);
+          setCookie('authorization', 0, {maxAge: 1200 * 6 * 24 });
 
           // Note: If we find a disallowed user, they don't get an authorization cookie
         }
