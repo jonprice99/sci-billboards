@@ -15,15 +15,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMessage, faFlag, faAngleLeft, faThumbsUp } from '@fortawesome/free-solid-svg-icons'
 import { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
+import { setCookie, getCookie, deleteCookie, hasCookie } from 'cookies-next';
 
 const server_url = `http://127.0.0.1:8000`;
-
-// Flag for mod/admin power separation (to be replaced by login power check)
-const isAdmin = true;
 
 export default function UsersTools() {
     const [allUsers, setAllUsers] = useState([]);
     const [disallowedUsers, setDisallowedUsers] = useState([]);
+    const [isAdmin, setIsAdmin] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
@@ -39,7 +38,28 @@ export default function UsersTools() {
 
         // Check the user's permissions
         async function checkUser() {
+            // Check if the user is logged in
+            let loggedInCookie = getCookie('pittID');
 
+            // Check if the user is disallowed
+            let authorizedCookie = getCookie('authorization');
+
+            if (loggedInCookie == undefined) {
+                // The user isn't logged in, redirect them to the login page
+                alert("Access Denied: You need to login and be a moderator or administrator to access this page!");
+                router.push(`/login`);
+            }
+
+            if (loggedInCookie != undefined && authorizedCookie < 1) {
+                // The user is logged in, but they're unauthorized
+                alert("Access Denied: Only moderators or administrators can access this page!");
+                router.push(`/`);
+            }
+
+            if (authorizedCookie == 1) {
+                // The user is an admin
+                setIsAdmin(true);
+            }
         }
     
         fetchData();

@@ -4,18 +4,36 @@ import Link from 'next/link';
 import { useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons'
+import { setCookie, getCookie, deleteCookie, hasCookie } from 'cookies-next';
+import { useRouter } from 'next/navigation';
 
 const server_url = `http://127.0.0.1:8000`;
 
 export default function ModTools() {
-    useEffect(() => {
-        // Check the user's permissions
-        async function checkUser() {
+    const router = useRouter();
 
+    // Check the user's permissions
+    async function checkUser() {
+        // Check if the user is logged in
+        let loggedInCookie = getCookie('pittID');
+
+        // Check if the user is disallowed
+        let authorizedCookie = getCookie('authorization');
+
+        if (loggedInCookie == undefined) {
+            // The user isn't logged in, redirect them to the login page
+            alert("Access Denied: You need to login and be a moderator or administrator to access this page!");
+            router.push(`/login`);
         }
-        
-        checkUser();
-    }, []);
+
+        if (loggedInCookie != undefined && authorizedCookie < 1) {
+            // The user is logged in, but they're unauthorized
+            alert("Access Denied: Only moderators or administrators can access this page!");
+            router.push(`/`);
+        }
+    }
+
+    checkUser();
 
     // The set of cards with their appropriate links and details
     const cards = [
@@ -60,7 +78,6 @@ export default function ModTools() {
             parargraph: 'Manage comments on board posts and their visibility'
         },
     ]
-
 
     return (
         <main className={styles.main}>
