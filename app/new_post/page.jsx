@@ -8,10 +8,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons'
 import { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
+import { setCookie, getCookie, deleteCookie, hasCookie } from 'cookies-next';
 
 const server_url = `http://127.0.0.1:8000`;
-const poster_id = 1;  // To be replaced with mock login function info
-const poster_name = 'Roc' // To be replaced with mock login function info
+const poster_id = 1;  // Deprecated - To be removed following update of Posts table & Django model to remove poster_id column
 
 const new_post = () => {
   const router = useRouter();
@@ -28,6 +28,7 @@ const new_post = () => {
   const [tags, setTag] = useState('');
   const [description, setPostBody] = useState('');
   const [showName, setShowName] = useState(false);
+  const [poster_name, setPosterName] = useState('');
 
   const [categories, setCategories] = useState([]);
 
@@ -40,11 +41,30 @@ const new_post = () => {
 
     // Check the user's permissions
     async function checkUser() {
+      // Check if the user is logged in
+      let loggedInCookie = getCookie('pittID');
 
+      // Check if the user is disallowed
+      let authorizedCookie = getCookie('authorization');
+      
+      if (loggedInCookie == undefined) {
+        // The user isn't logged in, redirect them to the login page
+        alert("You need to login to make a new post!");
+        router.push(`/login`);
+      }
+
+      if (loggedInCookie != undefined && authorizedCookie == undefined) {
+        // The user is logged in, but they're unauthorized
+        alert("You're currently unable to make a new post. Please contact administration for assistance!");
+        router.push(`/`);
+      }
     }
 
     fetchData();
     checkUser();
+
+    // Got through the checks, so set poster_name
+    setPosterName(getCookie('pittID'));
   }, []);
 
   // Define a function that handles the form submission
@@ -55,8 +75,8 @@ const new_post = () => {
     // Get the numerical version of the category id
     let category_id = Number(categoryStr)
 
-    // Prevent the user from being able to send a blank post
-    if (category_id == 0 || title.length < 1 || description.length < 1) {
+    // Prevent the user from being able to send a blank post or post after login timeout
+    if (category_id == 0 || categoryStr.length < 1 || title.length < 1 || description.length < 1 || poster_name.length < 1) {
       router.push(`/new_post`);
     }
 

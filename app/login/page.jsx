@@ -31,9 +31,13 @@ const login = () => {
 
     async function isLoggedInCheck() {
       if (hasCookie('pittID')) {
-        // Redirect the user back to the homepage
-        router.back();
-        alert("You're already logged in!");
+        // Delete the cookies
+        deleteCookie('pittID');
+        if (hasCookie('authorization')) {
+          deleteCookie('authorization');
+        }
+
+        alert("You're logged out!");
       }
     }
 

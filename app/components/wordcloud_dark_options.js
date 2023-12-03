@@ -1,5 +1,5 @@
 export default {
-    title: "Keywords",
+    title: "",
     resizable: true,
     color: {
       pairing: {
