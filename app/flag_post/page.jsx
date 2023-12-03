@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons'
 import { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
+import { setCookie, getCookie, deleteCookie, hasCookie } from 'cookies-next';
 
 const server_url = `http://127.0.0.1:8000`;
 
@@ -18,9 +19,25 @@ export default function flag_post({ params, searchParams }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    // Check if the user is logged in & allowed to flag posts
+    // Check the user's permissions
     async function checkUser() {
+      // Check if the user is logged in
+      let loggedInCookie = getCookie('pittID');
 
+      // Check if the user is disallowed
+      let authorizedCookie = getCookie('authorization');
+      
+      if (loggedInCookie == undefined) {
+        // The user isn't logged in, redirect them to the login page
+        alert("You need to login to flag a post!");
+        router.push(`/login`);
+      }
+
+      if (loggedInCookie != undefined && authorizedCookie == undefined) {
+        // The user is logged in, but they're unauthorized
+        alert("You're currently unable to flag posts. Please contact administration for assistance!");
+        router.push(`/`);
+      }
     }
 
     checkUser();
