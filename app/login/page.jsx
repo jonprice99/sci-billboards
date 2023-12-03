@@ -15,25 +15,24 @@ const login = () => {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  
-  let usersJSON;
-  let disallowedJSON;
+  const [usersJSON, setUsersJSON] = useState([]);
+  const [disallowedJSON, setDisallowedJSON] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
       const res = await fetch(`${server_url}/api/mod/users/`);
       const data = await res.json();
-      usersJSON = data;
+      setUsersJSON(data);
 
       const disallowedRes = await fetch(`${server_url}/api/mod/disallowed_users`);
       const disallowedData = await disallowedRes.json();
-      disallowedJSON = disallowedData;
+      setDisallowedJSON(disallowedData);
     }
 
     async function isLoggedInCheck() {
       if (hasCookie('pittID')) {
         // Redirect the user back to the homepage
-        router.push('/');
+        router.back();
         alert("You're already logged in!");
       }
     }
@@ -47,11 +46,8 @@ const login = () => {
     // Prevent the default browser behavior
     event.preventDefault();
 
-    // Make the letters of the username capitalized to ensure all usernames in Users, Posts, & Comments are standardized (i.e., abc123 => ABC123)
-    setUsername(username.replace(/[a-zA-Z]+/g, match => match.toUpperCase()));
-
     //Set the form data so we can send it to the Django API
-    const data = { username, password }
+    const data = { username, password };
 
     // Cross reference the form data to the database
     try {
@@ -69,7 +65,8 @@ const login = () => {
       setCookie('pittID', username);
 
       // Check if the user is a superuser in Users table to set permissions
-      const object = usersJSON.find(item => item.username === username);
+      const object = usersJSON.find(item => item.username.toUpperCase() === username.toUpperCase());
+      
       if (object) {
         // Found the user, so set the permission level
         if (object.role === 1) {
@@ -96,6 +93,8 @@ const login = () => {
       console.error("Login denied - invalid username/password:", error);
       router.refresh();
     }
+
+    router.back();
   }
 
   // Function to handle username box
