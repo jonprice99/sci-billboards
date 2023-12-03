@@ -48,12 +48,12 @@ def users_list(request):
     logger.info('Response Data: %s', serializer.data)
     return Response(serializer.data)
 
-#@api_view(['GET'])
-#def user_upvotes_list(request):
-#    upvotes = User_Upvotes.objects.all()
-#    serializer = User_UpvotesSerializer(upvotes, many=True)
-#    logger.info('Response Data: %s', serializer.data)
-#    return Response(serializer.data)
+@api_view(['GET'])
+def user_upvotes_list(request):
+    users_upvotes = User_Upvotes.objects.all()
+    serializer = User_UpvotesSerializer(users_upvotes, many=True)
+    logger.info('Response Data: %s', serializer.data)
+    return Response(serializer.data)
 
 @api_view(['GET'])
 def disallowed_users_list(request):
@@ -188,6 +188,16 @@ def add_user(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
+def add_user_upvote(request):
+    serializer = User_UpvotesSerializer(data=request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
 def add_disallowed_user(request):
     serializer = Disallowed_UsersSerializer(data=request.data)
 
@@ -275,6 +285,16 @@ def delete_disallowed_user(request, username):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     user.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['DELETE'])
+def delete_user_upvote(request, category_id, post_id, username):
+    try:
+        user_upvote = User_Upvotes.objects.get(category_id=category_id, post_id=post_id, username=username)
+    except User_Upvotes.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    user_upvote.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['PATCH'])

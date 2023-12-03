@@ -42,9 +42,10 @@ class Categories(models.Model):
         return self.name
     
 class User_Upvotes(models.Model):
-    category_id = models.PositiveIntegerField()
-    post_id = models.PositiveIntegerField()
-    user_id = models.PositiveIntegerField()
+    id = models.AutoField(primary_key=True)
+    category_id = models.PositiveIntegerField(null=False)
+    post_id = models.PositiveIntegerField(null=False)
+    username = models.CharField(max_length=128, null=False)
     
     class Meta:
         db_table = 'User_Upvotes'

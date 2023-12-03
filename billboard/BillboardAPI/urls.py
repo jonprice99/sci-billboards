@@ -31,5 +31,7 @@ urlpatterns = [
     path("comments/delete/<int:category_id>/<int:post_id>/<int:comment_id>/", views.delete_comment, name="mod-delete-comment"),
     path('posts/flag_post/<int:category_id>/<int:post_id>', views.flag_post, name='flag_post'),
     path("user/sign-in/",views.user_login ,name="user_login"),
-    #path('user_upvotes/', views.user_upvotes_list, name='get-user-upvotes'),
+    path('user_upvotes/', views.user_upvotes_list, name='get-user-upvotes'),
+    path('user_upvotes/add', views.add_user_upvote, name='add-user-upvote'),
+    path('user_upvotes/delete/<int:category_id>/<int:post_id>/<str:username>', views.delete_user_upvote, name='delete-user-upvote'),
 ]
