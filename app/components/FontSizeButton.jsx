@@ -9,6 +9,16 @@ import Link from 'next/link'
 import { hasCookie, deleteCookie } from "cookies-next";
 
 export default function FontSizeButton({ closeMenu }) {
+    const [fontSize, setFontSize] = useState(100);
+
+    const increaseSize = () => {
+        setFontSize(prevFontSize => prevFontSize + 25);
+    }
+
+    const decreaseSize = () => {
+        setFontSize(prevFontSize => prevFontSize - 25);
+    }
+
     const isLoggedIn = hasCookie("pittID");
 
     const handleLogout = () => {
