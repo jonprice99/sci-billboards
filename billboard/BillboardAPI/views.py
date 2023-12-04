@@ -83,6 +83,12 @@ def posts_list(request, category_id):
     return Response(serializer.data)
 
 @api_view(['GET'])
+def get_public_posts(request):
+    posts = Posts.objects.filter(is_hidden=False)
+    serializer = PostsSerializer(posts, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
 def get_all_posts(request):
     posts = Posts.objects.all()
     serializer = PostsSerializer(posts, many=True)

@@ -20,6 +20,7 @@ urlpatterns = [
     path('categories/create/', views.create_category, name='create-category'),
     path("categories/update/<int:id>/", views.update_category, name="update_category"),
     path("categories/delete/<int:id>/", views.delete_category, name="delete_category"),
+    path('posts/', views.get_public_posts, name='get-public-posts'),
     path('posts/<int:category_id>', views.posts_list, name='posts-list'),
     path('posts/<int:category_id>/<int:post_id>', views.get_post, name='get-post'),
     path('posts/create/', views.create_post, name='create-post'),
