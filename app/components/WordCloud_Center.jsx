@@ -24,21 +24,29 @@ export default function Home_Center() {
     const catData = await catRes.json();
     //console.log(catData)
 
+    // Break down the keywords and id them by category
+    let keywordMap = data.reduce((acc, obj) => {
+      let k = obj.keywords.split(",");
+      k.forEach((keyword) => {
+        acc.push({ category_id: obj.category_id, keyword: keyword });
+      });
+      return acc;
+    }, []);
+    //console.log(keywordMap)
+
     // Count each keyword based on how often it appears in a category
     let wordCount = Object.values(
-      data.reduce((acc, { category_id, keywords }) => {
-        let words = keywords.split(",");
-        words.forEach((word) => {
-          if (!acc[word]) {
-            acc[word] = { category_id, word, count: 1 };
-          } else if (acc[word].category_id === category_id) {
-            acc[word].count++;
-          }
-        });
+      keywordMap.reduce((acc, { category_id, keyword }) => {
+        let index = acc.findIndex((obj) => obj.category_id === category_id && obj.word === keyword);
+        if (index === -1) {
+          acc.push({ category_id, word: keyword, count: 1 });
+        } else {
+          acc[index].count++;
+        }
         return acc;
-      }, {})
+      }, [])
     );
-    //console.log(wordCount)
+    //console.log(wordCount);
 
     // Attach the category names for each corresponding category id
     let wordCountWithNames = wordCount.map((item) => {
