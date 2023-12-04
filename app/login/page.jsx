@@ -29,20 +29,7 @@ const login = () => {
       setDisallowedJSON(disallowedData);
     }
 
-    async function isLoggedInCheck() {
-      if (hasCookie('pittID')) {
-        // Delete the cookies
-        deleteCookie('pittID');
-        if (hasCookie('authorization')) {
-          deleteCookie('authorization');
-        }
-
-        alert("You're logged out!");
-      }
-    }
-
     fetchData();
-    isLoggedInCheck();
   }, []);
 
   // Define a function that handles the form submission

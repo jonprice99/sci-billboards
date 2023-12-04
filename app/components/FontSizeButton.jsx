@@ -1,6 +1,5 @@
 /**
- * This file contains the component that will serve as accessibility
- * buttons to increase or decrease the size of text across the site
+ * This file contains the buttons for the hamburger menu
  */
 
 import { useState } from "react";
@@ -10,21 +9,15 @@ import Link from 'next/link'
 import { hasCookie, deleteCookie } from "cookies-next";
 
 export default function FontSizeButton({ closeMenu }) {
-    const [fontSize, setFontSize] = useState(100);
-
-    const increaseSize = () => {
-        setFontSize(prevFontSize => prevFontSize + 25);
-    }
-
-    const decreaseSize = () => {
-        setFontSize(prevFontSize => prevFontSize - 25);
-    }
-
     const isLoggedIn = hasCookie("pittID");
 
     const handleLogout = () => {
         // clearing the "pittID" cookie
         deleteCookie("pittID");
+
+        if (hasCookie('authorization')) {
+            deleteCookie('authorization');
+        }
 
         window.location.href = "/";
     };
