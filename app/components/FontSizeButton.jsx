@@ -7,8 +7,9 @@ import { useState } from "react";
 import 'app/globals.css'
 import styles from './FontSizeButton.module.css'
 import Link from 'next/link'
+import { hasCookie, deleteCookie } from "cookies-next";
 
-export default function FontSizeButton({closeMenu}) {
+export default function FontSizeButton({ closeMenu }) {
     const [fontSize, setFontSize] = useState(100);
 
     const increaseSize = () => {
@@ -19,14 +20,32 @@ export default function FontSizeButton({closeMenu}) {
         setFontSize(prevFontSize => prevFontSize - 25);
     }
 
+    const isLoggedIn = hasCookie("pittID");
+
+    const handleLogout = () => {
+        // clearing the "pittID" cookie
+        deleteCookie("pittID");
+
+        window.location.href = "/";
+    };
 
 
     return (
         <div className={styles.button_layout}>
             <div>
-                <Link href={"/login"}>
-                    <button className={styles.font_size_button} onClick={closeMenu}>Login</button>
-                </Link>
+                {isLoggedIn ? (
+                    // If user is logged in, display "Logout"
+                    <button className={styles.font_size_button} onClick={handleLogout}>
+                        Logout
+                    </button>
+                ) : (
+                    // If user is not logged in, display "Login"
+                    <Link href={"/login"}>
+                        <button className={styles.font_size_button} onClick={closeMenu}>
+                            Login
+                        </button>
+                    </Link>
+                )}
             </div>
             <div>
                 <Link href={"/mod_tools"}>
