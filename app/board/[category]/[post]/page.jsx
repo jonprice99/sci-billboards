@@ -276,6 +276,16 @@ export default function Post({ params, searchParams }) {
                         <FontAwesomeIcon icon={faMessage} flip="horizontal" size="xl" style={{ marginRight: "10px" }}></FontAwesomeIcon>
                         Comments
                     </h4>
+                    <form method="post" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', paddingTop: '20px' }}>
+                        <label htmlFor="user_comment"></label>
+                        <input
+                            type="text"
+                            id="user_comment"
+                            placeholder="Enter comment..."
+                            style={{ flex: 1}}
+                        />
+                        <input type="submit" value="Comment" />
+                    </form>
                 </div>
             </div>
 
