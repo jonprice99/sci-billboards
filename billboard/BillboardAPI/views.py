@@ -118,70 +118,57 @@ def get_post(request, category_id, post_id):
     serializer = PostsSerializer(post, many=False)
     return Response(serializer.data)
 
-@api_view(['PUT'])
+@api_view(['PATCH'])
 def update_category(request, id):
     try:
+        Categories.objects.filter(id=id).update(**request.data)
         category = Categories.objects.get(id=id)
+        serializer = CategoriesSerializer(category)
+        return Response(serializer.data)
     except Categories.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    serializer = CategoriesSerializer(category, data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['PUT'])
+@api_view(['PATCH'])
 def mod_update_post(request, category_id, post_id):
     try:
+        Posts.objects.filter(category_id=category_id, post_id=post_id).update(**request.data)
         post = Posts.objects.get(category_id=category_id, post_id=post_id)
+        serializer = PostsSerializer(post)
+        return Response(serializer.data)
     except Posts.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-    
-    serializer = PostsSerializer(post, data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['PUT'])
+
+@api_view(['PATCH'])
 def mod_update_comment(request, category_id, post_id, comment_id):
     try:
+        Comments.objects.filter(category_id=category_id, post_id=post_id, comment_id=comment_id).update(**request.data)
         comment = Comments.objects.get(category_id=category_id, post_id=post_id, comment_id=comment_id)
+        serializer = CommentsSerializer(comment)
+        return Response(serializer.data)
     except Comments.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     
-    serializer = PostsSerializer(comment, data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-@api_view(['PUT'])
+@api_view(['PATCH'])
 def update_user(request, id):
     try:
+        Users.objects.filter(id=id).update(**request.data)
         user = Users.objects.get(id=id)
+        serializer = UsersSerializer(user)
+        return Response(serializer.data)
     except Users.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-    
-    serializer = UsersSerializer(user, data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['PUT'])
+@api_view(['PATCH'])
 def update_disallowed_user(request, username):
     try:
+        Disallowed_Users.objects.filter(username=username).update(**request.data)
         user = Disallowed_Users.objects.get(username=username)
+        serializer = Disallowed_UsersSerializer(user)
+        return Response(serializer.data)
     except Disallowed_Users.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-    
-    serializer = Disallowed_UsersSerializer(user, data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 def add_user(request):
