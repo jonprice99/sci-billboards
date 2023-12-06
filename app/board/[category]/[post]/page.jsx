@@ -13,6 +13,7 @@ import { faMessage, faFlag, faAngleLeft, faThumbsUp } from '@fortawesome/free-so
 import { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
 import { setCookie, getCookie, deleteCookie, hasCookie } from 'cookies-next';
+import AutoResize from 'react-textarea-autosize';
 
 const server_url = `http://127.0.0.1:8000`;
 
@@ -86,7 +87,39 @@ export default function Post({ params, searchParams }) {
             // Get the comments for this post
             const cardResponse = await fetch(`${server_url}/api/comments/${catData.id}/${params.post}`);
             const cardData = await cardResponse.json();
-            setCards(cardData);
+            //setCards(cardData);
+
+            // Scrub the comments for any that don't want their name shown
+            const scrubbedComments = cardData.map(comment => {
+                if (!comment.showName) {
+                    return {
+                        ...comment,
+                        user_name: "Anonymous"
+                    };
+                }
+                return comment;
+            });
+
+            // Update the comments to have a formatted date
+            const formattedComments = scrubbedComments.map(comment => {
+                // Format the date into MM/DD/YYYY, hh:mm:ss AM/PM format
+                const date = new Date(comment.comment_date);
+                const formattedDate = date.toLocaleDateString('en-US', {
+                    month: '2-digit',
+                    day: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: true
+                });
+                return {
+                    ...comment,
+                    comment_date: formattedDate
+                };
+            });
+            //console.log(formattedComments);
+            setCards(formattedComments);
         }
 
         fetchData();
@@ -349,11 +382,12 @@ export default function Post({ params, searchParams }) {
                     </h4>
                     <form method="post" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', paddingTop: '20px' }}>
                         <label htmlFor="user_comment"></label>
-                        <input
+                        <AutoResize
                             type="text"
                             id="user_comment"
                             placeholder="Enter comment..."
-                            style={{ flex: 1 }}
+                            style={{ flex: 1, height: 20 }}
+                            rows={2}
                         />
                         <input type="submit" value="Comment" />
                     </form>
