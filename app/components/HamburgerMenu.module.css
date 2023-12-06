@@ -17,12 +17,11 @@
 .close_button {
     padding: 10px;
     float: right;
+    cursor: pointer;
 }
 
 /* Mobile */
 @media (max-width: 700px) {
-
-
     .menu {
         position: fixed;
         top: 0;

@@ -107,9 +107,9 @@
   font-weight: 400;
   text-align: left;
   bottom: calc(100% - 10px);
-  -webkit-line-clamp: 4;
+  -webkit-line-clamp: 3;
   /* number of lines to show */
-  line-clamp: 4;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
 }
 

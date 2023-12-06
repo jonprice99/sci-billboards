@@ -170,13 +170,13 @@ export default function Page({ params, searchParams }) {
       let loginCookie = getCookie('pittID');
       let authorizeCookie = getCookie('authorization');
 
-      // See if the user is trying to upvote their own post
-      const userPost = cards.find(item => item.category_id === category_id && item.post_id === post_id && item.poster_name.toUpperCase() === loginCookie.toUpperCase());
-
       // Check if the user is logged in
       if (loginCookie != undefined) {
         // Check if the user is authorized to upvote
         if (authorizeCookie != undefined) {
+          // See if the user is trying to upvote their own post
+          const userPost = cards.find(item => item.category_id === category_id && item.post_id === post_id && item.poster_name.toUpperCase() === loginCookie.toUpperCase());
+          
           if (!userPost) {
             // Check if the user has upvoted this post or not
             const upvotedObject = allUpvotes.find(item => item.category_id === category_id && item.post_id === post_id && item.username.toUpperCase() === loginCookie.toUpperCase());
