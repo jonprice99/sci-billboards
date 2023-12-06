@@ -9,7 +9,7 @@ import styles from 'app/board/[category]/[post]/Board.module.css'
 import Center from 'app/components/Home_Center';
 import Error_Grid from 'app/components/Error_Grid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMessage, faFlag, faAngleLeft, faThumbsUp } from '@fortawesome/free-solid-svg-icons'
+import { faMessage, faFlag, faAngleLeft, faThumbsUp, faUser } from '@fortawesome/free-solid-svg-icons'
 import { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
 import { setCookie, getCookie, deleteCookie, hasCookie } from 'cookies-next';
@@ -163,173 +163,173 @@ export default function Post({ params, searchParams }) {
     }
 
     // Function for the upvote button
-  function UpVoteButton({ category_id, post_id, upvoteCount }) {
-    const router = useRouter();
-    const [upvotes, setUpvotes] = useState(upvoteCount);
+    function UpVoteButton({ category_id, post_id, upvoteCount }) {
+        const router = useRouter();
+        const [upvotes, setUpvotes] = useState(upvoteCount);
 
-    const handleClick = async () => {
-      let loginCookie = getCookie('pittID');
-      let authorizeCookie = getCookie('authorization');
+        const handleClick = async () => {
+            let loginCookie = getCookie('pittID');
+            let authorizeCookie = getCookie('authorization');
 
-      // See if the user is trying to upvote their own post
-      const userPost = cards.find(item => item.category_id === category_id && item.post_id === post_id && item.poster_name.toUpperCase() === loginCookie.toUpperCase());
+            // See if the user is trying to upvote their own post
+            const userPost = cards.find(item => item.category_id === category_id && item.post_id === post_id && item.poster_name.toUpperCase() === loginCookie.toUpperCase());
 
-      // Check if the user is logged in
-      if (loginCookie != undefined) {
-        // Check if the user is authorized to upvote
-        if (authorizeCookie != undefined) {
-          if (!userPost) {
-            // Check if the user has upvoted this post or not
-            const upvotedObject = allUpvotes.find(item => item.category_id === category_id && item.post_id === post_id && item.username.toUpperCase() === loginCookie.toUpperCase());
+            // Check if the user is logged in
+            if (loginCookie != undefined) {
+                // Check if the user is authorized to upvote
+                if (authorizeCookie != undefined) {
+                    if (!userPost) {
+                        // Check if the user has upvoted this post or not
+                        const upvotedObject = allUpvotes.find(item => item.category_id === category_id && item.post_id === post_id && item.username.toUpperCase() === loginCookie.toUpperCase());
 
-            if (upvotes === upvoteCount) {
-              //if user, post_id, category_id not in User_Upvotes
-              if (!upvotedObject) {
-                // Increment the local count
-                setUpvotes(upvotes + 1);
-                upvoteCount++;
-                setUpvotes(upvoteCount);
-                //console.log(upvotes);
+                        if (upvotes === upvoteCount) {
+                            //if user, post_id, category_id not in User_Upvotes
+                            if (!upvotedObject) {
+                                // Increment the local count
+                                setUpvotes(upvotes + 1);
+                                upvoteCount++;
+                                setUpvotes(upvoteCount);
+                                //console.log(upvotes);
 
-                // Increment the database count
-                const response = await fetch(`${server_url}/api/posts/inc_upvote/${category_id}/${post_id}`, {
-                  method: "PATCH"
-                });
-                //console.log(response);
+                                // Increment the database count
+                                const response = await fetch(`${server_url}/api/posts/inc_upvote/${category_id}/${post_id}`, {
+                                    method: "PATCH"
+                                });
+                                //console.log(response);
 
-                // Add the upvote to the User_Upvotes table for tracking
-                let username = getCookie('pittID');
-                const data = { category_id, post_id, username }
+                                // Add the upvote to the User_Upvotes table for tracking
+                                let username = getCookie('pittID');
+                                const data = { category_id, post_id, username }
 
-                try {
-                  const addResponse = await fetch(`${server_url}/api/user_upvotes/add`, {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(data)
-                  });
+                                try {
+                                    const addResponse = await fetch(`${server_url}/api/user_upvotes/add`, {
+                                        method: "POST",
+                                        headers: {
+                                            "Content-Type": "application/json"
+                                        },
+                                        body: JSON.stringify(data)
+                                    });
 
-                  //console.log("Success:", addResponse);
-                  //router.refresh();
-                } catch (error) {
-                  // There was an error when trying to post to the db
-                  console.error("Error when attempting to post to db:", error);
+                                    //console.log("Success:", addResponse);
+                                    //router.refresh();
+                                } catch (error) {
+                                    // There was an error when trying to post to the db
+                                    console.error("Error when attempting to post to db:", error);
+                                }
+                            } else {
+                                // Decrement the local count
+                                setUpvotes(upvotes - 1)
+                                upvoteCount--;
+
+                                // Decrement the database count
+                                const response = await fetch(`${server_url}/api/posts/dec_upvote/${category_id}/${post_id}`, {
+                                    method: "PATCH",
+                                });
+                                //console.log(response);
+
+                                // Remove the upvote from the User_Upvotes table
+                                let username = getCookie('pittID');
+
+                                // Get the current data for the board
+                                try {
+                                    // Send the DELETE request to remove the category from the db
+                                    const deleteResponse = await fetch(`${server_url}/api/user_upvotes/delete/${category_id}/${post_id}/${username}`, {
+                                        method: "DELETE"
+                                    });
+
+                                    //console.log("Success:", deleteResponse);
+                                    //router.refresh();
+                                } catch (error) {
+                                    console.error("Error:", error);
+                                }
+                            }
+                        } else {
+                            if (upvotes < upvoteCount) {
+                                // User just downvoted & wants to upvote, const didn't update
+                                setUpvotes(upvoteCount);
+                                //console.log("upvotedObject: " + upvotedObject)
+                                //console.log("upvotes: " + upvotes)
+                                //console.log("upvoteCount: " + upvoteCount)
+
+                                // Increment the database count
+                                const response = await fetch(`${server_url}/api/posts/inc_upvote/${category_id}/${post_id}`, {
+                                    method: "PATCH"
+                                });
+                                //console.log(response);
+
+                                // Add the upvote to the User_Upvotes table for tracking
+                                let username = getCookie('pittID');
+                                const data = { category_id, post_id, username }
+
+                                try {
+                                    const addResponse = await fetch(`${server_url}/api/user_upvotes/add`, {
+                                        method: "POST",
+                                        headers: {
+                                            "Content-Type": "application/json"
+                                        },
+                                        body: JSON.stringify(data)
+                                    });
+
+                                    //console.log("Success:", addResponse);
+                                    //router.refresh();
+                                } catch (error) {
+                                    // There was an error when trying to post to the db
+                                    console.error("Error when attempting to post to db:", error);
+                                }
+                            } else {
+                                // User just upvoted & wants to downvote, const didn't update
+                                setUpvotes(upvoteCount);
+                                //console.log("upvotedObject: " + upvotedObject)
+                                //console.log("upvotes: " + upvotes)
+                                //console.log("upvoteCount: " + upvoteCount)
+
+                                // Decrement the database count
+                                const response = await fetch(`${server_url}/api/posts/dec_upvote/${category_id}/${post_id}`, {
+                                    method: "PATCH",
+                                });
+                                //console.log(response);
+
+                                // Remove the upvote from the User_Upvotes table
+                                let username = getCookie('pittID');
+
+                                // Get the current data for the board
+                                try {
+                                    // Send the DELETE request to remove the category from the db
+                                    const deleteResponse = await fetch(`${server_url}/api/user_upvotes/delete/${category_id}/${post_id}/${username}`, {
+                                        method: "DELETE"
+                                    });
+
+                                    //console.log("Success:", deleteResponse);
+                                    //router.refresh();
+                                } catch (error) {
+                                    console.error("Error:", error);
+                                }
+                            }
+                        }
+                    } else {
+                        // Block the user from trying to upvote their own post
+                        alert("You can't upvote your own post!");
+                    }
+                } else {
+                    // The user is logged in, but not authorized, so they must be disallowed
+                    alert("You are currently unable to upvote posts. Please contact administration for assistance.");
                 }
-              } else {
-                // Decrement the local count
-                setUpvotes(upvotes - 1)
-                upvoteCount--;
-
-                // Decrement the database count
-                const response = await fetch(`${server_url}/api/posts/dec_upvote/${category_id}/${post_id}`, {
-                  method: "PATCH",
-                });
-                //console.log(response);
-
-                // Remove the upvote from the User_Upvotes table
-                let username = getCookie('pittID');
-
-                // Get the current data for the board
-                try {
-                  // Send the DELETE request to remove the category from the db
-                  const deleteResponse = await fetch(`${server_url}/api/user_upvotes/delete/${category_id}/${post_id}/${username}`, {
-                    method: "DELETE"
-                  });
-
-                  //console.log("Success:", deleteResponse);
-                  //router.refresh();
-                } catch (error) {
-                  console.error("Error:", error);
-                }
-              }
             } else {
-              if (upvotes < upvoteCount) {
-                // User just downvoted & wants to upvote, const didn't update
-                setUpvotes(upvoteCount);
-                //console.log("upvotedObject: " + upvotedObject)
-                //console.log("upvotes: " + upvotes)
-                //console.log("upvoteCount: " + upvoteCount)
-
-                // Increment the database count
-                const response = await fetch(`${server_url}/api/posts/inc_upvote/${category_id}/${post_id}`, {
-                  method: "PATCH"
-                });
-                //console.log(response);
-
-                // Add the upvote to the User_Upvotes table for tracking
-                let username = getCookie('pittID');
-                const data = { category_id, post_id, username }
-
-                try {
-                  const addResponse = await fetch(`${server_url}/api/user_upvotes/add`, {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(data)
-                  });
-
-                  //console.log("Success:", addResponse);
-                  //router.refresh();
-                } catch (error) {
-                  // There was an error when trying to post to the db
-                  console.error("Error when attempting to post to db:", error);
-                }
-              } else {
-                // User just upvoted & wants to downvote, const didn't update
-                setUpvotes(upvoteCount);
-                //console.log("upvotedObject: " + upvotedObject)
-                //console.log("upvotes: " + upvotes)
-                //console.log("upvoteCount: " + upvoteCount)
-
-                // Decrement the database count
-                const response = await fetch(`${server_url}/api/posts/dec_upvote/${category_id}/${post_id}`, {
-                  method: "PATCH",
-                });
-                //console.log(response);
-
-                // Remove the upvote from the User_Upvotes table
-                let username = getCookie('pittID');
-
-                // Get the current data for the board
-                try {
-                  // Send the DELETE request to remove the category from the db
-                  const deleteResponse = await fetch(`${server_url}/api/user_upvotes/delete/${category_id}/${post_id}/${username}`, {
-                    method: "DELETE"
-                  });
-
-                  //console.log("Success:", deleteResponse);
-                  //router.refresh();
-                } catch (error) {
-                  console.error("Error:", error);
-                }
-              }
+                // The user isn't logged in
+                alert("You need to be logged in to upvote ideas!")
             }
-          } else {
-            // Block the user from trying to upvote their own post
-            alert("You can't upvote your own post!");
-          }
-        } else {
-          // The user is logged in, but not authorized, so they must be disallowed
-          alert("You are currently unable to upvote posts. Please contact administration for assistance.");
-        }
-      } else {
-        // The user isn't logged in
-        alert("You need to be logged in to upvote ideas!")
-      }
-    };
+        };
 
-    return (
-      <counter>
-        <button onClick={handleClick} className={styles.iconButton}>
-          <FontAwesomeIcon icon={faThumbsUp} size="xl" style={{ color: "#ffffff", }} />
-        </button>
-        <br />
-        {upvotes}
-      </counter>
-    )
-  }
+        return (
+            <counter>
+                <button onClick={handleClick} className={styles.iconButton}>
+                    <FontAwesomeIcon icon={faThumbsUp} size="xl" />
+                </button>
+                <br />
+                {upvotes}
+            </counter>
+        )
+    }
 
     return (
         <main className={styles.main}>
@@ -375,31 +375,42 @@ export default function Post({ params, searchParams }) {
             </div>
 
             <div className={styles.commentsTitle}>
-                <div className="commentsInfo">
+                <div className={styles.commentsInfo}>
                     <h4>
                         <FontAwesomeIcon icon={faMessage} flip="horizontal" size="xl" style={{ marginRight: "10px" }}></FontAwesomeIcon>
                         Comments
                     </h4>
-                    <form method="post" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', paddingTop: '20px' }}>
-                        <label htmlFor="user_comment"></label>
-                        <AutoResize
-                            type="text"
-                            id="user_comment"
-                            placeholder="Enter comment..."
-                            style={{ flex: 1, height: 20 }}
-                            rows={2}
-                        />
-                        <input type="submit" value="Comment" />
+                    <form method="post" style={{ display: 'flex', flexDirection: 'column', paddingTop: '20px' }}>
+                        <div style={{ marginBottom: '20px' }}>
+                            <input type="checkbox" id="showName" name="showName" />
+                            <label htmlFor="showName" style={{ marginLeft: '5px' }}>Post your name anonymously</label>
+                        </div>
+                        <div style={{ display: 'flex' }}>
+                            <label htmlFor="user_comment"></label>
+                            <AutoResize
+                                type="text"
+                                id="user_comment"
+                                placeholder="Enter comment..."
+                                style={{ flex: 1, height: 20 }}
+                                rows={2}
+                            />
+                            <input type="submit" value="Comment" />
+                        </div>
                     </form>
                 </div>
             </div>
 
-            <div className={styles.post_grid}>
+            <div className={styles.comment_layout}>
                 {cards.map((card) => (
-                    <div key={params.post} className={styles.card} style={{ backgroundColor: pastelColors[(params.post - 1) % pastelColors.length] }}>
-                        <h2>{card.user_name}</h2>
-                        <p>{card.body}</p>
-                        <p>{card.comment_date}</p>
+                    <div key={params.post} className={styles.user_comment}>
+                        <div className={styles.userInfoContainer}>
+                            <FontAwesomeIcon icon={faUser} size="large" style={{ marginRight: "10px" }} />
+                            <h4>{card.user_name}</h4>
+                        </div>
+                        <div className={styles.commentDetailsContainer}>
+                            <p>{card.body}</p>
+                            <p>{card.comment_date}</p>
+                        </div>
                     </div>
                 ))}
 
