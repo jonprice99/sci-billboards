@@ -3,14 +3,13 @@
     height: 70px;
     display: flex;
     align-items: center;
+    padding-left: 1.5rem;
     z-index: 5;
 }
 
 .logo {
-    padding-left: .25rem;
+    padding-left: 75px;
     padding-right: 8px;
-    height: 50px;
-    width: 150px;
 }
 
 .header_text {
@@ -43,7 +42,7 @@
 .menu_placer {
     position: relative;
     margin-left: auto;
-    padding-right: .45rem;
+    padding-right: 180px;
 }
 
 /* Mobile */
