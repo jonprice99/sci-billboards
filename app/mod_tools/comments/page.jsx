@@ -139,7 +139,7 @@ export default function CommentsTools() {
         try {
             // Send the PUT request with the updated data
             const putResponse = await fetch(`${server_url}/api/mod/comments/update/${data.category_id}/${data.post_id}/${data.comment_id}`, {
-                method: "PUT",
+                method: "PATCH",
                 headers: {
                     "Content-Type": "application/json"
                 },

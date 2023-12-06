@@ -148,7 +148,7 @@ export default function UsersTools() {
         try {
             // Send the PUT request with the updated data
             const putResponse = await fetch(`${server_url}/api/mod/users/update/${data.user_id}`, {
-                method: "PUT",
+                method: "PATCH",
                 headers: {
                     "Content-Type": "application/json"
                 },
@@ -175,7 +175,7 @@ export default function UsersTools() {
         try {
             // Send the PUT request with the updated data
             const putResponse = await fetch(`${server_url}/api/mod/disallowed_users/update/${data.username}`, {
-                method: "PUT",
+                method: "PATCH",
                 headers: {
                     "Content-Type": "application/json"
                 },

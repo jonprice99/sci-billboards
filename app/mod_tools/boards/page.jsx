@@ -139,7 +139,7 @@ export default function BoardTools() {
         try {
             // Send the PUT request with the updated data
             const putResponse = await fetch(`${server_url}/api/categories/update/${data.id}/`, {
-                method: "PUT",
+                method: "PATCH",
                 headers: {
                     "Content-Type": "application/json"
                 },

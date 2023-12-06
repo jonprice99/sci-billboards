@@ -25,6 +25,7 @@ export default function PostsTools() {
 
     useEffect(() => {
         async function fetchData() {
+          console.log('Fetching...')
           const res = await fetch(`${server_url}/api/mod/posts/`);
           const data = await res.json();
           setAllPosts(data);
@@ -166,7 +167,7 @@ export default function PostsTools() {
         try {
             // Send the PUT request with the updated data
             const putResponse = await fetch(`${server_url}/api/mod/posts/update/${data.category_id}/${data.post_id}`, {
-                method: "PUT",
+                method: "PATCH",
                 headers: {
                     "Content-Type": "application/json"
                 },
