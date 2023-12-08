@@ -76,7 +76,7 @@ export default function PostsTools() {
         { dataField: 'title', caption: 'title', allowEditing: false, allowAdding: false },
         { dataField: 'description', caption: 'description', allowEditing: false, allowAdding: false },
         { dataField: 'upvotes', caption: 'upvotes', allowEditing: false, allowAdding: false },
-        { dataField: 'comment_count', caption: 'comments', allowEditing: false, allowAdding: false },
+        { dataField: 'comments', caption: 'comments', allowEditing: false, allowAdding: false },
         { dataField: 'keywords', caption: 'keywords', allowEditing: false, allowAdding: false },
     ];
 
@@ -95,7 +95,7 @@ export default function PostsTools() {
         { dataField: 'title', caption: 'title', allowEditing: true, allowAdding: true },
         { dataField: 'description', caption: 'description', allowEditing: true, allowAdding: true },
         { dataField: 'upvotes', caption: 'upvotes', allowEditing: true, allowAdding: true },
-        { dataField: 'comment_count', caption: 'comments', allowEditing: false, allowAdding: false },
+        { dataField: 'comments', caption: 'comments', allowEditing: false, allowAdding: false },
     ];
 
     /**
@@ -117,7 +117,6 @@ export default function PostsTools() {
         let comments = changes.comments;
         let is_hidden = changes.is_hidden;
         let is_pending_mod = changes.is_pending_mod;
-        let comment_count = changes.comment_count;
         let showName = changes.showName;
         let flag_weight = changes.flag_weight;
         const data = { category_id, post_id, title, description, keywords, progress, date_posted, poster_name, upvotes, comments, is_hidden, is_pending_mod, comment_count, showName, flag_weight };
@@ -158,7 +157,6 @@ export default function PostsTools() {
         let comments = changes.comments;
         let is_hidden = changes.is_hidden;
         let is_pending_mod = changes.is_pending_mod;
-        let comment_count = changes.comment_count;
         let showName = changes.showName;
         let flag_weight = changes.flag_weight;
         const data = { category_id, post_id, title, description, keywords, progress, date_posted, poster_name, upvotes, comments, is_hidden, is_pending_mod, comment_count, showName, flag_weight };
@@ -200,7 +198,6 @@ export default function PostsTools() {
         let comments = changes.comments;
         let is_hidden = changes.is_hidden;
         let is_pending_mod = changes.is_pending_mod;
-        let comment_count = changes.commentCount;
         let showName = changes.showName;
         let flag_weight = changes.flag_weight;
         const data = { category_id, post_id, title, description, keywords, progress, date_posted, poster_name, upvotes, comments, is_hidden, is_pending_mod, comment_count, showName, flag_weight }

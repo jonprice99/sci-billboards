@@ -63,10 +63,9 @@ class Posts(models.Model):
     date_posted = models.DateTimeField(auto_now_add=True)
     poster_name = models.CharField(max_length=128, null=True)
     upvotes = models.IntegerField(default=0)
-    comments = models.IntegerField(default=0)
+    comments = models.PositiveIntegerField(default=0)
     is_pending_mod = models.BooleanField(default=False)
     is_hidden = models.BooleanField(default=False)
-    comment_count = models.PositiveIntegerField(default=0)
     showName = models.BooleanField(default=False)
     flag_weight = models.IntegerField(default=0)
     

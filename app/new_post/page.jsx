@@ -11,7 +11,6 @@ import { useRouter } from "next/navigation";
 import { setCookie, getCookie, deleteCookie, hasCookie } from 'cookies-next';
 
 const server_url = `http://127.0.0.1:8000`;
-const poster_id = 1;  // Deprecated - To be removed following update of Posts table & Django model to remove poster_id column
 
 const new_post = () => {
   const router = useRouter();
@@ -172,7 +171,7 @@ const new_post = () => {
           />
           <br></br>
           <br></br>
-          <label htmlFor="tag">Provide keywords:</label>
+          <label htmlFor="tag">Provide keywords: (i.e., word 1,word 2,...)</label>
           <br></br>
           <AutoResize
             type="text"
