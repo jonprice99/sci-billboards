@@ -107,6 +107,7 @@ export default function Page({ params, searchParams }) {
           const cardResponse = await fetch(`${server_url}/api/posts/${data.id}`);
           const cardData = await cardResponse.json();
           setCards(cardData);
+          setAllPosts(cardData);
 
           // Check if we have no posts for this category
           if (Object.keys(cardData).length < 1) {
@@ -175,7 +176,7 @@ export default function Page({ params, searchParams }) {
         // Check if the user is authorized to upvote
         if (authorizeCookie != undefined) {
           // See if the user is trying to upvote their own post
-          const userPost = cards.find(item => item.category_id === category_id && item.post_id === post_id && item.poster_name.toUpperCase() === loginCookie.toUpperCase());
+          const userPost = allPosts.find(item => item.category_id === category_id && item.post_id === post_id && item.poster_name.toUpperCase() === loginCookie.toUpperCase());
           
           if (!userPost) {
             // Check if the user has upvoted this post or not
@@ -360,42 +361,42 @@ export default function Page({ params, searchParams }) {
   function handleSort({ sortBy }) {
     // Sort by most recent
     if (sortBy === 'recent') {
-      let mostRecent = cards.sort((a, b) => new Date(b.date_posted) - new Date(a.date_posted));
+      let mostRecent = allPosts.sort((a, b) => new Date(b.date_posted) - new Date(a.date_posted));
 
       setCards(mostRecent);
     }
 
     // Sort by least recent
     if (sortBy === 'leastRecent') {
-      let leastRecent = cards.sort((a, b) => new Date(a.date_posted) - new Date(b.date_posted));
+      let leastRecent = allPosts.sort((a, b) => new Date(a.date_posted) - new Date(b.date_posted));
 
       setCards(leastRecent);
     }
 
     // Sort by most upvotes
     if (sortBy == 'upvoted') {
-      let mostUpvotes = cards.sort((a, b) => new b.upvotes - new a.upvotes);
+      let mostUpvotes = allPosts.sort((a, b) => new b.upvotes - new a.upvotes);
 
       setCards(mostUpvotes);
     }
 
     // Sort by least upvotes
     if (sortBy == 'leastUpvoted') {
-      let leastUpvotes = cards.sort((a, b) => new a.upvotes - new b.upvotes);
+      let leastUpvotes = allPosts.sort((a, b) => new a.upvotes - new b.upvotes);
 
       setCards(leastUpvotes);
     }
 
     // Sort by most comments
     if (sortBy == 'comments') {
-      let mostComments = cards.sort((a, b) => new b.comments - new a.comments);
+      let mostComments = allPosts.sort((a, b) => new b.comments - new a.comments);
 
       setCards(mostComments);
     }
 
     // Sort by least comments
     if (sortBy == 'leastComments') {
-      let leastComments = cards.sort((a, b) => new a.comments - new b.comments);
+      let leastComments = allPosts.sort((a, b) => new a.comments - new b.comments);
 
       setCards(leastComments);
     }
@@ -405,28 +406,28 @@ export default function Page({ params, searchParams }) {
   function handleFilter({ filterBy }) {
     // Filter by only "not in progress"
     if (filterBy == "notProgressed") {
-      let filteredPosts = cards.filter(post => post.category === 0);
+      let filteredPosts = allPosts.filter(post => post.category === 0);
 
       setCards(filteredPosts);
     }
 
     // Filter by only "in talks"
     if (filterBy == "inTalks") {
-      let filteredPosts = cards.filter(post => post.category === 1);
+      let filteredPosts = allPosts.filter(post => post.category === 1);
 
       setCards(filteredPosts);
     }
 
     // Filter by only "in progress"
     if (filterBy == "inProgress") {
-      let filteredPosts = cards.filter(post => post.category === 2);
+      let filteredPosts = allPosts.filter(post => post.category === 2);
 
       setCards(filteredPosts);
     }
 
     // Filter by only "complete"
     if (filterBy == "complete") {
-      let filteredPosts = cards.filter(post => post.category === 3);
+      let filteredPosts = allPosts.filter(post => post.category === 3);
 
       setCards(filteredPosts);
     }
@@ -434,7 +435,7 @@ export default function Page({ params, searchParams }) {
 
   // Function to handle searching title/description of posts
   function handleSearch({ searchTerm }) {
-    let foundPosts = cards.filter(post => post.title.includes(searchTerm) || post.description.includes(searchTerm) || post.keywords.includes(searchTerm));
+    let foundPosts = allPosts.filter(post => post.title.includes(searchTerm) || post.description.includes(searchTerm) || post.keywords.includes(searchTerm));
 
     setCards(foundPosts);
   }
@@ -617,7 +618,6 @@ export default function Page({ params, searchParams }) {
 
       </div>
 
-      {/* Note: Will be updated to show posts from db */}
       <div className={styles.post_grid}>
         {cards.map((card) => (
           <div key={card.post_id} className={styles.card} style={{ backgroundColor: pastelColors[(card.post_id - 1) % pastelColors.length] }}>
