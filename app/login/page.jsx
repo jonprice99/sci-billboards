@@ -85,7 +85,11 @@ const login = () => {
       router.refresh();
     }
 
-    router.back();
+    if (window.history.length > 1) {
+      router.back();
+    } else {
+      router.push('/');
+    }
   }
 
   // Function to handle username box

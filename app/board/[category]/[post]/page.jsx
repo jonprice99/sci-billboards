@@ -18,18 +18,6 @@ import AutoResize from 'react-textarea-autosize';
 const server_url = `http://127.0.0.1:8000`;
 
 export default function Post({ params, searchParams }) {
-    // The colors of the comment cards
-    const pastelColors = [
-        'rgba(0, 53, 148, 1)',
-        'rgba(19, 149, 186, 1)',
-        'rgba(0, 126, 79, 1)',
-        'rgba(92, 161, 112, 1)',
-        'rgba(126, 77, 120, 1)',
-        'rgba(112, 101, 155, 1)',
-        'rgba(178, 34, 34, 1)',
-        'rgba(166, 90, 85, 1)',
-    ];
-
     const [cards, setCards] = useState([]);
     const [title, setTitle] = useState('');
     const [paragraph, setParagraph] = useState('');
@@ -38,8 +26,11 @@ export default function Post({ params, searchParams }) {
     const [date, setDate] = useState('');
     const [error, setError] = useState(false);
     const [categoryID, setCategoryID] = useState(0);
+    const [postID, setPostID] = useState(0);
     const [upvotes, setUpvotes] = useState(0);
     const [commentCount, setCommentCount] = useState(0);
+    const [newComment, setNewComment] = useState('');
+    const [showName, setShowName] = useState(false);
     let progressText;
     let catData;
 
@@ -56,11 +47,12 @@ export default function Post({ params, searchParams }) {
                 setCategoryID(catData.id);
                 const response = await fetch(`${server_url}/api/posts/${catData.id}/${params.post}`);
                 const data = await response.json();
+                setPostID(params.post);
                 setTitle(data.title);
                 setParagraph(data.description);
                 setProgress(data.progress);
                 setUpvotes(data.upvotes);
-                setCommentCount(data.comment_count);
+                setCommentCount(data.comments);
 
                 // Set the appropriate date
                 const date = new Date(data.date_posted);
@@ -153,6 +145,22 @@ export default function Post({ params, searchParams }) {
         // No need to authenticate user here since it's done in flag_post
         const handleClick = () => {
             router.push(`/flag_post?category_id=${category_id}&post_id=${post_id}`,);
+        };
+
+        return (
+            <button onClick={handleClick} className={`${styles.iconButton} ${styles.flagButton}`}>
+                <FontAwesomeIcon icon={faFlag} size="xl" />
+            </button>
+        )
+    }
+
+    // Function for the post flag comment button
+    function FlagCommentButton({ category_id, post_id, comment_id }) {
+        const router = useRouter();
+
+        // No need to authenticate user here since it's done in flag_post
+        const handleClick = () => {
+            router.push(`/flag_comment?category_id=${category_id}&post_id=${post_id}&comment_id=${comment_id}`,);
         };
 
         return (
@@ -331,6 +339,67 @@ export default function Post({ params, searchParams }) {
         )
     }
 
+    // Function to handle comment change
+    const handleCommentChange = (e) => {
+        setNewComment(e.target.value);
+    };
+
+    // Function to handle comment submission and send it to backend
+    async function handleCommentSubmit(event) {
+        // Prevent the default browser behavior
+        event.preventDefault();
+
+        const router = useRouter();
+
+        // Check if the user is logged in & authorized to comment
+        if (getCookie('pittID') == undefined) {
+            alert("You need to log in to post comments!");
+            router.push('/login');
+        } else if (getCookie('pittID') != undefined && getCookie('authorization') == undefined) {
+            alert("You currently are unable to comment. Please contact support for further assistance.")
+        } else {
+            // Get the body of the comment
+            let body = newComment;
+
+            // Get the name of the poster
+            let user_name = getCookie('pittID');
+
+            // Make sure that the user can't submit an empty comment
+            if (newComment.length < 1) {
+                router.refresh();
+            }
+
+            // Got through the check, so format the data for the API
+            const data = { categoryID, postID, user_name, body, showName }
+
+            // Send the data to the API
+            try {
+                const addResponse = await fetch(`${server_url}/api/comments/create/`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                console.log("Success:", addResponse);
+                alert("Comment sent!");
+                router.refresh();
+            } catch (error) {
+                // There was an error when trying to post to the db
+                alert("Error when attempting to post to db.");
+                console.error("Error when attempting to post to db:", error);
+                //router.refresh();
+            }
+        }
+    }
+
+    // Function to handle show poster name change
+    const handleShowNameChange = () => {
+        var checkbox = document.getElementById("showName");
+        setShowName(checkbox.checked);
+    }
+
     return (
         <main className={styles.main}>
             {/* The grid under the header that contains back button, board name, new post button, search, sort, and filter tools */}
@@ -378,12 +447,12 @@ export default function Post({ params, searchParams }) {
                 <div className={styles.commentsInfo}>
                     <h4>
                         <FontAwesomeIcon icon={faMessage} flip="horizontal" size="xl" style={{ marginRight: "10px" }}></FontAwesomeIcon>
-                        Comments
+                        {commentCount} Comments
                     </h4>
                     <form method="post" style={{ display: 'flex', flexDirection: 'column', paddingTop: '20px' }}>
                         <div style={{ marginBottom: '20px' }}>
                             <input type="checkbox" id="showName" name="showName" />
-                            <label htmlFor="showName" style={{ marginLeft: '5px' }}>Post your name anonymously</label>
+                            <label htmlFor="showName" style={{ marginLeft: '5px' }}value={showName} onChange={handleShowNameChange}>Post your name anonymously</label>
                         </div>
                         <div style={{ display: 'flex' }}>
                             <label htmlFor="user_comment"></label>
@@ -391,10 +460,12 @@ export default function Post({ params, searchParams }) {
                                 type="text"
                                 id="user_comment"
                                 placeholder="Enter comment..."
+                                value={newComment}
+                                onChange={handleCommentChange}
                                 style={{ flex: 1, height: 20 }}
                                 rows={2}
                             />
-                            <input type="submit" value="Comment" />
+                            <input type="submit" onClick={handleCommentSubmit}/>
                         </div>
                     </form>
                 </div>
@@ -409,7 +480,12 @@ export default function Post({ params, searchParams }) {
                         </div>
                         <div className={styles.commentDetailsContainer}>
                             <p>{card.body}</p>
-                            <p>{card.comment_date}</p>
+                            <p>
+                                <p>
+                                    <FlagCommentButton category_id={categoryID} post_id={postID} comment_id={card.comment_id} />
+                                </p>
+                                {card.comment_date}
+                            </p>
                         </div>
                     </div>
                 ))}
