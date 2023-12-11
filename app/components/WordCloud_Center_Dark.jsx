@@ -1,6 +1,6 @@
 /**
- * This is the file where the word cloud for the homepage HTML
- * is located. (Currently just a Pitt Logo placeholder...)
+ * This is the file where the word cloud for the homepage
+ * is located.
  */
 
 'use client';

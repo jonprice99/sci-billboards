@@ -1,6 +1,6 @@
 /**
- * This is the file where the word cloud for the homepage HTML
- * is located. (Currently just a Pitt Logo placeholder...)
+ * This is the file where the word cloud for the homepage
+ * is located.
  */
 
 import 'app/globals.css'
@@ -10,6 +10,7 @@ import '@carbon/charts-react/styles.css'
 import options from './wordcloud_options.js'
 import { useEffect, useState } from 'react'
 
+// Django server url for fetching, posting, etc to db
 const server_url = `http://127.0.0.1:8000`;
 
 export default function Home_Center() {

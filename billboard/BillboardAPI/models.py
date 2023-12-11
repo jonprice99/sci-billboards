@@ -85,6 +85,7 @@ class Comments(models.Model):
     is_pending_mod = models.BooleanField(default=False)
     is_hidden = models.BooleanField(default=False)
     showName = models.BooleanField(default=False)
+    flag_weight = models.IntegerField(default=0)
     
     class Meta:
         db_table = 'Comments'
