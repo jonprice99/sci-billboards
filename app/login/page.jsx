@@ -102,6 +102,13 @@ const login = () => {
     setPassword(e.target.value);
   };
 
+  // Function to handle 'Enter' key form submission method
+  function handleKeyDown(event) {
+    if (event.keyCode === 13) {
+      handleSubmit(event);
+    }
+  }
+
   return (
     <main className={styles.main}>
 
@@ -144,6 +151,7 @@ const login = () => {
             value={password}
             rows={1}
             size={30}
+            onKeyDown={handleKeyDown}
             required
           />
         </form>

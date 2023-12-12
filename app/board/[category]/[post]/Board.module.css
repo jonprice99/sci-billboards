@@ -62,8 +62,16 @@
   margin-right: 50px;
 }
 
+.iconWrapper button:hover {
+  cursor: pointer;
+}
+
 .flagButton {
   margin-top: -15px;
+}
+
+.flagButton:hover {
+  cursor: pointer;
 }
 
 .extraInfo h5 {
@@ -198,6 +206,7 @@
 
 .button:hover {
   box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.1), 0 17px 50px 0 rgba(0, 0, 0, 0.075);
+  cursor: pointer;
 }
 
 .postButtonFloating {

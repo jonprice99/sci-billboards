@@ -145,6 +145,8 @@
 
 .button:hover {
   box-shadow: 0 12px 16px 0 rgba(0,0,0,0.1), 0 17px 50px 0 rgba(0, 0, 0, 0.075);
+  cursor: pointer;
+  transform: scale(1.05);
 }
 
 .post_form {

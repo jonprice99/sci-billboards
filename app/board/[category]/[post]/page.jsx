@@ -160,7 +160,7 @@ export default function Post({ params, searchParams }) {
 
         // No need to authenticate user here since it's done in flag_post
         const handleClick = () => {
-            router.push(`/flag_comment?category_id=${category_id}&post_id=${post_id}&comment_id=${comment_id}`,);
+            router.push(`/flag_comment?category_id=${category_id}&post_id=${post_id}&comment_id=${comment_id}`, {shallow: false});
         };
 
         return (

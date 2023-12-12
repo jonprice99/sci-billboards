@@ -51,12 +51,20 @@
     z-index: 1;
     margin-top: 0.75rem;
     margin-left: 0.25rem;
-    margin-right: 0.1rem;
+    margin-right: 0.25rem;
     text-align: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
 
+}
+
+.card:active {
+    filter: brightness(85%);
+}
+  
+.card:hover {
+    transform: scale(1.02);
 }
 
 .card span {
