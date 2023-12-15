@@ -1,13 +1,13 @@
 'use client';
 import styles from './ModTools.module.css'
 import Link from 'next/link';
-import { useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons'
 import { setCookie, getCookie, deleteCookie, hasCookie } from 'cookies-next';
 import { useRouter } from 'next/navigation';
 
 const server_url = `http://127.0.0.1:8000`;
+let alertDisplayed = false;
 
 export default function ModTools() {
     const router = useRouter();
@@ -21,15 +21,24 @@ export default function ModTools() {
         let authorizedCookie = getCookie('authorization');
 
         if (loggedInCookie == undefined) {
-            // The user isn't logged in, redirect them to the login page
-            alert("Access Denied: You need to login and be a moderator or administrator to access this page!");
-            router.push(`/login`);
+            if (!alertDisplayed) {
+                // The user isn't logged in, redirect them to the login page
+                alert("Access Denied: You need to login and be a moderator or administrator to access this page!");
+                alertDisplayed = true;
+                router.push(`/login`);
+            }
         }
 
-        if (loggedInCookie != undefined && authorizedCookie < 1) {
-            // The user is logged in, but they're unauthorized
-            alert("Access Denied: Only moderators or administrators can access this page!");
-            router.push(`/`);
+        if (loggedInCookie != undefined && (authorizedCookie == undefined || authorizedCookie < 1)) {
+            if (!alertDisplayed) {
+                // The user is logged in, but they're unauthorized
+                alert("Access Denied: Only moderators or administrators can access this page!");
+                router.push(`/`);
+                alertDisplayed = true;
+            } else {
+                // The alert's been displayed, so we can reset the flag
+                alertDisplayed = false;
+            }
         }
     }
 

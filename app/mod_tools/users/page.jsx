@@ -24,6 +24,7 @@ export default function UsersTools() {
     const [disallowedUsers, setDisallowedUsers] = useState([]);
     const [isAdmin, setIsAdmin] = useState(false);
     const router = useRouter();
+    let alertDisplayed = false;
 
     useEffect(() => {
         async function fetchData() {
@@ -45,15 +46,21 @@ export default function UsersTools() {
             let authorizedCookie = getCookie('authorization');
 
             if (loggedInCookie == undefined) {
-                // The user isn't logged in, redirect them to the login page
-                alert("Access Denied: You need to login and be a moderator or administrator to access this page!");
-                router.push(`/login`);
+                if (!alertDisplayed) {
+                    // The user isn't logged in, redirect them to the login page
+                    alert("Access Denied: You need to login and be a moderator or administrator to access this page!");
+                    router.push(`/login`);
+                    alertDisplayed = true;
+                }
             }
 
-            if (loggedInCookie != undefined && authorizedCookie < 1) {
-                // The user is logged in, but they're unauthorized
-                alert("Access Denied: Only moderators or administrators can access this page!");
-                router.push(`/`);
+            if (loggedInCookie != undefined && (authorizedCookie == undefined || authorizedCookie < 1)) {
+                if (!alertDisplayed) {
+                    // The user is logged in, but they're unauthorized
+                    alert("Access Denied: Only moderators or administrators can access this page!");
+                    router.push(`/`);
+                    alertDisplayed = true;
+                }
             }
 
             if (authorizedCookie == 1) {

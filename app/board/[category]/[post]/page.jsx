@@ -37,6 +37,8 @@ export default function Post({ params, searchParams }) {
     // Hold the User_Upvotes table data
     const [allUpvotes, setAllUpvotes] = useState([]);
 
+    let alertDisplayed = false; 
+
     useEffect(() => {
         // Get the necessary data from the database
         async function fetchData() {
@@ -315,16 +317,34 @@ export default function Post({ params, searchParams }) {
                             }
                         }
                     } else {
-                        // Block the user from trying to upvote their own post
-                        alert("You can't upvote your own post!");
+                        if (!alertDisplayed) {
+                            // Block the user from trying to upvote their own post
+                            alert("You can't upvote your own post!");
+                            alertDisplayed = true;
+                        } else {
+                            // The alert's been displayed, so we can reset the flag
+                            alertDisplayed = false;
+                        }
                     }
                 } else {
-                    // The user is logged in, but not authorized, so they must be disallowed
-                    alert("You are currently unable to upvote posts. Please contact administration for assistance.");
+                    if (!alertDisplayed) {
+                        // The user is logged in, but not authorized, so they must be disallowed
+                        alert("You are currently unable to upvote posts. Please contact administration for assistance.");
+                        alertDisplayed = true;
+                    } else {
+                        // The alert's been displayed, so we can reset the flag
+                        alertDisplayed = false;
+                    }
                 }
             } else {
-                // The user isn't logged in
-                alert("You need to be logged in to upvote ideas!")
+                if (!alertDisplayed) {
+                    // The user isn't logged in
+                    alert("You need to be logged in to upvote ideas!")
+                    alertDisplayed = true;
+                } else {
+                    // The alert's been displayed, so we can reset the flag
+                    alertDisplayed = false;
+                }
             }
         };
 
@@ -353,10 +373,23 @@ export default function Post({ params, searchParams }) {
 
         // Check if the user is logged in & authorized to comment
         if (getCookie('pittID') == undefined) {
-            alert("You need to log in to post comments!");
-            router.push('/login');
+            if (!alertDisplayed) {
+                alert("You need to log in to post comments!");
+                router.push('/login');
+                alertDisplayed = true;
+            } else {
+                // The alert's been displayed, so we can reset the flag
+                alertDisplayed = false;
+            }
         } else if (getCookie('pittID') != undefined && getCookie('authorization') == undefined) {
-            alert("You currently are unable to comment. Please contact support for further assistance.")
+            if (!alertDisplayed) {
+                // Block a disallowed user from being able to comment
+                alert("You currently are unable to comment. Please contact support for further assistance.")
+                alertDisplayed = true;
+            } else {
+                // The alert's been displayed, so we can reset the flag
+                alertDisplayed = false;
+            }
         } else {
             // Get the body of the comment
             let body = newComment;
@@ -383,11 +416,27 @@ export default function Post({ params, searchParams }) {
                 });
 
                 console.log("Success:", addResponse);
-                alert("Comment sent!");
+
+                if (!alertDisplayed) {
+                    alert("Comment sent!");
+                    alertDisplayed = true;
+                } else {
+                    // The alert's been displayed, so we can reset the flag
+                    alertDisplayed = false;
+                }
+                
                 router.refresh();
             } catch (error) {
-                // There was an error when trying to post to the db
-                alert("Error when attempting to post to db.");
+                if (!alertDisplayed) {
+                    // There was an error when trying to post to the db
+                    alert("Error when attempting to submit comment. Please try again later!");
+                    alertDisplayed = true;
+                } else {
+                    // The alert's been displayed, so we can reset the flag
+                    alertDisplayed = false;
+                }
+
+
                 console.error("Error when attempting to post to db:", error);
                 //router.refresh();
             }

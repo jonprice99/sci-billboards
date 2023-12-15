@@ -85,10 +85,7 @@ export default function Page({ params, searchParams }) {
   const [allUpvotes, setAllUpvotes] = useState([]);
   const [allPosts, setAllPosts] = useState([]);
 
-  //function to handle changes in sort drop down menu
-  const handleSelectChange = (selectedOptions) => {
-    //console.log(selectedOptions);
-  }
+  let alertDisplayed = false;
 
   useEffect(() => {
     // Get the necessary data from the database
@@ -307,16 +304,34 @@ export default function Page({ params, searchParams }) {
               }
             }
           } else {
-            // Block the user from trying to upvote their own post
-            alert("You can't upvote your own post!");
+            if (!alertDisplayed) {
+              // Block the user from trying to upvote their own post
+              alert("You can't upvote your own post!");
+              alertDisplayed = true;
+            } else {
+              // The alert's been displayed, so we can reset the flag
+              alertDisplayed = false;
+            }
           }
         } else {
-          // The user is logged in, but not authorized, so they must be disallowed
-          alert("You are currently unable to upvote posts. Please contact administration for assistance.");
+          if (!alertDisplayed) {
+            // The user is logged in, but not authorized, so they must be disallowed
+            alert("You are currently unable to upvote posts. Please contact administration for assistance.");
+            alertDisplayed = true;
+          } else {
+            // The alert's been displayed, so we can reset the flag
+            alertDisplayed = false;
+          }
         }
       } else {
-        // The user isn't logged in
-        alert("You need to be logged in to upvote ideas!")
+        if (!alertDisplayed) {
+          // The user isn't logged in
+          alert("You need to be logged in to upvote ideas!")
+          alertDisplayed = true;
+        } else {
+          // The alert's been displayed, so we can reset the flag
+          alertDisplayed = false;
+        }
       }
     };
 

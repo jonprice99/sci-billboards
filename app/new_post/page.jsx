@@ -31,6 +31,9 @@ const new_post = () => {
 
   const [categories, setCategories] = useState([]);
 
+  // A boolean flag to prevent login alert from showing twice
+  let loginAlert = false;
+
   useEffect(() => {
     async function fetchData() {
       const res = await fetch(`${server_url}/api/categories/`);
@@ -47,15 +50,21 @@ const new_post = () => {
       let authorizedCookie = getCookie('authorization');
       
       if (loggedInCookie == undefined) {
-        // The user isn't logged in, redirect them to the login page
-        alert("You need to login to make a new post!");
-        router.push(`/login`);
+        if (!loginAlert) {
+          // The user isn't logged in, redirect them to the login page
+          alert("You need to login to make a new post!");
+          router.push(`/login`);
+          loginAlert = true;
+        }
       }
 
       if (loggedInCookie != undefined && authorizedCookie == undefined) {
-        // The user is logged in, but they're unauthorized
-        alert("You're currently unable to make a new post. Please contact administration for assistance!");
-        router.push(`/`);
+        if (!loginAlert) {
+          // The user is logged in, but they're unauthorized
+          alert("You're currently unable to make a new post. Please contact administration for assistance!");
+          router.push(`/`);
+          loginAlert = true;
+        }
       }
     }
 
