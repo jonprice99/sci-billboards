@@ -92,12 +92,12 @@ export default function UsersTools() {
 
         // Admin data
         let user_id = changes.user_id;
-        let username = changes.user_name;
+        let username = changes.username;
         let role = changes.role;
         const data = { user_id, username, role }
 
         try {
-            const addResponse = await fetch(`${server_url}/api/users/add`, {
+            const addResponse = await fetch(`${server_url}/api/mod/users/add`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -123,7 +123,7 @@ export default function UsersTools() {
         const data = { username }
 
         try {
-            const addResponse = await fetch(`${server_url}/api/disallowed_users/add`, {
+            const addResponse = await fetch(`${server_url}/api/mod/disallowed_users/add`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -147,7 +147,7 @@ export default function UsersTools() {
 
         // Admin data
         let user_id = changes.user_id;
-        let username = changes.user_name;
+        let username = changes.username;
         let role = changes.role;
         const data = { user_id, username, role };
         
@@ -203,14 +203,14 @@ export default function UsersTools() {
         let changes = event.data
 
         // Admin data
-        let username = changes.user_name;
+        let username = changes.username;
         let role = changes.role;
         const data = { user_id, username, role };
 
         // Get the current data for the board
         try {
             // Send the DELETE request to remove the category from the db
-            const deleteResponse = await fetch(`${server_url}/api/users/delete/${data.user_id}`, {
+            const deleteResponse = await fetch(`${server_url}/api/mod/users/delete/${data.user_id}`, {
                 method: "DELETE"
             });
 
@@ -234,7 +234,7 @@ export default function UsersTools() {
         // Get the current data for the board
         try {
             // Send the DELETE request to remove the category from the db
-            const deleteResponse = await fetch(`${server_url}/api/disallowed_users/delete/${data.user_id}`, {
+            const deleteResponse = await fetch(`${server_url}/api/mod/disallowed_users/delete/${data.user_id}`, {
                 method: "DELETE"
             });
 
