@@ -436,7 +436,6 @@ export default function Post({ params, searchParams }) {
                     alertDisplayed = false;
                 }
 
-
                 console.error("Error when attempting to post to db:", error);
                 //router.refresh();
             }

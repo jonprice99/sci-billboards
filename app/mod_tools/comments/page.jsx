@@ -22,6 +22,7 @@ export default function CommentsTools() {
     const [allComments, setAllComments] = useState([]);
     const [isAdmin, setIsAdmin] = useState(false);
     const router = useRouter();
+    let alertDisplayed = false;
 
     useEffect(() => {
         async function fetchData() {

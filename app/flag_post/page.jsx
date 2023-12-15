@@ -32,6 +32,7 @@ export default function flag_post({ params, searchParams }) {
           // The user isn't logged in, redirect them to the login page
           alert("You need to login to flag a post!");
           router.push(`/login`);
+          alertDisplayed = true;
         }
       }
 
@@ -40,8 +41,8 @@ export default function flag_post({ params, searchParams }) {
           // The user is logged in, but they're unauthorized
           alert("You're currently unable to flag posts. Please contact administration for assistance!");
           router.push(`/`);
+          alertDisplayed = true;
         }
-        
       }
     }
 

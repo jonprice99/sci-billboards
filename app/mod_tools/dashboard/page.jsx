@@ -24,6 +24,7 @@ export default function PostsTools() {
     const [allPosts, setAllPosts] = useState([]);
     const [allComments, setAllComments] = useState([]);
     const [allUpvotes, setAllUpvotes] = useState([]);
+    let alertDisplayed = false;
 
     useEffect(() => {
         async function fetchData() {
