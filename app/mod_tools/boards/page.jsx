@@ -8,7 +8,6 @@
 import 'devextreme/dist/css/dx.light.css';
 import ExtremeDataGrid, { Column, ColumnChooser, ColumnFixing, Editing, FilterRow, Popup, Paging, Search, SearchPanel, Selection, Toolbar, Item, Lookup, Form } from 'devextreme-react/data-grid';
 import 'devextreme-react/text-area';
-import { Button } from 'devextreme-react/button';
 import Link from "next/link"
 import styles from 'app/mod_tools/boards/BoardTools.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -205,7 +204,7 @@ export default function BoardTools() {
                 </div>
     
                 <br />
-                <div style={{ width: '100%' }}>
+                <div style={{ width: '80%' }}>
                     <ExtremeDataGrid
                         dataSource={categories}
                         columns={columns}
@@ -255,7 +254,7 @@ export default function BoardTools() {
                 </div>
     
                 <br />
-                <div style={{ width: '100%' }}>
+                <div style={{ width: '80%' }}>
                     <ExtremeDataGrid
                         dataSource={categories}
                         columns={adminColumns}

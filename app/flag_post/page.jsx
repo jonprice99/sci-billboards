@@ -16,6 +16,7 @@ export default function flag_post({ params, searchParams }) {
   const [flagReasonStr, setFlagReasonStr] = useState('');
   const [post, setPost] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  let alertDisplayed = false;
 
   useEffect(() => {
     // Check the user's permissions
@@ -27,15 +28,20 @@ export default function flag_post({ params, searchParams }) {
       let authorizedCookie = getCookie('authorization');
       
       if (loggedInCookie == undefined) {
-        // The user isn't logged in, redirect them to the login page
-        alert("You need to login to flag a post!");
-        router.push(`/login`);
+        if (!alertDisplayed) {
+          // The user isn't logged in, redirect them to the login page
+          alert("You need to login to flag a post!");
+          router.push(`/login`);
+        }
       }
 
       if (loggedInCookie != undefined && authorizedCookie == undefined) {
-        // The user is logged in, but they're unauthorized
-        alert("You're currently unable to flag posts. Please contact administration for assistance!");
-        router.push(`/`);
+        if (!alertDisplayed) {
+          // The user is logged in, but they're unauthorized
+          alert("You're currently unable to flag posts. Please contact administration for assistance!");
+          router.push(`/`);
+        }
+        
       }
     }
 
@@ -116,7 +122,10 @@ export default function flag_post({ params, searchParams }) {
       });
 
       console.log(patchResponse);
-      alert("Your report has been submitted!");
+
+      if (!alertDisplayed) {
+        alert("Your report has been submitted!");
+      }
 
       // Go back to the category board page
       if (window.history.length > 1) {

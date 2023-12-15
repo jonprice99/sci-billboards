@@ -208,7 +208,7 @@ export default function CommentsTools() {
                 </div>
     
                 <br />
-                <div style={{ width: '100%', height: '00px' }}>
+                <div style={{ width: '80%' }}>
                     <ExtremeDataGrid
                         dataSource={allComments}
                         columns={columns}
@@ -258,7 +258,7 @@ export default function CommentsTools() {
                 </div>
     
                 <br />
-                <div style={{ width: '100%' }}>
+                <div style={{ width: '80%' }}>
                     <ExtremeDataGrid
                         dataSource={allComments}
                         columns={adminColumns}

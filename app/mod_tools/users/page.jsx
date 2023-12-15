@@ -286,7 +286,7 @@ export default function UsersTools() {
     
                 <br />
                 <h3>Users:</h3>
-                <div style={{ width: '70%' }}>
+                <div style={{ width: '80%' }}>
                     <ExtremeDataGrid
                         dataSource={allUsers}
                         columns={adminColumns}
@@ -318,7 +318,7 @@ export default function UsersTools() {
                 <br />
                 <br />
                 <h3>Disallowed Users:</h3>
-                <div style={{ width: '70%' }}>
+                <div style={{ width: '80%' }}>
                     <ExtremeDataGrid
                         dataSource={disallowedUsers}
                         columns={adminDisallowedColumns}
