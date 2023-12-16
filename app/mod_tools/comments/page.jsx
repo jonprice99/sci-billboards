@@ -14,15 +14,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMessage, faFlag, faAngleLeft, faThumbsUp } from '@fortawesome/free-solid-svg-icons'
 import { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
+import { setCookie, getCookie, deleteCookie, hasCookie } from 'cookies-next';
 
 const server_url = `http://127.0.0.1:8000`;
 
-// Flag for mod/admin power separation (to be replaced by login power check)
-const isAdmin = false;
-
 export default function CommentsTools() {
     const [allComments, setAllComments] = useState([]);
+    const [isAdmin, setIsAdmin] = useState(false);
     const router = useRouter();
+    let alertDisplayed = false;
 
     useEffect(() => {
         async function fetchData() {
@@ -33,7 +33,34 @@ export default function CommentsTools() {
 
         // Check the user's permissions
         async function checkUser() {
+            // Check if the user is logged in
+            let loggedInCookie = getCookie('pittID');
 
+            // Check if the user is disallowed
+            let authorizedCookie = getCookie('authorization');
+
+            if (loggedInCookie == undefined) {
+                if (!alertDisplayed) {
+                    // The user isn't logged in, redirect them to the login page
+                    alert("Access Denied: You need to login and be a moderator or administrator to access this page!");
+                    router.push(`/login`);
+                    alertDisplayed = true;
+                }
+            }
+
+            if (loggedInCookie != undefined && (authorizedCookie == undefined || authorizedCookie < 1)) {
+                if (!alertDisplayed) {
+                    // The user is logged in, but they're unauthorized
+                    alert("Access Denied: Only moderators or administrators can access this page!");
+                    router.push(`/`);
+                    alertDisplayed = true;
+                }
+            }
+
+            if (authorizedCookie == 1) {
+                // The user is an admin
+                setIsAdmin(true);
+            }
         }
     
         fetchData();
@@ -47,7 +74,7 @@ export default function CommentsTools() {
         { dataField: 'category_id', caption: 'category_id', allowEditing: false, allowAdding: false },
         { dataField: 'post_id', caption: 'post_id', allowEditing: false, allowAdding: false },
         { dataField: 'comment_id', caption: 'comment_id', allowEditing: false, allowAdding: false },
-        { dataField: 'user_id', caption: 'user_id', allowEditing: false, allowAdding: false },
+        { dataField: 'showName', caption: 'showName', allowEditing: false, allowAdding: false },
         { dataField: 'user_name', caption: 'poster_name', allowEditing: false, allowAdding: false },
         { dataField: 'body', caption: 'body', allowEditing: false, allowAdding: false }
     ];
@@ -59,7 +86,7 @@ export default function CommentsTools() {
         { dataField: 'category_id', caption: 'category_id', allowEditing: true, allowAdding: true },
         { dataField: 'post_id', caption: 'post_id', allowEditing: true, allowAdding: true },
         { dataField: 'comment_id', caption: 'comment_id', allowEditing: true, allowAdding: true },
-        { dataField: 'user_id', caption: 'user_id', allowEditing: true, allowAdding: true },
+        { dataField: 'showName', caption: 'showName', allowEditing: true, allowAdding: true },
         { dataField: 'user_name', caption: 'poster_name', allowEditing: true, allowAdding: true },
         { dataField: 'body', caption: 'body', allowEditing: true, allowAdding: true }
     ];
@@ -74,13 +101,12 @@ export default function CommentsTools() {
         let category_id = changes.category_id;
         let post_id = changes.post_id;
         let comment_id = changes.comment_id;
-        let user_id = changes.user_id;
         let user_name = changes.user_name;
         let body = changes.body;
         let comment_date = changes.comment_date;
         let is_hidden = changes.is_hidden;
         let is_pending_mod = changes.is_pending_mod;
-        const data = { category_id, post_id, comment_id, user_id, user_name, body, comment_date, is_hidden, is_pending_mod }
+        const data = { category_id, post_id, comment_id, user_name, body, comment_date, is_hidden, is_pending_mod }
 
         try {
             const addResponse = await fetch(`${server_url}/api/comments/create`, {
@@ -109,7 +135,6 @@ export default function CommentsTools() {
         let category_id = changes.category_id;
         let post_id = changes.post_id;
         let comment_id = changes.comment_id;
-        let user_id = changes.user_id;
         let user_name = changes.user_name;
         let body = changes.body;
         let comment_date = changes.comment_date;
@@ -121,7 +146,7 @@ export default function CommentsTools() {
         try {
             // Send the PUT request with the updated data
             const putResponse = await fetch(`${server_url}/api/mod/comments/update/${data.category_id}/${data.post_id}/${data.comment_id}`, {
-                method: "PUT",
+                method: "PATCH",
                 headers: {
                     "Content-Type": "application/json"
                 },
@@ -145,13 +170,12 @@ export default function CommentsTools() {
         let category_id = changes.category_id;
         let post_id = changes.post_id;
         let comment_id = changes.comment_id;
-        let user_id = changes.user_id;
         let user_name = changes.user_name;
         let body = changes.body;
         let comment_date = changes.comment_date;
         let is_hidden = changes.is_hidden;
         let is_pending_mod = changes.is_pending_mod;
-        const data = { category_id, post_id, comment_id, user_id, user_name, body, comment_date, is_hidden, is_pending_mod }
+        const data = { category_id, post_id, comment_id, user_name, body, comment_date, is_hidden, is_pending_mod }
 
         // Get the current data for the board
         try {
@@ -185,7 +209,7 @@ export default function CommentsTools() {
                 </div>
     
                 <br />
-                <div style={{ width: '100%', height: '00px' }}>
+                <div style={{ width: '80%' }}>
                     <ExtremeDataGrid
                         dataSource={allComments}
                         columns={columns}
@@ -235,7 +259,7 @@ export default function CommentsTools() {
                 </div>
     
                 <br />
-                <div style={{ width: '100%' }}>
+                <div style={{ width: '80%' }}>
                     <ExtremeDataGrid
                         dataSource={allComments}
                         columns={adminColumns}

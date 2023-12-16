@@ -42,9 +42,10 @@ class Categories(models.Model):
         return self.name
     
 class User_Upvotes(models.Model):
-    category_id = models.PositiveIntegerField()
-    post_id = models.PositiveIntegerField()
-    user_id = models.PositiveIntegerField()
+    id = models.AutoField(primary_key=True)
+    category_id = models.PositiveIntegerField(null=False)
+    post_id = models.PositiveIntegerField(null=False)
+    username = models.CharField(max_length=128, null=False)
     
     class Meta:
         db_table = 'User_Upvotes'
@@ -57,16 +58,16 @@ class Posts(models.Model):
     post_id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=160)
     description = models.TextField()
-    subcategory = models.CharField(max_length=256, null=True)
+    keywords = models.TextField(null=False)
     progress = models.SmallIntegerField(default=0)
     date_posted = models.DateTimeField(auto_now_add=True)
-    poster_id = models.IntegerField()
     poster_name = models.CharField(max_length=128, null=True)
     upvotes = models.IntegerField(default=0)
-    comments = models.IntegerField(default=0)
+    comments = models.PositiveIntegerField(default=0)
     is_pending_mod = models.BooleanField(default=False)
     is_hidden = models.BooleanField(default=False)
-    comment_count = models.PositiveIntegerField(default=0)
+    showName = models.BooleanField(default=False)
+    flag_weight = models.IntegerField(default=0)
     
     class Meta:
         db_table = 'Posts'  # Specify the table name
@@ -78,12 +79,13 @@ class Comments(models.Model):
     category_id = models.PositiveIntegerField()
     post_id = models.PositiveIntegerField()
     comment_id = models.AutoField(primary_key=True)
-    user_id = models.PositiveIntegerField()
     user_name = models.CharField(max_length=128, null=True)
     body = models.CharField(max_length=256)
     comment_date = models.DateTimeField(auto_now_add=True)
     is_pending_mod = models.BooleanField(default=False)
     is_hidden = models.BooleanField(default=False)
+    showName = models.BooleanField(default=False)
+    flag_weight = models.IntegerField(default=0)
     
     class Meta:
         db_table = 'Comments'

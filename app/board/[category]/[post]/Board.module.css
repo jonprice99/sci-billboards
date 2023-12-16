@@ -32,6 +32,7 @@
 .paragraph {
   max-width: 100%;
   width: var(--max-width);
+  padding-top: 30px;
 }
 
 .paragraph h3 {
@@ -43,6 +44,7 @@
   justify-content: space-between;
   max-width: 100%;
   width: var(--max-width);
+  padding-top: 30px;
 }
 
 .dateInfo {
@@ -60,20 +62,19 @@
   margin-right: 50px;
 }
 
+.iconWrapper button:hover {
+  cursor: pointer;
+}
+
 .flagButton {
   margin-top: -15px;
 }
 
+.flagButton:hover {
+  cursor: pointer;
+}
+
 .extraInfo h5 {
-  font-weight: normal;
-}
-
-.commentsTitle {
-  max-width: 100%;
-  width: var(--max-width);
-}
-
-.commentsTitle h4 {
   font-weight: normal;
 }
 
@@ -205,6 +206,7 @@
 
 .button:hover {
   box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.1), 0 17px 50px 0 rgba(0, 0, 0, 0.075);
+  cursor: pointer;
 }
 
 .postButtonFloating {
@@ -253,6 +255,59 @@
 .iconButton {
   background: transparent;
   border: none;
+}
+
+.commentsTitle {
+  max-width: 100%;
+  width: var(--max-width);
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+.commentsTitle h4 {
+  font-weight: normal;
+}
+
+.commentsInfo h4 {
+  padding-bottom: 10px;
+}
+
+.comment_layout {
+  text-align: left;
+  max-width: 100%;
+  width: var(--max-width);
+}
+
+.user_comment {
+  padding-top: 20px;
+  border-bottom: solid 1px gray;
+}
+
+.userInfoContainer {
+  display: flex;
+  align-items: center;
+}
+
+.userInfoContainer h3 {
+  margin: 0;
+}
+
+.commentDetailsContainer {
+  padding-top: 10px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 10px;
+}
+
+.commentDetailsContainer p:first-child {
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.commentDetailsContainer p:last-child {
+  font-size: 12px;
+  text-align: right;
 }
 
 

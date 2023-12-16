@@ -8,22 +8,21 @@
 import 'devextreme/dist/css/dx.light.css';
 import ExtremeDataGrid, { Column, ColumnChooser, ColumnFixing, Editing, FilterRow, Popup, Paging, Search, SearchPanel, Selection, Toolbar, Item, Lookup, Form } from 'devextreme-react/data-grid';
 import 'devextreme-react/text-area';
-import { Button } from 'devextreme-react/button';
 import Link from "next/link"
 import styles from 'app/mod_tools/boards/BoardTools.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMessage, faFlag, faAngleLeft, faThumbsUp } from '@fortawesome/free-solid-svg-icons'
 import { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
+import { setCookie, getCookie, deleteCookie, hasCookie } from 'cookies-next';
 
 const server_url = `http://127.0.0.1:8000`;
 
-// Flag for mod/admin power separation (to be replaced by login power check)
-const isAdmin = false;
-
 export default function BoardTools() {
     const [categories, setCategories] = useState([]);
+    const [isAdmin, setIsAdmin] = useState(false);
     const router = useRouter();
+    let alertDisplayed = false;
 
     useEffect(() => {
         async function fetchData() {
@@ -34,7 +33,34 @@ export default function BoardTools() {
 
         // Check the user's permissions
         async function checkUser() {
+            // Check if the user is logged in
+            let loggedInCookie = getCookie('pittID');
 
+            // Check if the user is disallowed
+            let authorizedCookie = getCookie('authorization');
+
+            if (loggedInCookie == undefined) {
+                if (!alertDisplayed) {
+                    // The user isn't logged in, redirect them to the login page
+                    alert("Access Denied: You need to login and be a moderator or administrator to access this page!");
+                    router.push(`/login`);
+                    alertDisplayed = true;
+                }
+            }
+
+            if (loggedInCookie != undefined && (authorizedCookie == undefined || authorizedCookie < 1)) {
+                if (!alertDisplayed) {
+                    // The user is logged in, but they're unauthorized
+                    alert("Access Denied: Only moderators or administrators can access this page!");
+                    router.push(`/`);
+                    alertDisplayed = true;
+                }
+            }
+
+            if (authorizedCookie == 1) {
+                // The user is an admin
+                setIsAdmin(true);
+            }
         }
     
         fetchData();
@@ -119,7 +145,7 @@ export default function BoardTools() {
         try {
             // Send the PUT request with the updated data
             const putResponse = await fetch(`${server_url}/api/categories/update/${data.id}/`, {
-                method: "PUT",
+                method: "PATCH",
                 headers: {
                     "Content-Type": "application/json"
                 },
@@ -179,7 +205,7 @@ export default function BoardTools() {
                 </div>
     
                 <br />
-                <div style={{ width: '100%' }}>
+                <div style={{ width: '80%' }}>
                     <ExtremeDataGrid
                         dataSource={categories}
                         columns={columns}
@@ -229,7 +255,7 @@ export default function BoardTools() {
                 </div>
     
                 <br />
-                <div style={{ width: '100%' }}>
+                <div style={{ width: '80%' }}>
                     <ExtremeDataGrid
                         dataSource={categories}
                         columns={adminColumns}

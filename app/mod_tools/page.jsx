@@ -1,21 +1,48 @@
 'use client';
 import styles from './ModTools.module.css'
 import Link from 'next/link';
-import { useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons'
+import { setCookie, getCookie, deleteCookie, hasCookie } from 'cookies-next';
+import { useRouter } from 'next/navigation';
 
 const server_url = `http://127.0.0.1:8000`;
+let alertDisplayed = false;
 
 export default function ModTools() {
-    useEffect(() => {
-        // Check the user's permissions
-        async function checkUser() {
+    const router = useRouter();
 
+    // Check the user's permissions
+    async function checkUser() {
+        // Check if the user is logged in
+        let loggedInCookie = getCookie('pittID');
+
+        // Check if the user is disallowed
+        let authorizedCookie = getCookie('authorization');
+
+        if (loggedInCookie == undefined) {
+            if (!alertDisplayed) {
+                // The user isn't logged in, redirect them to the login page
+                alert("Access Denied: You need to login and be a moderator or administrator to access this page!");
+                alertDisplayed = true;
+                router.push(`/login`);
+            }
         }
-        
-        checkUser();
-    }, []);
+
+        if (loggedInCookie != undefined && (authorizedCookie == undefined || authorizedCookie < 1)) {
+            if (!alertDisplayed) {
+                // The user is logged in, but they're unauthorized
+                alert("Access Denied: Only moderators or administrators can access this page!");
+                router.push(`/`);
+                alertDisplayed = true;
+            } else {
+                // The alert's been displayed, so we can reset the flag
+                alertDisplayed = false;
+            }
+        }
+    }
+
+    checkUser();
 
     // The set of cards with their appropriate links and details
     const cards = [
@@ -60,7 +87,6 @@ export default function ModTools() {
             parargraph: 'Manage comments on board posts and their visibility'
         },
     ]
-
 
     return (
         <main className={styles.main}>

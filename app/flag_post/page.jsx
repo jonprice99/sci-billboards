@@ -1,30 +1,61 @@
 'use client';
 import Link from "next/link"
 import styles from './FlagPost.module.css'
-import Image from 'next/image'
-import AutoResize from 'react-textarea-autosize';
 import Home_Center from "../components/Home_Center";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons'
 import { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
+import { setCookie, getCookie, deleteCookie, hasCookie } from 'cookies-next';
 
+// The Django API server url to connect to the DB
 const server_url = `http://127.0.0.1:8000`;
 
 export default function flag_post({ params, searchParams }) {
   const router = useRouter();
   const [flagReasonStr, setFlagReasonStr] = useState('');
-
+  const [post, setPost] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  let alertDisplayed = false;
 
   useEffect(() => {
-    // Check if the user is logged in & allowed to flag posts
+    // Check the user's permissions
     async function checkUser() {
+      // Check if the user is logged in
+      let loggedInCookie = getCookie('pittID');
 
+      // Check if the user is disallowed
+      let authorizedCookie = getCookie('authorization');
+      
+      if (loggedInCookie == undefined) {
+        if (!alertDisplayed) {
+          // The user isn't logged in, redirect them to the login page
+          alert("You need to login to flag a post!");
+          router.push(`/login`);
+          alertDisplayed = true;
+        }
+      }
+
+      if (loggedInCookie != undefined && authorizedCookie == undefined) {
+        if (!alertDisplayed) {
+          // The user is logged in, but they're unauthorized
+          alert("You're currently unable to flag posts. Please contact administration for assistance!");
+          router.push(`/`);
+          alertDisplayed = true;
+        }
+      }
+    }
+
+    // Get data from the database
+    async function fetchData() {
+      const res = await fetch(`${server_url}/api/posts/${searchParams.category_id}/${searchParams.post_id}`);
+      const data = await res.json();
+      setPost(data);
     }
 
     checkUser();
     setIsLoggedIn(true);
+    fetchData();
   }, []);
 
   // Define a function that handles the form submission
@@ -38,17 +69,64 @@ export default function flag_post({ params, searchParams }) {
     }
 
     // Calculate the appropriate weight for the flag
+    let weightToAdd = 0;
+    if (flagReasonStr == "inappropriateHarassment") {
+      weightToAdd = 5;
+    } else if (flagReasonStr == "spam") {
+      weightToAdd = 4;
+    } else if (flagReasonStr == "offTopic") {
+      weightToAdd = 3;
+    } else if (flagReasonStr == "repetitive") {
+      weightToAdd = 2;
+    } else if (flagReasonStr == "other") {
+      weightToAdd = 1;
+    }
+
+    // Check if this post needs to be held for moderation
+    let flag_weight = 0;
+    let is_hidden = false;
+    let is_pending_mod = false;
+    if (weightToAdd + post[0].flag_weight >= 5) {
+      // The flag_weight will be at least 5, we'll need to hide the post
+      flag_weight = post[0].flag_weight + weightToAdd;
+      is_hidden = true;
+      is_pending_mod = true;
+    } else {
+      // We just need to update the flag weight against this post
+      flag_weight = post[0].flag_weight + weightToAdd;
+    }
+
+    // Collect the rest of the data from the post for the patch
+    let category_id = searchParams.category_id;
+    let post_id = searchParams.post_id;
+    let title = post[0].title;
+    let description = post[0].description;
+    let keywords = post[0].keywords;
+    let progress = post[0].progress;
+    let date_posted = post[0].date_posted;
+    let poster_name = post[0].poster_name;
+    let upvotes = post[0].upvotes;
+    let comments = post[0].comments;
+    let showName = post[0].showName;
 
     //Set the form data so we can send it to the Django API
-    const data = {  };
+    const data = { category_id, post_id, title, description, keywords, progress, date_posted, poster_name, upvotes, is_pending_mod, is_hidden, showName, flag_weight };
 
     // Submit the form data to the database
     try {
-      const addResponse = await fetch(`${server_url}/api/posts/flag_post/${searchParams.category_id}/${searchParams.post_id}`, {
+      const patchResponse = await fetch(`${server_url}/api/posts/flag_post/${searchParams.category_id}/${searchParams.post_id}`, {
         method: "PATCH",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
       });
 
-      alert("Your report has been submitted!");
+      console.log(patchResponse);
+
+      if (!alertDisplayed) {
+        alert("Your report has been submitted!");
+      }
 
       // Go back to the category board page
       if (window.history.length > 1) {

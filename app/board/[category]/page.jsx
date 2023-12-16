@@ -10,6 +10,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
 import { Select } from "react-dropdown-select";
 import Dropdown from 'app/board/Dropdown.js';
+import { setCookie, getCookie, deleteCookie, hasCookie } from 'cookies-next';
 
 const server_url = `http://127.0.0.1:8000`;
 
@@ -81,17 +82,10 @@ export default function Page({ params, searchParams }) {
   const [buttonFloat, setButtonFloat] = useState(false);
   const [selectedSortValues, setSelectedSortValues] = useState([]);
   const [selectedFilterValues, setSelectedFilterValues] = useState([]);
+  const [allUpvotes, setAllUpvotes] = useState([]);
+  const [allPosts, setAllPosts] = useState([]);
 
-  // Hold the json version of the posts for easier sorts/filters
-  let postsJSON;
-
-  // Hold the json version of the upvotes for easier parsing
-  let upvotesJSON;
-
-  //function to handle changes in sort drop down menu
-  const handleSelectChange = (selectedOptions) => {
-    console.log(selectedOptions);
-  }
+  let alertDisplayed = false;
 
   useEffect(() => {
     // Get the necessary data from the database
@@ -109,8 +103,8 @@ export default function Page({ params, searchParams }) {
         try {
           const cardResponse = await fetch(`${server_url}/api/posts/${data.id}`);
           const cardData = await cardResponse.json();
-          postsJSON = cardData;
           setCards(cardData);
+          setAllPosts(cardData);
 
           // Check if we have no posts for this category
           if (Object.keys(cardData).length < 1) {
@@ -126,18 +120,12 @@ export default function Page({ params, searchParams }) {
       }
 
       // Get the User_Upvotes data
-      //const upvotesResponse = await fetch(`${server_url}/api/user_upvotes`);
-      //const upvotesData = await upvotesResponse.json();
-      //upvotesJSON = upvotesData;
-    }
-
-    // Check the user's permissions
-    async function checkUser() {
-
+      const upvotesResponse = await fetch(`${server_url}/api/user_upvotes`);
+      const upvotesData = await upvotesResponse.json();
+      setAllUpvotes(upvotesData);
     }
 
     fetchData();
-    checkUser();
 
     //create floating new post button
     function handleScroll() {
@@ -159,8 +147,9 @@ export default function Page({ params, searchParams }) {
   function FlagButton({ category_id, post_id }) {
     const router = useRouter();
 
+    // No need to authenticate user here since that's done in flag_post page
     const handleClick = () => {
-      router.push(`/flag_post?category_id=${category_id}&post_id=${post_id}`, {shallow: false});
+      router.push(`/flag_post?category_id=${category_id}&post_id=${post_id}`, { shallow: false });
     };
 
     return (
@@ -176,26 +165,173 @@ export default function Page({ params, searchParams }) {
     const [upvotes, setUpvotes] = useState(upvoteCount);
 
     const handleClick = async () => {
-      // Proceed with this section if the user hasn't upvoted this post
-      //if user, post_id, category_id not in User_Upvotes
-      if (upvotes === upvoteCount) {
-        // Increment the local count
-        setUpvotes(upvotes + 1);
+      let loginCookie = getCookie('pittID');
+      let authorizeCookie = getCookie('authorization');
 
-        // Increment the database count
-        const response = await fetch(`${server_url}/api/posts/inc_upvote/${category_id}/${post_id}`, {
-          method: "PATCH"
-        });
-        console.log(response);
+      // Check if the user is logged in
+      if (loginCookie != undefined) {
+        // Check if the user is authorized to upvote
+        if (authorizeCookie != undefined) {
+          // See if the user is trying to upvote their own post
+          const userPost = allPosts.find(item => item.category_id === category_id && item.post_id === post_id && item.poster_name.toUpperCase() === loginCookie.toUpperCase());
+          
+          if (!userPost) {
+            // Check if the user has upvoted this post or not
+            const upvotedObject = allUpvotes.find(item => item.category_id === category_id && item.post_id === post_id && item.username.toUpperCase() === loginCookie.toUpperCase());
+
+            if (upvotes === upvoteCount) {
+              //if user, post_id, category_id not in User_Upvotes
+              if (!upvotedObject) {
+                // Increment the local count
+                setUpvotes(upvotes + 1);
+                upvoteCount++;
+                setUpvotes(upvoteCount);
+                //console.log(upvotes);
+
+                // Increment the database count
+                const response = await fetch(`${server_url}/api/posts/inc_upvote/${category_id}/${post_id}`, {
+                  method: "PATCH"
+                });
+                //console.log(response);
+
+                // Add the upvote to the User_Upvotes table for tracking
+                let username = getCookie('pittID');
+                const data = { category_id, post_id, username }
+
+                try {
+                  const addResponse = await fetch(`${server_url}/api/user_upvotes/add`, {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                  });
+
+                  //console.log("Success:", addResponse);
+                  //router.refresh();
+                } catch (error) {
+                  // There was an error when trying to post to the db
+                  console.error("Error when attempting to post to db:", error);
+                }
+              } else {
+                // Decrement the local count
+                setUpvotes(upvotes - 1)
+                upvoteCount--;
+
+                // Decrement the database count
+                const response = await fetch(`${server_url}/api/posts/dec_upvote/${category_id}/${post_id}`, {
+                  method: "PATCH",
+                });
+                //console.log(response);
+
+                // Remove the upvote from the User_Upvotes table
+                let username = getCookie('pittID');
+
+                // Get the current data for the board
+                try {
+                  // Send the DELETE request to remove the category from the db
+                  const deleteResponse = await fetch(`${server_url}/api/user_upvotes/delete/${category_id}/${post_id}/${username}`, {
+                    method: "DELETE"
+                  });
+
+                  //console.log("Success:", deleteResponse);
+                  //router.refresh();
+                } catch (error) {
+                  console.error("Error:", error);
+                }
+              }
+            } else {
+              if (upvotes < upvoteCount) {
+                // User just downvoted & wants to upvote, const didn't update
+                setUpvotes(upvoteCount);
+                //console.log("upvotedObject: " + upvotedObject)
+                //console.log("upvotes: " + upvotes)
+                //console.log("upvoteCount: " + upvoteCount)
+
+                // Increment the database count
+                const response = await fetch(`${server_url}/api/posts/inc_upvote/${category_id}/${post_id}`, {
+                  method: "PATCH"
+                });
+                //console.log(response);
+
+                // Add the upvote to the User_Upvotes table for tracking
+                let username = getCookie('pittID');
+                const data = { category_id, post_id, username }
+
+                try {
+                  const addResponse = await fetch(`${server_url}/api/user_upvotes/add`, {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                  });
+
+                  //console.log("Success:", addResponse);
+                  //router.refresh();
+                } catch (error) {
+                  // There was an error when trying to post to the db
+                  console.error("Error when attempting to post to db:", error);
+                }
+              } else {
+                // User just upvoted & wants to downvote, const didn't update
+                setUpvotes(upvoteCount);
+                //console.log("upvotedObject: " + upvotedObject)
+                //console.log("upvotes: " + upvotes)
+                //console.log("upvoteCount: " + upvoteCount)
+
+                // Decrement the database count
+                const response = await fetch(`${server_url}/api/posts/dec_upvote/${category_id}/${post_id}`, {
+                  method: "PATCH",
+                });
+                //console.log(response);
+
+                // Remove the upvote from the User_Upvotes table
+                let username = getCookie('pittID');
+
+                // Get the current data for the board
+                try {
+                  // Send the DELETE request to remove the category from the db
+                  const deleteResponse = await fetch(`${server_url}/api/user_upvotes/delete/${category_id}/${post_id}/${username}`, {
+                    method: "DELETE"
+                  });
+
+                  //console.log("Success:", deleteResponse);
+                  //router.refresh();
+                } catch (error) {
+                  console.error("Error:", error);
+                }
+              }
+            }
+          } else {
+            if (!alertDisplayed) {
+              // Block the user from trying to upvote their own post
+              alert("You can't upvote your own post!");
+              alertDisplayed = true;
+            } else {
+              // The alert's been displayed, so we can reset the flag
+              alertDisplayed = false;
+            }
+          }
+        } else {
+          if (!alertDisplayed) {
+            // The user is logged in, but not authorized, so they must be disallowed
+            alert("You are currently unable to upvote posts. Please contact administration for assistance.");
+            alertDisplayed = true;
+          } else {
+            // The alert's been displayed, so we can reset the flag
+            alertDisplayed = false;
+          }
+        }
       } else {
-        // Decrement the local count
-        setUpvotes(upvotes - 1)
-
-        // Decrement the database count
-        const response = await fetch(`${server_url}/api/posts/dec_upvote/${category_id}/${post_id}`, {
-          method: "PATCH",
-        });
-        console.log(response);
+        if (!alertDisplayed) {
+          // The user isn't logged in
+          alert("You need to be logged in to upvote ideas!")
+          alertDisplayed = true;
+        } else {
+          // The alert's been displayed, so we can reset the flag
+          alertDisplayed = false;
+        }
       }
     };
 
@@ -240,42 +376,42 @@ export default function Page({ params, searchParams }) {
   function handleSort({ sortBy }) {
     // Sort by most recent
     if (sortBy === 'recent') {
-      let mostRecent = postsJSON.sort((a, b) => new Date(b.date_posted) - new Date(a.date_posted));
+      let mostRecent = allPosts.sort((a, b) => new Date(b.date_posted) - new Date(a.date_posted));
 
       setCards(mostRecent);
     }
 
     // Sort by least recent
     if (sortBy === 'leastRecent') {
-      let leastRecent = postsJSON.sort((a, b) => new Date(a.date_posted) - new Date(b.date_posted));
+      let leastRecent = allPosts.sort((a, b) => new Date(a.date_posted) - new Date(b.date_posted));
 
       setCards(leastRecent);
     }
 
     // Sort by most upvotes
     if (sortBy == 'upvoted') {
-      let mostUpvotes = postsJSON.sort((a, b) => new b.upvotes - new a.upvotes);
+      let mostUpvotes = allPosts.sort((a, b) => new b.upvotes - new a.upvotes);
 
       setCards(mostUpvotes);
     }
 
     // Sort by least upvotes
     if (sortBy == 'leastUpvoted') {
-      let leastUpvotes = postsJSON.sort((a, b) => new a.upvotes - new b.upvotes);
+      let leastUpvotes = allPosts.sort((a, b) => new a.upvotes - new b.upvotes);
 
       setCards(leastUpvotes);
     }
 
     // Sort by most comments
     if (sortBy == 'comments') {
-      let mostComments = postsJSON.sort((a, b) => new b.comments - new a.comments);
+      let mostComments = allPosts.sort((a, b) => new b.comments - new a.comments);
 
       setCards(mostComments);
     }
 
     // Sort by least comments
     if (sortBy == 'leastComments') {
-      let leastComments = postsJSON.sort((a, b) => new a.comments - new b.comments);
+      let leastComments = allPosts.sort((a, b) => new a.comments - new b.comments);
 
       setCards(leastComments);
     }
@@ -285,28 +421,28 @@ export default function Page({ params, searchParams }) {
   function handleFilter({ filterBy }) {
     // Filter by only "not in progress"
     if (filterBy == "notProgressed") {
-      let filteredPosts = postsJSON.filter(post => post.category === 0);
+      let filteredPosts = allPosts.filter(post => post.category === 0);
 
       setCards(filteredPosts);
     }
 
     // Filter by only "in talks"
     if (filterBy == "inTalks") {
-      let filteredPosts = postsJSON.filter(post => post.category === 1);
+      let filteredPosts = allPosts.filter(post => post.category === 1);
 
       setCards(filteredPosts);
     }
 
     // Filter by only "in progress"
     if (filterBy == "inProgress") {
-      let filteredPosts = postsJSON.filter(post => post.category === 2);
+      let filteredPosts = allPosts.filter(post => post.category === 2);
 
       setCards(filteredPosts);
     }
 
     // Filter by only "complete"
     if (filterBy == "complete") {
-      let filteredPosts = postsJSON.filter(post => post.category === 3);
+      let filteredPosts = allPosts.filter(post => post.category === 3);
 
       setCards(filteredPosts);
     }
@@ -314,7 +450,7 @@ export default function Page({ params, searchParams }) {
 
   // Function to handle searching title/description of posts
   function handleSearch({ searchTerm }) {
-    let foundPosts = postsJSON.filter(post => post.title.includes(searchTerm) || post.description.includes(searchTerm));
+    let foundPosts = allPosts.filter(post => post.title.includes(searchTerm) || post.description.includes(searchTerm) || post.keywords.includes(searchTerm));
 
     setCards(foundPosts);
   }
@@ -476,7 +612,7 @@ export default function Page({ params, searchParams }) {
           <div className={styles.sortDropDown}>
             <Dropdown
               options={sortOptions}
-              onChange={handleSelectChange}
+              onChange={(value) => handleSort(value)}
               defaultPlaceholder="Sort by"
               style={{ color: 'grey' }}
               values={selectedSortValues}
@@ -486,7 +622,7 @@ export default function Page({ params, searchParams }) {
           <div className={styles.filterDropDown}>
             <Dropdown
               options={filterOptions}
-              onChange={handleSelectChange}
+              onChange={(value) => handleFilter(value)}
               defaultPlaceholder="Filter by"
               style={{ color: 'grey' }}
               values={selectedFilterValues}
@@ -497,7 +633,6 @@ export default function Page({ params, searchParams }) {
 
       </div>
 
-      {/* Note: Will be updated to show posts from db */}
       <div className={styles.post_grid}>
         {cards.map((card) => (
           <div key={card.post_id} className={styles.card} style={{ backgroundColor: pastelColors[(card.post_id - 1) % pastelColors.length] }}>

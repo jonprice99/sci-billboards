@@ -48,12 +48,12 @@ def users_list(request):
     logger.info('Response Data: %s', serializer.data)
     return Response(serializer.data)
 
-#@api_view(['GET'])
-#def user_upvotes_list(request):
-#    upvotes = User_Upvotes.objects.all()
-#    serializer = User_UpvotesSerializer(upvotes, many=True)
-#    logger.info('Response Data: %s', serializer.data)
-#    return Response(serializer.data)
+@api_view(['GET'])
+def user_upvotes_list(request):
+    users_upvotes = User_Upvotes.objects.all()
+    serializer = User_UpvotesSerializer(users_upvotes, many=True)
+    logger.info('Response Data: %s', serializer.data)
+    return Response(serializer.data)
 
 @api_view(['GET'])
 def disallowed_users_list(request):
@@ -83,6 +83,12 @@ def posts_list(request, category_id):
     return Response(serializer.data)
 
 @api_view(['GET'])
+def get_public_posts(request):
+    posts = Posts.objects.filter(is_hidden=False)
+    serializer = PostsSerializer(posts, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
 def get_all_posts(request):
     posts = Posts.objects.all()
     serializer = PostsSerializer(posts, many=True)
@@ -96,7 +102,7 @@ def get_all_comments(request):
 
 @api_view(['GET'])
 def get_post_comments(request, category_id, post_id):
-    comments = Comments.objects.filter(category_id=category_id, post_id=post_id, isHidden=False)
+    comments = Comments.objects.filter(category_id=category_id, post_id=post_id, is_hidden=False)
     serializer = CommentsSerializer(comments, many=True)
     return Response(serializer.data)
 
@@ -112,74 +118,71 @@ def get_post(request, category_id, post_id):
     serializer = PostsSerializer(post, many=False)
     return Response(serializer.data)
 
-@api_view(['PUT'])
+@api_view(['PATCH'])
 def update_category(request, id):
     try:
+        Categories.objects.filter(id=id).update(**request.data)
         category = Categories.objects.get(id=id)
+        serializer = CategoriesSerializer(category)
+        return Response(serializer.data)
     except Categories.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    serializer = CategoriesSerializer(category, data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['PUT'])
+@api_view(['PATCH'])
 def mod_update_post(request, category_id, post_id):
     try:
+        Posts.objects.filter(category_id=category_id, post_id=post_id).update(**request.data)
         post = Posts.objects.get(category_id=category_id, post_id=post_id)
+        serializer = PostsSerializer(post)
+        return Response(serializer.data)
     except Posts.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-    
-    serializer = PostsSerializer(post, data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['PUT'])
+
+@api_view(['PATCH'])
 def mod_update_comment(request, category_id, post_id, comment_id):
     try:
+        Comments.objects.filter(category_id=category_id, post_id=post_id, comment_id=comment_id).update(**request.data)
         comment = Comments.objects.get(category_id=category_id, post_id=post_id, comment_id=comment_id)
+        serializer = CommentsSerializer(comment)
+        return Response(serializer.data)
     except Comments.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     
-    serializer = PostsSerializer(comment, data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-@api_view(['PUT'])
+@api_view(['PATCH'])
 def update_user(request, id):
     try:
+        Users.objects.filter(id=id).update(**request.data)
         user = Users.objects.get(id=id)
+        serializer = UsersSerializer(user)
+        return Response(serializer.data)
     except Users.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-    
-    serializer = UsersSerializer(user, data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['PUT'])
+@api_view(['PATCH'])
 def update_disallowed_user(request, username):
     try:
+        Disallowed_Users.objects.filter(username=username).update(**request.data)
         user = Disallowed_Users.objects.get(username=username)
+        serializer = Disallowed_UsersSerializer(user)
+        return Response(serializer.data)
     except Disallowed_Users.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-    
-    serializer = Disallowed_UsersSerializer(user, data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 def add_user(request):
     serializer = UsersSerializer(data=request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def add_user_upvote(request):
+    serializer = User_UpvotesSerializer(data=request.data)
 
     if serializer.is_valid():
         serializer.save()
@@ -275,6 +278,16 @@ def delete_disallowed_user(request, username):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     user.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['DELETE'])
+def delete_user_upvote(request, category_id, post_id, username):
+    try:
+        user_upvote = User_Upvotes.objects.get(category_id=category_id, post_id=post_id, username=username)
+    except User_Upvotes.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    user_upvote.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['PATCH'])

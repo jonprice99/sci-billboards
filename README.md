@@ -34,8 +34,10 @@ python3 -m venv myenv
 
 To run the virtual environment for the Django database API:
 ```bash
-# from the project root directory
+# from the project root directory (using Powershell)
 ./myenv/Scripts/Activate.ps1
+
+# if on macOS/Linux: source myenv/bin/activate
 ```
 
 _Should you need to deactivate the virtual environment:_

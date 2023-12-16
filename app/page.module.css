@@ -128,7 +128,7 @@ footer .links a {
 }
 
 .card {
-  padding: 1.5rem 1.7rem;
+  padding: 1.5rem 1.5rem;
   border-radius: var(--border-radius);
   background: rgba(var(--card-rgb), 0);
   border: 1px solid rgba(var(--card-border-rgb), 0);
@@ -136,7 +136,15 @@ footer .links a {
   z-index: 1;
   margin-top: 0.5rem;
   margin-left: 0.25rem;
-  margin-right: 0.1rem;
+  margin-right: 0.25rem;
+}
+
+.card:active {
+  filter: brightness(85%);
+}
+
+.card:hover {
+  transform: scale(1.03);
 }
 
 .card span {

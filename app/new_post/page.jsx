@@ -8,10 +8,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons'
 import { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
+import { setCookie, getCookie, deleteCookie, hasCookie } from 'cookies-next';
 
 const server_url = `http://127.0.0.1:8000`;
-const poster_id = 1;  // To be replaced with mock login function info
-const poster_name = 'Roc' // To be replaced with mock login function info
 
 const new_post = () => {
   const router = useRouter();
@@ -25,11 +24,15 @@ const new_post = () => {
 
   const [categoryStr, setCategoryStr] = useState('');
   const [title, setTitle] = useState('');
-  const [tags, setTag] = useState('');
+  const [keywords, setKeywords] = useState('');
   const [description, setPostBody] = useState('');
   const [showName, setShowName] = useState(false);
+  const [poster_name, setPosterName] = useState('');
 
   const [categories, setCategories] = useState([]);
+
+  // A boolean flag to prevent login alert from showing twice
+  let loginAlert = false;
 
   useEffect(() => {
     async function fetchData() {
@@ -40,11 +43,36 @@ const new_post = () => {
 
     // Check the user's permissions
     async function checkUser() {
+      // Check if the user is logged in
+      let loggedInCookie = getCookie('pittID');
 
+      // Check if the user is disallowed
+      let authorizedCookie = getCookie('authorization');
+      
+      if (loggedInCookie == undefined) {
+        if (!loginAlert) {
+          // The user isn't logged in, redirect them to the login page
+          alert("You need to login to make a new post!");
+          router.push(`/login`);
+          loginAlert = true;
+        }
+      }
+
+      if (loggedInCookie != undefined && authorizedCookie == undefined) {
+        if (!loginAlert) {
+          // The user is logged in, but they're unauthorized
+          alert("You're currently unable to make a new post. Please contact administration for assistance!");
+          router.push(`/`);
+          loginAlert = true;
+        }
+      }
     }
 
     fetchData();
     checkUser();
+
+    // Got through the checks, so set poster_name
+    setPosterName(getCookie('pittID'));
   }, []);
 
   // Define a function that handles the form submission
@@ -55,20 +83,13 @@ const new_post = () => {
     // Get the numerical version of the category id
     let category_id = Number(categoryStr)
 
-    // Prevent the user from being able to send a blank post
-    if (category_id == 0 || title.length < 1 || description.length < 1) {
+    // Prevent the user from being able to send a blank post or post after login timeout
+    if (category_id == 0 || categoryStr.length < 1 || title.length < 1 || description.length < 1 || poster_name.length < 1) {
       router.push(`/new_post`);
     }
 
     //Set the form data so we can send it to the Django API
-    let data;
-    if (!showName) {
-      // We're keeping the post anonymous
-      data = { category_id, title, description, poster_id };
-    } else {
-      // We're adding a name to the post
-      data = { category_id, title, description, poster_id, poster_name }
-    }
+    const data = { category_id, title, description, keywords, poster_name, showName };
 
     // Get the category href we're posting to so we can put it in the router
     let selected_href = (categories.filter(item => item.id == category_id)).map((item) => item.href)
@@ -100,7 +121,7 @@ const new_post = () => {
 
   // Function to handle title character count
   const handleTagChange = (e) => {
-    setTag(e.target.value);
+    setKeywords(e.target.value);
   };
 
   // Function to handle body character count
@@ -159,12 +180,12 @@ const new_post = () => {
           />
           <br></br>
           <br></br>
-          <label htmlFor="tag">Provide tags:</label>
+          <label htmlFor="tag">Provide keywords: (i.e., word 1,word 2,...)</label>
           <br></br>
           <AutoResize
             type="text"
-            id="tags"
-            value={tags}
+            id="keywords"
+            value={keywords}
             onChange={handleTagChange}
             required
           />

@@ -15,31 +15,21 @@ const login = () => {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  
-  let usersJSON;
-  let disallowedJSON;
+  const [usersJSON, setUsersJSON] = useState([]);
+  const [disallowedJSON, setDisallowedJSON] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
       const res = await fetch(`${server_url}/api/mod/users/`);
       const data = await res.json();
-      usersJSON = data;
+      setUsersJSON(data);
 
       const disallowedRes = await fetch(`${server_url}/api/mod/disallowed_users`);
       const disallowedData = await disallowedRes.json();
-      disallowedJSON = disallowedData;
-    }
-
-    async function isLoggedInCheck() {
-      if (hasCookie('pittID')) {
-        // Redirect the user back to the homepage
-        router.push('/');
-        alert("You're already logged in!");
-      }
+      setDisallowedJSON(disallowedData);
     }
 
     fetchData();
-    isLoggedInCheck();
   }, []);
 
   // Define a function that handles the form submission
@@ -47,11 +37,8 @@ const login = () => {
     // Prevent the default browser behavior
     event.preventDefault();
 
-    // Make the letters of the username capitalized to ensure all usernames in Users, Posts, & Comments are standardized (i.e., abc123 => ABC123)
-    setUsername(username.replace(/[a-zA-Z]+/g, match => match.toUpperCase()));
-
     //Set the form data so we can send it to the Django API
-    const data = { username, password }
+    const data = { username, password };
 
     // Cross reference the form data to the database
     try {
@@ -66,25 +53,26 @@ const login = () => {
       // Possibly: Add check for empty/null array here
 
       // (if no error/non-null array) Set the login
-      setCookie('pittID', username);
+      setCookie('pittID', username, {maxAge: 1200 * 6 * 24 });
 
       // Check if the user is a superuser in Users table to set permissions
-      const object = usersJSON.find(item => item.username === username);
+      const object = usersJSON.find(item => item.username.toUpperCase() === username.toUpperCase());
+      
       if (object) {
         // Found the user, so set the permission level
         if (object.role === 1) {
           // User is an admin
-          setCookie('authorization', 1);
+          setCookie('authorization', 1, {maxAge: 1200 * 6 * 24 });
         } else if (object.role === 2) {
           // User is a mod
-          setCookie('authorization', 2);
+          setCookie('authorization', 2, {maxAge: 1200 * 6 * 24 });
         }
       } else {
         // Go through disallowed to find username
         const disallowedObject = disallowedJSON.find(item => item.username === username);
         if (!disallowedObject) {
           // We have an authorized standard user
-          setCookie('authorization', 0);
+          setCookie('authorization', 0, {maxAge: 1200 * 6 * 24 });
 
           // Note: If we find a disallowed user, they don't get an authorization cookie
         }
@@ -95,6 +83,12 @@ const login = () => {
       // There was an error when trying to connect to the db
       console.error("Login denied - invalid username/password:", error);
       router.refresh();
+    }
+
+    if (window.history.length > 1) {
+      router.back();
+    } else {
+      router.push('/');
     }
   }
 
@@ -107,6 +101,13 @@ const login = () => {
   const handlePassChange = (e) => {
     setPassword(e.target.value);
   };
+
+  // Function to handle 'Enter' key form submission method
+  function handleKeyDown(event) {
+    if (event.keyCode === 13) {
+      handleSubmit(event);
+    }
+  }
 
   return (
     <main className={styles.main}>
@@ -150,6 +151,7 @@ const login = () => {
             value={password}
             rows={1}
             size={30}
+            onKeyDown={handleKeyDown}
             required
           />
         </form>

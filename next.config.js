@@ -5,4 +5,5 @@ module.exports = {
     experimental: {
         scrollRestoration: true,
     },
+    //reactStrictMode: false,
 }

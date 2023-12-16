@@ -15,16 +15,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMessage, faFlag, faAngleLeft, faThumbsUp } from '@fortawesome/free-solid-svg-icons'
 import { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
+import { setCookie, getCookie, deleteCookie, hasCookie } from 'cookies-next';
 
 const server_url = `http://127.0.0.1:8000`;
-
-// Flag for mod/admin power separation (to be replaced by login power check)
-const isAdmin = true;
 
 export default function UsersTools() {
     const [allUsers, setAllUsers] = useState([]);
     const [disallowedUsers, setDisallowedUsers] = useState([]);
+    const [isAdmin, setIsAdmin] = useState(false);
     const router = useRouter();
+    let alertDisplayed = false;
 
     useEffect(() => {
         async function fetchData() {
@@ -39,7 +39,34 @@ export default function UsersTools() {
 
         // Check the user's permissions
         async function checkUser() {
+            // Check if the user is logged in
+            let loggedInCookie = getCookie('pittID');
 
+            // Check if the user is disallowed
+            let authorizedCookie = getCookie('authorization');
+
+            if (loggedInCookie == undefined) {
+                if (!alertDisplayed) {
+                    // The user isn't logged in, redirect them to the login page
+                    alert("Access Denied: You need to login and be a moderator or administrator to access this page!");
+                    router.push(`/login`);
+                    alertDisplayed = true;
+                }
+            }
+
+            if (loggedInCookie != undefined && (authorizedCookie == undefined || authorizedCookie < 1)) {
+                if (!alertDisplayed) {
+                    // The user is logged in, but they're unauthorized
+                    alert("Access Denied: Only moderators or administrators can access this page!");
+                    router.push(`/`);
+                    alertDisplayed = true;
+                }
+            }
+
+            if (authorizedCookie == 1) {
+                // The user is an admin
+                setIsAdmin(true);
+            }
         }
     
         fetchData();
@@ -65,12 +92,12 @@ export default function UsersTools() {
 
         // Admin data
         let user_id = changes.user_id;
-        let username = changes.user_name;
+        let username = changes.username;
         let role = changes.role;
         const data = { user_id, username, role }
 
         try {
-            const addResponse = await fetch(`${server_url}/api/users/add`, {
+            const addResponse = await fetch(`${server_url}/api/mod/users/add`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -96,7 +123,7 @@ export default function UsersTools() {
         const data = { username }
 
         try {
-            const addResponse = await fetch(`${server_url}/api/disallowed_users/add`, {
+            const addResponse = await fetch(`${server_url}/api/mod/disallowed_users/add`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -120,7 +147,7 @@ export default function UsersTools() {
 
         // Admin data
         let user_id = changes.user_id;
-        let username = changes.user_name;
+        let username = changes.username;
         let role = changes.role;
         const data = { user_id, username, role };
         
@@ -128,7 +155,7 @@ export default function UsersTools() {
         try {
             // Send the PUT request with the updated data
             const putResponse = await fetch(`${server_url}/api/mod/users/update/${data.user_id}`, {
-                method: "PUT",
+                method: "PATCH",
                 headers: {
                     "Content-Type": "application/json"
                 },
@@ -155,7 +182,7 @@ export default function UsersTools() {
         try {
             // Send the PUT request with the updated data
             const putResponse = await fetch(`${server_url}/api/mod/disallowed_users/update/${data.username}`, {
-                method: "PUT",
+                method: "PATCH",
                 headers: {
                     "Content-Type": "application/json"
                 },
@@ -176,14 +203,14 @@ export default function UsersTools() {
         let changes = event.data
 
         // Admin data
-        let username = changes.user_name;
+        let username = changes.username;
         let role = changes.role;
         const data = { user_id, username, role };
 
         // Get the current data for the board
         try {
             // Send the DELETE request to remove the category from the db
-            const deleteResponse = await fetch(`${server_url}/api/users/delete/${data.user_id}`, {
+            const deleteResponse = await fetch(`${server_url}/api/mod/users/delete/${data.user_id}`, {
                 method: "DELETE"
             });
 
@@ -207,7 +234,7 @@ export default function UsersTools() {
         // Get the current data for the board
         try {
             // Send the DELETE request to remove the category from the db
-            const deleteResponse = await fetch(`${server_url}/api/disallowed_users/delete/${data.user_id}`, {
+            const deleteResponse = await fetch(`${server_url}/api/mod/disallowed_users/delete/${data.user_id}`, {
                 method: "DELETE"
             });
 
@@ -259,7 +286,7 @@ export default function UsersTools() {
     
                 <br />
                 <h3>Users:</h3>
-                <div style={{ width: '70%' }}>
+                <div style={{ width: '80%' }}>
                     <ExtremeDataGrid
                         dataSource={allUsers}
                         columns={adminColumns}
@@ -291,7 +318,7 @@ export default function UsersTools() {
                 <br />
                 <br />
                 <h3>Disallowed Users:</h3>
-                <div style={{ width: '70%' }}>
+                <div style={{ width: '80%' }}>
                     <ExtremeDataGrid
                         dataSource={disallowedUsers}
                         columns={adminDisallowedColumns}
